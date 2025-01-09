@@ -7,7 +7,6 @@
 - **Language**: TypeScript
 - **Framework**: React + Vite
 - **Styling**: Styled-Components
-- **State Management**: Recoil
 - **API Communication**: Axios
 - **Code Quality**: ESLint, Prettier
 
