@@ -1,8 +1,8 @@
-<<<<<<< HEAD
 import styled from '@emotion/styled';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import InquiryBanner from '../../components/InquiryBanner';
+import Community from '../../components/Community';
 
 const HomeContainer = styled.div`
   width: 100%;
@@ -20,23 +20,13 @@ const Home = () => {
   return (
     <HomeContainer>
       <Navbar />
-      <Content>{/* 여기에 홈페이지의 다른 내용이 들어갈 예정 */}</Content>
+      <Content>
+        <Community />
+      </Content>
       <InquiryBanner />
       <Footer />
     </HomeContainer>
   );
-=======
-import Community from "../../components/Community";
-
-const Home = () => {
-  return (
-    <div>
-      
-      <Community/>
-
-    </div>
-  )
->>>>>>> develop
 };
 
 export default Home;
