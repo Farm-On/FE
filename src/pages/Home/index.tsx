@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import styled from '@emotion/styled';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
@@ -24,6 +25,18 @@ const Home = () => {
       <Footer />
     </HomeContainer>
   );
+=======
+import Community from "../../components/Community";
+
+const Home = () => {
+  return (
+    <div>
+      
+      <Community/>
+
+    </div>
+  )
+>>>>>>> develop
 };
 
 export default Home;
