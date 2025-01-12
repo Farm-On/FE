@@ -55,7 +55,8 @@ export const CategoryWrapper = styled.div`
 `
 export const Category = styled.div`
     margin:0;
-    width:68px;
+    min-width:68px;
+    width:fit-content;
     height:36px;
     border-radius:71.01px;
     background-color:rgba(0, 160, 94, 1);
@@ -67,19 +68,25 @@ export const Category = styled.div`
         color:rgba(255, 255, 255, 1);
         font-size:16px;
         font-family:'PretendardRegular';
+        white-space:nowrap;
+        margin:0;
+        height:24px;
+        padding-left:20px;
+        padding-right:20px;
     }
 `
 export const Feeds = styled.div`
-    padding-left:362px;
-    padding-top:16px;
-    padding-bottom:0px;
+    margin-left:362px;
+    margin-top:16px;
+    margin-bottom:0px;
     width:1196px;
     height:auto;
-    
 `
 
 export const GreenBox = styled.div`
-    width:45px;
+    width:fit-content;
+    min-width:45px;
+    padding: 0 10px;
     height:26px;
     background-color:rgba(0, 160, 94, 0.1);
     display:flex;
@@ -92,6 +99,7 @@ export const GreenBox = styled.div`
         font-size:12px;
         font-family:'PretendardSemiBold'; 
         line-height:14.32px;
+        white-space: nowrap;
     }
 `
 export const Headline = styled.div`
