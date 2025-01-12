@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import logo from '../../assets/images/logo.png';
 import styled from '@emotion/styled';
+import logo from '../../assets/images/logo.png';
 
 const NavContainer = styled.nav`
   position: fixed;
@@ -10,13 +10,13 @@ const NavContainer = styled.nav`
   height: 80px;
   background: #ffffff;
   border-bottom: 1px solid #dadada;
+  display: flex;
+  justify-content: center;
 `;
 
 const NavContent = styled.div`
-  position: relative;
-  width: 1920px;
+  width: 1200px;
   height: 100%;
-  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -25,8 +25,7 @@ const NavContent = styled.div`
 const LeftSection = styled.div`
   display: flex;
   align-items: center;
-  margin-left: 361px;
-  gap: 34px;
+  gap: 60px;
 `;
 
 const Logo = styled(Link)`
@@ -61,7 +60,6 @@ const MenuLink = styled(Link)`
 const RightSection = styled.div`
   display: flex;
   align-items: center;
-  margin-right: 361px;
   gap: 26px;
 `;
 
@@ -100,7 +98,6 @@ const SignupButton = styled(Link)`
   background: #00a05e;
   border-radius: 6px;
   text-decoration: none;
-  text-align: center;
 `;
 
 const SignupText = styled.span`
@@ -108,10 +105,6 @@ const SignupText = styled.span`
   font-weight: 600;
   font-size: 16px;
   color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 24px;
 `;
 
 const Navbar = () => {
