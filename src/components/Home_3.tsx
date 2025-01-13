@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 import ChevronRight from '../assets/ChevronRight.svg?react';
+import New from '../assets/New.svg?react';
+import Speaker from '../assets/speaker.svg?react';
+
 import { TrendingCard } from './TrendingCard';
 
 export interface TrendingCardData {
@@ -53,6 +56,27 @@ const dummy_trendings = [
   },
 ];
 
+const dummy_announcements = [
+  {
+    id: 4,
+    icon: <New />,
+    title: '전문가 매칭 서비스 업데이트: 더 많은 전문가와 연결하세요!',
+    date: '2024.12.12',
+  },
+  {
+    id: 5,
+    icon: <Speaker />,
+    title: '리뷰 시스템 개편: 전문가와의 소중한 경험을 나누어보세요.',
+    date: '2024.12.12',
+  },
+  {
+    id: 6,
+    icon: <Speaker />,
+    title: '함께 FarmON을 개선할 베타 테스트 참가자를 모집합니다!',
+    date: '2024.12.12',
+  },
+];
+
 export const Trendings = () => {
   return (
     <>
@@ -71,11 +95,30 @@ export const Trendings = () => {
           <TrendingCard key={data.id} data={data} />
         ))}
       </TrendingCardContainer>
+      <HeaderContainer style={{ marginTop: '110px' }}>
+        <HeaderTitle>새 소식을 알려드려요</HeaderTitle>
+        <HeaderViewAllContainer>
+          <HeaderViewAllText>전체보기</HeaderViewAllText>
+          <ChevronRight />
+        </HeaderViewAllContainer>
+      </HeaderContainer>
+      {dummy_announcements.map((announcement) => (
+        <AnnouncementContainer key={announcement.id}>
+          <AnnouncementContent>
+            <AnnouncementTitleContainer>
+              {announcement.icon}
+              <AnnouncementTitle>{announcement.title}</AnnouncementTitle>
+            </AnnouncementTitleContainer>
+            <AnnouncementDate>{announcement.date}</AnnouncementDate>
+          </AnnouncementContent>
+        </AnnouncementContainer>
+      ))}
     </>
   );
 };
 
 const HeaderContainer = styled.div`
+  margin-bottom: 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -126,4 +169,41 @@ const CircleButton = styled.div`
   background-color: #fff;
   border-radius: 9999px;
   filter: drop-shadow(0px 0px 7px rgba(0, 0, 0, 0.15));
+`;
+
+const AnnouncementContainer = styled.div``;
+
+const AnnouncementContent = styled.div`
+  padding: 30px 44px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 0.7px solid #d1d1d1;
+  border-bottom: 0.7px solid #d1d1d1;
+`;
+
+const AnnouncementTitleContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 48px;
+`;
+
+const AnnouncementTitle = styled.span`
+  color: #000;
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 166%; /* 29.88px */
+  text-transform: uppercase;
+`;
+
+const AnnouncementDate = styled.span`
+  color: #8e8e8e;
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 166%; /* 29.88px */
+  text-transform: uppercase;
 `;

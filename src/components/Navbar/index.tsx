@@ -3,10 +3,6 @@ import styled from '@emotion/styled';
 import logo from '../../assets/images/logo.png';
 
 const NavContainer = styled.nav`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
   height: 80px;
   background: #ffffff;
   border-bottom: 1px solid #dadada;
