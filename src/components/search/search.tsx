@@ -2,18 +2,28 @@ import styled from 'styled-components';
 import Category from './category';
 import SearchImg from '../../assets/images/search.png';
 import Banner from './banner';
+
 const Container = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
-  overflow: hidden;
+`;
+
+const SearchSection = styled.div`
+  width: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
 `;
 
 const BackgroundBlur = styled.div`
   position: absolute;
-  width: 25rem;
-  height: 25rem;
+  width: 400px;
+  height: 400px;
   opacity: 0.6;
   background: radial-gradient(
     100% 100% at 50% 50%,
@@ -23,72 +33,93 @@ const BackgroundBlur = styled.div`
   box-shadow: 66px 66px 66px rgba(0, 0, 0, 0.1);
   border-radius: 9999px;
   filter: blur(66px);
-  z-index: 0; /* 컨텐츠 뒤에 배치 */
-  margin-top: -9.875rem;
-`;
-
-const ContentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 1; /* 배경보다 위에 배치 */
+  z-index: 0;
+  top: -158px;
+  left: 50%;
+  transform: translateX(-50%);
 `;
 
 const Title1 = styled.h1`
-  font-size: 2.75rem;
+  font-family: 'Pretendard';
+  font-size: 44px;
   font-weight: bold;
+  margin: 0;
   margin-top: 137px;
-  margin-bottom: 0;
+  text-align: center;
 `;
 
 const Title2 = styled.h1`
-  font-size: 2.75rem;
+  font-family: 'Pretendard';
+  font-size: 44px;
   font-weight: bold;
   margin: 0;
-  margin-top: 0;
   margin-bottom: 86px;
+  text-align: center;
 `;
 
 const SearchBar = styled.div`
   display: flex;
   align-items: center;
-  width: 42.75rem;
-  height: 4.125rem;
+  width: 684px;
+  height: 66px;
   background-color: #f5f5f5;
-  border-radius: 1vw;
+  border-radius: 16px;
+  margin-bottom: 40px;
 `;
 
 const StyledImage = styled.img`
-  width: 2rem;
-  height: 2rem;
-  object-fit: cover;
-  margin-left: 1.5rem;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  margin-left: 24px;
 `;
 
 const Input = styled.input`
   width: 100%;
+  height: 100%;
   border: none;
   outline: none;
-  font-size: 1.125rem;
+  font-family: 'Pretendard';
+  font-size: 18px;
   color: #8e8e8e;
   background: none;
-  margin-left: 1rem;
+  margin: 0 24px;
+
+  &::placeholder {
+    color: #8e8e8e;
+  }
+`;
+
+const BannerContainer = styled.div`
+  width: 100%;
+  margin-top: 80px;
+`;
+
+const CategoryContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
 `;
 
 const Search = () => {
   return (
     <Container>
-      <BackgroundBlur />
-      <ContentWrapper>
-        <Title1>지금 당신에게 </Title1>
+      <SearchSection>
+        <BackgroundBlur />
+        <Title1>지금 당신에게</Title1>
         <Title2>필요한 컨설팅을 찾아보세요.</Title2>
         <SearchBar>
-          <StyledImage src={SearchImg} alt="Grain" />
+          <StyledImage src={SearchImg} alt="Search" />
           <Input placeholder="인삼 재배법이 궁금하다면?" />
         </SearchBar>
-        <Category />
+        <CategoryContainer>
+          <Category />
+        </CategoryContainer>
+      </SearchSection>
+      <BannerContainer>
         <Banner />
-      </ContentWrapper>
+      </BannerContainer>
     </Container>
   );
 };
