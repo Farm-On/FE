@@ -1,5 +1,5 @@
 import React from 'react';
-import * as C from '../styles/MainCommunityStyle';
+import * as C from '../styles/pages/MainCommunityStyle';
 
 interface FeedProps {
   topic: string;

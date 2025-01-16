@@ -1,4 +1,4 @@
-import * as C from '../styles/MainCommunityStyle';
+import * as C from '../styles/pages/MainCommunityStyle';
 import { AiOutlineRight } from 'react-icons/ai';
 import { useState } from 'react';
 import Feed from './Feed';
