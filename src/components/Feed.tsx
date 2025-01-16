@@ -7,7 +7,7 @@ interface FeedProps {
   content: string;
 }
 
-const Feed: React.FC<FeedProps> = ({ topic, headline, content }) => {
+export const Feed: React.FC<FeedProps> = ({ topic, headline, content }) => {
   return (
     <div>
       <C.GreenBox>
@@ -28,4 +28,4 @@ const Feed: React.FC<FeedProps> = ({ topic, headline, content }) => {
   );
 };
 
-export default Feed;
+

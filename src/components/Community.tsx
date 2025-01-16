@@ -1,7 +1,7 @@
 import * as C from '../styles/pages/MainCommunityStyle';
 import { AiOutlineRight } from 'react-icons/ai';
 import { useState } from 'react';
-import Feed from './Feed';
+import {Feed} from './Feed';
 
 interface Category {
   id: string;
@@ -27,7 +27,7 @@ const initialCategories: Category[] = [
   },
 ];
 
-function Community(): JSX.Element {
+export const  Community=()=>{
   const [selectedCategory, setSelectedCategory] = useState<string>('1');
 
   const handleCategoryClick = (id: string) => {
@@ -82,4 +82,4 @@ function Community(): JSX.Element {
   );
 }
 
-export default Community;
+
