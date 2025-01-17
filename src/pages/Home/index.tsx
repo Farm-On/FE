@@ -57,8 +57,7 @@ const Home = () => {
     <>
       <Navbar />
       <HomeContainer>
-        <MyEstimatePage/>
-        {/* <MainContent>
+        <MainContent>
           <SearchSection>
             <Search />
           </SearchSection>
@@ -71,7 +70,7 @@ const Home = () => {
           <BannerSection>
             <InquiryBanner />
           </BannerSection>
-        </MainContent> */}
+        </MainContent>
         <FooterWrapper>
           <Footer />
         </FooterWrapper>

@@ -1,13 +1,19 @@
 import styled from "styled-components";
 
-export const EstimateCard = () => {
+interface CardProps{
+    productName:string;
+    product:string;
+    date:string;
+}
+
+export const EstimateCard = ({productName,product,date}:CardProps) => {
     return (
         <div>
             <Card>
                 <Content>
-                    <h4>쌀 (곡물)</h4>
+                    <h4>{productName} ({product})</h4>
                     <h4>신청 견적 보기</h4>
-                    <p>2024.12.08</p>
+                    <p>{date}</p>
                 </Content>
             </Card>
         </div>
@@ -24,7 +30,7 @@ top: 245px;
 left: 360px;
 `
 const Content = styled.div`
-    width:91px;
+    width:100px;
     height:83px;
     padding-left:30px;
     padding-top:20px;
