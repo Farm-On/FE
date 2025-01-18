@@ -2,9 +2,10 @@ import styled from '@emotion/styled';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import InquiryBanner from '../../components/InquiryBanner';
-import Community from '../../components/Community';
+import {Community} from '../../components/Community';
 import { Trendings } from '../../components/Home_3';
 import Search from '../../components/search/search';
+import MyEstimatePage from './MyEstimate';
 
 const HomeContainer = styled.div`
   width: 100%;

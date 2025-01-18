@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import styled from '@emotion/styled';
+import MyEstimatePage from './pages/Home/MyEstimate';
 
 const AppContainer = styled.div`
   width: 100%;
@@ -13,6 +14,7 @@ function App() {
       <AppContainer>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/MyEstimate" element={<MyEstimatePage />} />
         </Routes>
       </AppContainer>
     </Router>
