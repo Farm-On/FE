@@ -1,28 +1,28 @@
-import styled from 'styled-components';
-import { TrendingCardData } from './Home_3';
-import DefaultAvatar from '../assets/DefaultAvatar.svg?react';
+import styled from '@emotion/styled';
 
-export const TrendingCard = ({ data }: { data: TrendingCardData }) => {
-  return (
-    <Card>
-      <ThumbnailImage src={data.thumbnail_url} alt="" />
-      <Content>
-        <Title>{data.title}</Title>
-        <Description>{data.description}</Description>
-        <AuthorContainer>
-          {data.author_avatar_url ? (
-            <AuthorAvatar src={data.author_avatar_url} alt="" />
-          ) : (
-            <DefaultAvatar />
-          )}
-          <AuthorUsername>{data.author_username}</AuthorUsername>
-        </AuthorContainer>
-      </Content>
-    </Card>
-  );
-};
+export const TrendingCardContainer = styled.div`
+  position: relative;
+  margin-top: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 18px;
+`;
 
-const Card = styled.div`
+export const CircleButton = styled.div`
+  position: absolute;
+  right: -22px;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  border-radius: 9999px;
+  filter: drop-shadow(0px 0px 7px rgba(0, 0, 0, 0.15));
+`;
+
+export const Card = styled.div`
   width: 286px;
   display: flex;
   flex-direction: column;
@@ -30,7 +30,7 @@ const Card = styled.div`
   background: #f3f3f3;
 `;
 
-const Content = styled.div`
+export const Content = styled.div`
   padding-top: 15px;
   padding-left: 20px;
   padding-right: 20px;
@@ -41,13 +41,13 @@ const Content = styled.div`
   overflow: hidden;
 `;
 
-const ThumbnailImage = styled.img`
+export const ThumbnailImage = styled.img`
   width: 286px;
   height: 225px;
   border-radius: 20px 20px 0px 0px;
 `;
 
-const Title = styled.span`
+export const Title = styled.span`
   color: #000;
   font-family: Pretendard;
   font-size: 20px;
@@ -57,7 +57,7 @@ const Title = styled.span`
   text-transform: uppercase;
 `;
 
-const Description = styled.span`
+export const Description = styled.span`
   color: #2c2c2c;
   font-family: Pretendard;
   font-size: 16px;
@@ -67,20 +67,20 @@ const Description = styled.span`
   text-transform: uppercase;
 `;
 
-const AuthorContainer = styled.div`
+export const AuthorContainer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 8px;
 `;
 
-const AuthorAvatar = styled.img`
+export const AuthorAvatar = styled.img`
   width: 22px;
   height: 22px;
   border-radius: 22px;
   overflow: hidden;
 `;
 
-const AuthorUsername = styled.span`
+export const AuthorUsername = styled.span`
   color: #2c2c2c;
   font-family: Pretendard;
   font-size: 12px;

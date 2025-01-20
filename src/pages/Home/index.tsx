@@ -1,82 +1,62 @@
-import styled from '@emotion/styled';
-import Navbar from '../../components/Navbar';
-import Footer from '../../components/Footer';
-import InquiryBanner from '../../components/InquiryBanner';
-import {Community} from '../../components/Community';
-import { Trendings } from '../../components/Home_3';
-import Search from '../../components/search/search';
-import MyEstimatePage from './MyEstimate';
+import * as H from '@/styles/pages/Home.style';
 
-const HomeContainer = styled.div`
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  padding-top: 80px; // Height of Navbar
-  padding-bottom: 180px; // Height of Footer
-`;
+import { Link } from 'react-router-dom';
+import ChevronRight from '@/assets/icons/ChevronRight.svg?react';
 
-const MainContent = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-`;
+import { Navbar } from '@/components/Navbar';
+import { Footer } from '@/components/Footer';
+import { InquiryBanner } from '@/components/InquiryBanner';
+import { Community } from '@/components/Community';
+import { Search } from '@/components/Search/Search';
+import { Announcements } from '@/components/Announcements';
+import { Trendings } from '@/components/Trendings';
 
-const Section = styled.div`
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-`;
-
-const SearchSection = styled(Section)`
-  margin-bottom: 120px;
-`;
-
-const CommunitySection = styled(Section)`
-  margin-bottom: 120px;
-`;
-
-const TrendingsSection = styled(Section)`
-  margin-bottom: 120px;
-`;
-
-const BannerSection = styled(Section)`
-  margin-bottom: 120px;
-`;
-
-const FooterWrapper = styled.div`
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-`;
-
-const Home = () => {
+export default function Home() {
   return (
     <>
       <Navbar />
-      <HomeContainer>
-        <MainContent>
-          <SearchSection>
+      <H.HomeContainer>
+        <H.MainContent>
+          <H.SearchSection>
             <Search />
-          </SearchSection>
-          <CommunitySection>
+          </H.SearchSection>
+          <H.CommunitySection>
+            <Header title="궁금한 점을 나눠보세요" link="#" />
             <Community />
-          </CommunitySection>
-          <TrendingsSection>
+          </H.CommunitySection>
+          <H.TrendingsSection>
+            <Header title="지금 인기있는 칼럼" link="#" />
             <Trendings />
-          </TrendingsSection>
-          <BannerSection>
+          </H.TrendingsSection>
+          <H.AnnouncementSection>
+            <Header title="새 소식을 알려드려요" link="#" />
+            <Announcements />
+          </H.AnnouncementSection>
+          <H.BannerSection>
             <InquiryBanner />
-          </BannerSection>
-        </MainContent>
-        <FooterWrapper>
+          </H.BannerSection>
+        </H.MainContent>
+        <H.FooterWrapper>
           <Footer />
-        </FooterWrapper>
-      </HomeContainer>
+        </H.FooterWrapper>
+      </H.HomeContainer>
     </>
   );
-};
+}
 
-export default Home;
+interface HeaderProps {
+  title: string;
+  link: string;
+}
+
+const Header = ({ title, link }: HeaderProps) => (
+  <H.HeaderContainer>
+    <H.HeaderTitle>{title}</H.HeaderTitle>
+    <H.HeaderViewAllContainer>
+      <H.HeaderViewAllText>전체보기</H.HeaderViewAllText>
+      <Link to={link}>
+        <ChevronRight />
+      </Link>
+    </H.HeaderViewAllContainer>
+  </H.HeaderContainer>
+);

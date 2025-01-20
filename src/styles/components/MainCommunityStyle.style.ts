@@ -1,61 +1,27 @@
-import styled from 'styled-components';
-import { AiFillLike } from 'react-icons/ai';
-import { MdModeComment } from 'react-icons/md';
+import styled from '@emotion/styled';
+import Like from '@/assets/icons/like.svg?react';
+import Comment from '@/assets/icons/comment.svg?react';
 
 export const CommunityContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  padding-top: 120px;
 `;
 
 export const ContentWrapper = styled.div`
   width: 1200px;
 `;
 
-export const StyledLike = styled(AiFillLike)`
+export const StyledLike = styled(Like)`
   color: rgba(206, 206, 206, 1);
   width: 13.05px;
   height: 13.26px;
 `;
 
-export const StyledComment = styled(MdModeComment)`
+export const StyledComment = styled(Comment)`
   color: rgba(206, 206, 206, 1);
   width: 12px;
   height: 14px;
-`;
-
-export const Title = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 40px;
-  h2 {
-    font-family: 'PretendardSemiBold';
-    font-size: 26px;
-    margin: 0;
-  }
-`;
-
-export const ViewAll = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  h4 {
-    font-family: 'PretendardMedium';
-    margin: 0;
-    font-size: 16px;
-    line-height: 24px;
-    color: rgba(0, 160, 94, 1);
-  }
-  p {
-    margin: 0;
-    width: 20px;
-    height: 20px;
-    color: rgba(0, 160, 94, 1);
-  }
 `;
 
 export const CategoryWrapper = styled.div`
@@ -65,11 +31,7 @@ export const CategoryWrapper = styled.div`
   margin-bottom: 40px;
 `;
 
-interface CategoryProps {
-  isSelected: boolean;
-}
-
-export const Category = styled.div<CategoryProps>`
+export const Category = styled.div<{ isSelected: boolean }>`
   margin: 0;
   min-width: 68px;
   width: fit-content;

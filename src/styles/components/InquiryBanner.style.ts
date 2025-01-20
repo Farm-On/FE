@@ -1,11 +1,7 @@
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
-import boardImg from '../../assets/images/board.png';
-import onionImg from '../../assets/images/onion.png';
-import cabbageImg from '../../assets/images/cabbage.png';
-import bananaImg from '../../assets/images/banana.png';
 
-const BannerContainer = styled.div`
+export const BannerContainer = styled.div`
   width: 100%;
   height: 200px;
   margin-bottom: 2px;
@@ -17,7 +13,7 @@ const BannerContainer = styled.div`
   overflow: hidden;
 `;
 
-const BannerWrapper = styled.div`
+export const BannerWrapper = styled.div`
   position: relative;
   width: 1200px;
   height: 100%;
@@ -32,7 +28,7 @@ const BannerWrapper = styled.div`
   }
 `;
 
-const ContentWrapper = styled.div`
+export const ContentWrapper = styled.div`
   position: absolute;
   left: 60px;
   display: flex;
@@ -44,7 +40,7 @@ const ContentWrapper = styled.div`
   }
 `;
 
-const BoardImage = styled.img`
+export const BoardImage = styled.img`
   width: 84.46px;
   height: 81px;
   object-fit: contain;
@@ -55,7 +51,7 @@ const BoardImage = styled.img`
   }
 `;
 
-const BannerContent = styled.div`
+export const BannerContent = styled.div`
   font-family: 'Pretendard Variable';
   font-weight: 600;
   font-size: 22px;
@@ -68,7 +64,7 @@ const BannerContent = styled.div`
   }
 `;
 
-const InquiryButton = styled(Link)`
+export const InquiryButton = styled(Link)`
   position: absolute;
   right: 220px;
   top: 50%;
@@ -92,7 +88,7 @@ const InquiryButton = styled(Link)`
   }
 `;
 
-const OnionImage = styled.img`
+export const OnionImage = styled.img`
   position: absolute;
   width: 43px;
   height: 53px;
@@ -107,7 +103,7 @@ const OnionImage = styled.img`
   }
 `;
 
-const CabbageImage = styled.img`
+export const CabbageImage = styled.img`
   position: absolute;
   width: 120px;
   height: 120px;
@@ -121,7 +117,7 @@ const CabbageImage = styled.img`
   }
 `;
 
-const BananaImage = styled.img`
+export const BananaImage = styled.img`
   position: absolute;
   width: 31.8px;
   height: 33px;
@@ -138,25 +134,3 @@ const BananaImage = styled.img`
     top: 50px;
   }
 `;
-
-const InquiryBanner = () => {
-  return (
-    <BannerContainer>
-      <BannerWrapper>
-        <ContentWrapper>
-          <BoardImage src={boardImg} alt="board" />
-          <BannerContent>
-            연결하고 싶은 전문가나{'\n'}
-            추가로 요청할 작물이 있으신가요?
-          </BannerContent>
-        </ContentWrapper>
-        <InquiryButton to="/inquiry">문의하러 가기</InquiryButton>
-        <OnionImage src={onionImg} alt="onion" />
-        <BananaImage src={bananaImg} alt="banana" />
-        <CabbageImage src={cabbageImg} alt="cabbage" />
-      </BannerWrapper>
-    </BannerContainer>
-  );
-};
-
-export default InquiryBanner;
