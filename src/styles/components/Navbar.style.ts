@@ -1,8 +1,7 @@
-import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
-import logo from '../../assets/images/logo.png';
+import { Link } from 'react-router-dom';
 
-const NavContainer = styled.nav`
+export const NavContainer = styled.nav`
   height: 80px;
   background: #ffffff;
   border-bottom: 1px solid #dadada;
@@ -10,7 +9,7 @@ const NavContainer = styled.nav`
   justify-content: center;
 `;
 
-const NavContent = styled.div`
+export const NavContent = styled.div`
   width: 1200px;
   height: 100%;
   display: flex;
@@ -18,13 +17,13 @@ const NavContent = styled.div`
   justify-content: space-between;
 `;
 
-const LeftSection = styled.div`
+export const LeftSection = styled.div`
   display: flex;
   align-items: center;
   gap: 60px;
 `;
 
-const Logo = styled(Link)`
+export const Logo = styled(Link)`
   width: 119.14px;
   height: 24.71px;
   display: flex;
@@ -38,12 +37,12 @@ const Logo = styled(Link)`
   }
 `;
 
-const MenuContainer = styled.div`
+export const MenuContainer = styled.div`
   display: flex;
   gap: 24px;
 `;
 
-const MenuLink = styled(Link)`
+export const MenuLink = styled(Link)`
   font-family: 'Pretendard';
   font-weight: 600;
   font-size: 18px;
@@ -53,19 +52,19 @@ const MenuLink = styled(Link)`
   white-space: nowrap;
 `;
 
-const RightSection = styled.div`
+export const RightSection = styled.div`
   display: flex;
   align-items: center;
   gap: 26px;
 `;
 
-const AuthLinks = styled.div`
+export const AuthLinks = styled.div`
   display: flex;
   align-items: center;
   gap: 40px;
 `;
 
-const RegisterLink = styled(Link)`
+export const RegisterLink = styled(Link)`
   font-family: 'Pretendard';
   font-weight: 600;
   font-size: 16px;
@@ -75,7 +74,7 @@ const RegisterLink = styled(Link)`
   white-space: nowrap;
 `;
 
-const LoginLink = styled(Link)`
+export const LoginLink = styled(Link)`
   font-family: 'Pretendard';
   font-weight: 500;
   font-size: 16px;
@@ -85,7 +84,7 @@ const LoginLink = styled(Link)`
   white-space: nowrap;
 `;
 
-const SignupButton = styled(Link)`
+export const SignupButton = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -96,40 +95,9 @@ const SignupButton = styled(Link)`
   text-decoration: none;
 `;
 
-const SignupText = styled.span`
+export const SignupText = styled.span`
   font-family: 'Pretendard';
   font-weight: 600;
   font-size: 16px;
   color: #ffffff;
 `;
-
-const Navbar = () => {
-  return (
-    <NavContainer>
-      <NavContent>
-        <LeftSection>
-          <Logo to="/">
-            <img src={logo} alt="FarmON" />
-          </Logo>
-          <MenuContainer>
-            <MenuLink to="/expert-profile">전문가 프로필</MenuLink>
-            <MenuLink to="/chat">채팅</MenuLink>
-            <MenuLink to="/community">커뮤니티</MenuLink>
-          </MenuContainer>
-        </LeftSection>
-
-        <RightSection>
-          <AuthLinks>
-            <RegisterLink to="/expert-register">전문가 등록하기</RegisterLink>
-            <LoginLink to="/login">로그인</LoginLink>
-          </AuthLinks>
-          <SignupButton to="/signup">
-            <SignupText>회원가입</SignupText>
-          </SignupButton>
-        </RightSection>
-      </NavContent>
-    </NavContainer>
-  );
-};
-
-export default Navbar;

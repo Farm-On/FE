@@ -1,5 +1,4 @@
-import React from 'react';
-import * as C from '../styles/pages/MainCommunityStyle';
+import * as C from '@/styles/components/MainCommunityStyle.style';
 
 interface FeedProps {
   topic: string;
@@ -7,7 +6,7 @@ interface FeedProps {
   content: string;
 }
 
-export const Feed: React.FC<FeedProps> = ({ topic, headline, content }) => {
+export const Feed = ({ topic, headline, content }: FeedProps) => {
   return (
     <div>
       <C.GreenBox>
@@ -27,5 +26,3 @@ export const Feed: React.FC<FeedProps> = ({ topic, headline, content }) => {
     </div>
   );
 };
-
-

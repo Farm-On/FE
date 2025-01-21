@@ -1,11 +1,9 @@
-import styled from 'styled-components';
-import ChevronRight from '../assets/ChevronRight.svg?react';
-import New from '../assets/New.svg?react';
-import Speaker from '../assets/speaker.svg?react';
+import * as T from '@/styles/components/Trendings.style';
 
-import { TrendingCard } from './TrendingCard';
+import ChevronRight from '@/assets/icons/ChevronRight.svg?react';
+import DefaultAvatar from '@/assets/icons/DefaultAvatar.svg?react';
 
-export interface TrendingCardData {
+interface TrendingCardData {
   id: number;
   thumbnail_url: string | undefined;
   title: string | undefined;
@@ -13,6 +11,26 @@ export interface TrendingCardData {
   author_avatar_url: string | undefined;
   author_username: string | undefined;
 }
+
+export const TrendingCard = ({ data }: { data: TrendingCardData }) => {
+  return (
+    <T.Card>
+      <T.ThumbnailImage src={data.thumbnail_url} alt="" />
+      <T.Content>
+        <T.Title>{data.title}</T.Title>
+        <T.Description>{data.description}</T.Description>
+        <T.AuthorContainer>
+          {data.author_avatar_url ? (
+            <T.AuthorAvatar src={data.author_avatar_url} alt="" />
+          ) : (
+            <DefaultAvatar />
+          )}
+          <T.AuthorUsername>{data.author_username}</T.AuthorUsername>
+        </T.AuthorContainer>
+      </T.Content>
+    </T.Card>
+  );
+};
 
 const dummy_trendings = [
   {
@@ -56,154 +74,15 @@ const dummy_trendings = [
   },
 ];
 
-const dummy_announcements = [
-  {
-    id: 4,
-    icon: <New />,
-    title: '전문가 매칭 서비스 업데이트: 더 많은 전문가와 연결하세요!',
-    date: '2024.12.12',
-  },
-  {
-    id: 5,
-    icon: <Speaker />,
-    title: '리뷰 시스템 개편: 전문가와의 소중한 경험을 나누어보세요.',
-    date: '2024.12.12',
-  },
-  {
-    id: 6,
-    icon: <Speaker />,
-    title: '함께 FarmON을 개선할 베타 테스트 참가자를 모집합니다!',
-    date: '2024.12.12',
-  },
-];
-
 export const Trendings = () => {
   return (
-    <>
-      <HeaderContainer>
-        <HeaderTitle>지금 인기있는 칼럼</HeaderTitle>
-        <HeaderViewAllContainer>
-          <HeaderViewAllText>전체보기</HeaderViewAllText>
-          <ChevronRight />
-        </HeaderViewAllContainer>
-      </HeaderContainer>
-      <TrendingCardContainer>
-        <CircleButton>
-          <ChevronRight width={30} height={30} />
-        </CircleButton>
-        {dummy_trendings.map((data) => (
-          <TrendingCard key={data.id} data={data} />
-        ))}
-      </TrendingCardContainer>
-      <HeaderContainer style={{ marginTop: '110px' }}>
-        <HeaderTitle>새 소식을 알려드려요</HeaderTitle>
-        <HeaderViewAllContainer>
-          <HeaderViewAllText>전체보기</HeaderViewAllText>
-          <ChevronRight />
-        </HeaderViewAllContainer>
-      </HeaderContainer>
-      {dummy_announcements.map((announcement) => (
-        <AnnouncementContainer key={announcement.id}>
-          <AnnouncementContent>
-            <AnnouncementTitleContainer>
-              {announcement.icon}
-              <AnnouncementTitle>{announcement.title}</AnnouncementTitle>
-            </AnnouncementTitleContainer>
-            <AnnouncementDate>{announcement.date}</AnnouncementDate>
-          </AnnouncementContent>
-        </AnnouncementContainer>
+    <T.TrendingCardContainer>
+      <T.CircleButton>
+        <ChevronRight width={30} height={30} />
+      </T.CircleButton>
+      {dummy_trendings.map((data) => (
+        <TrendingCard key={data.id} data={data} />
       ))}
-    </>
+    </T.TrendingCardContainer>
   );
 };
-
-const HeaderContainer = styled.div`
-  margin-bottom: 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const HeaderTitle = styled.span`
-  color: #252525;
-  font-family: Pretendard;
-  font-size: 26px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 150%; /* 39px */
-  text-transform: uppercase;
-`;
-
-const HeaderViewAllContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const HeaderViewAllText = styled.span`
-  color: #00a05e;
-  font-family: Pretendard;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 150%; /* 24px */
-  text-transform: uppercase;
-`;
-
-const TrendingCardContainer = styled.div`
-  position: relative;
-  margin-top: 40px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 18px;
-`;
-
-const CircleButton = styled.div`
-  position: absolute;
-  right: -22px;
-  width: 52px;
-  height: 52px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #fff;
-  border-radius: 9999px;
-  filter: drop-shadow(0px 0px 7px rgba(0, 0, 0, 0.15));
-`;
-
-const AnnouncementContainer = styled.div``;
-
-const AnnouncementContent = styled.div`
-  padding: 30px 44px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 0.7px solid #d1d1d1;
-  border-bottom: 0.7px solid #d1d1d1;
-`;
-
-const AnnouncementTitleContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 48px;
-`;
-
-const AnnouncementTitle = styled.span`
-  color: #000;
-  font-family: Pretendard;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 166%; /* 29.88px */
-  text-transform: uppercase;
-`;
-
-const AnnouncementDate = styled.span`
-  color: #8e8e8e;
-  font-family: Pretendard;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 166%; /* 29.88px */
-  text-transform: uppercase;
-`;

@@ -1,7 +1,7 @@
-import * as C from '../styles/pages/MainCommunityStyle';
-import { AiOutlineRight } from 'react-icons/ai';
 import { useState } from 'react';
-import {Feed} from './Feed';
+import { Feed } from './Feed';
+
+import * as C from '@/styles/components/MainCommunityStyle.style';
 
 interface Category {
   id: string;
@@ -27,7 +27,7 @@ const initialCategories: Category[] = [
   },
 ];
 
-export const  Community=()=>{
+export const Community = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('1');
 
   const handleCategoryClick = (id: string) => {
@@ -37,16 +37,6 @@ export const  Community=()=>{
   return (
     <C.CommunityContainer>
       <C.ContentWrapper>
-        <C.Title>
-          <h2>궁금한 점을 나눠보세요</h2>
-          <C.ViewAll>
-            <h4>전체보기</h4>
-            <p>
-              <AiOutlineRight />
-            </p>
-          </C.ViewAll>
-        </C.Title>
-
         <C.CategoryWrapper>
           {initialCategories.map((category) => (
             <div key={category.id}>
@@ -80,6 +70,4 @@ export const  Community=()=>{
       </C.ContentWrapper>
     </C.CommunityContainer>
   );
-}
-
-
+};
