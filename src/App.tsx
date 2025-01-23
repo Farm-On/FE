@@ -10,6 +10,7 @@ import PretendardMedium from '@/assets/fonts/Pretendard-Medium.woff';
 // 페이지
 import Home from './pages/Home';
 import MyEstimatePage from './pages/Home/MyEstimate';
+import RequestEstimatePage from './pages/Home/RequestEstimate';
 
 const AppContainer = styled.div`
   width: 100%;
@@ -43,6 +44,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/MyEstimate" element={<MyEstimatePage />} />
+          <Route path="/MyEstimate/RequestEstimate" element={<RequestEstimatePage />} />
         </Routes>
       </AppContainer>
     </Router>

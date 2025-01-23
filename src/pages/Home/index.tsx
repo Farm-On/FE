@@ -10,13 +10,15 @@ import { Community } from '@/components/Community';
 import { Search } from '@/components/Search/Search';
 import { Announcements } from '@/components/Announcements';
 import { Trendings } from '@/components/Trendings';
+import RequestEstimatePage from '../Home/RequestEstimate';
 
 export default function Home() {
   return (
     <>
       <Navbar />
       <H.HomeContainer>
-        <H.MainContent>
+        <RequestEstimatePage/>
+        {/* <H.MainContent>
           <H.SearchSection>
             <Search />
           </H.SearchSection>
@@ -35,7 +37,7 @@ export default function Home() {
           <H.BannerSection>
             <InquiryBanner />
           </H.BannerSection>
-        </H.MainContent>
+        </H.MainContent> */}
         <H.FooterWrapper>
           <Footer />
         </H.FooterWrapper>
