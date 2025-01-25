@@ -47,9 +47,37 @@ const initialCategories: Category[] = [
 
 export default function RequestEstimatePage():JSX.Element{
     const [selected,setSelected] = useState<string>('2');
+    //const [titleLength, setTitleLength] = useState<number>(0);
+    //const [contentLength, setContentLength] = useState<number>(0);
+    const [titleValue,setTitleValue] = useState<string>('');
+    const [contentValue,setContentValue] = useState<string>('');
+    const [isdisabled,setIsdisabled] = useState<boolean>(true);
+    const [isChecked,setIsChecked] = useState<string>(''); //선택된 예산
+
     const handleChipClick = (id:string)=>{
         setSelected(id)
     };
+
+    const handleValue = (e: React.ChangeEvent<HTMLInputElement>)=>{
+        const newText = e.target.value;
+        if(newText.length <= 20){
+            setTitleValue(newText)
+        }
+    };
+    const handleContentValue = (e: React.ChangeEvent<HTMLTextAreaElement>)=>{
+        const newText = e.target.value;
+        if(newText.length <= 3000){
+            setContentValue(newText)
+        }
+    };
+    
+    const handleMoney = (value:string)=>{
+        setIsChecked(value);
+        setIsdisabled(value !== '직접입력')
+    };
+
+
+
     return(
         <div>
             <RE.Title>
@@ -99,20 +127,21 @@ export default function RequestEstimatePage():JSX.Element{
                 <div>
                     <RE.Bubble>예산은 어느 정도인가요?</RE.Bubble>
                     <RE.InputContainer>
-                        <EstimateBudget id='10~50' value='10~50' label='10만원 ~ 50만원'/>
-                        <EstimateBudget id='50~100' value='50~100' label='50만원 ~ 100만원'/>
-                        <EstimateBudget id='100~200' value='100~200' label='100만원 ~ 200만원'/>
-                        <EstimateBudget id='200~500' value='200~500' label='200만원 ~ 500만원'/>
-                        <EstimateBudget id='500~1000' value='500~1000' label='500만원 ~ 1,000만원'/>
-                        <EstimateBudget id='1000이상' value='1000이상' label='1,000만원 이상'/>
-                        <EstimateBudget id='직접입력' value='직접입력' label='직접입력'/>
+                        <EstimateBudget id='10~50' value='10~50' label='10만원 ~ 50만원' checked={isChecked ==='10~50'} onChange={()=>handleMoney('10~50')}/>
+                        <EstimateBudget id='50~100' value='50~100' label='50만원 ~ 100만원' checked={isChecked ==='50~100'} onChange={()=>handleMoney('50~100')}/>
+                        <EstimateBudget id='100~200' value='100~200' label='100만원 ~ 200만원' checked={isChecked ==='100~200'} onChange={()=>handleMoney('100~200')}/>
+                        <EstimateBudget id='200~500' value='200~500' label='200만원 ~ 500만원' checked={isChecked ==='200~500'} onChange={()=>handleMoney('200~500')}/>
+                        <EstimateBudget id='500~1000' value='500~1000' label='500만원 ~ 1,000만원' checked={isChecked ==='500~1000'} onChange={()=>handleMoney('500~1000')}/>
+                        <EstimateBudget id='1000이상' value='1000이상' label='1,000만원 이상' checked={isChecked ==='1000이상'} onChange={()=>handleMoney('1000이상')}/>
+                        <EstimateBudget id='직접입력' value='직접입력' label='직접입력' checked={isChecked ==='직접입력'} onChange={()=>handleMoney('직접입력')}/>
                     </RE.InputContainer>
-                    <div style={{display:'flex', gap:'10px',height:'44px'}}>
-                        <RE.MinBudget placeholder='500,000'></RE.MinBudget>
+
+                    <RE.TypeBudget>
+                        <RE.MinBudget placeholder='500,000' disabled={isdisabled}></RE.MinBudget>
                         <p style={{width:'8px'}}>-</p>
-                        <RE.MaxBudget placeholder='50,000,000'></RE.MaxBudget>
+                        <RE.MaxBudget placeholder='50,000,000' disabled={isdisabled}></RE.MaxBudget>
                         <RE.Apply>적용</RE.Apply>
-                    </div>
+                    </RE.TypeBudget>
                     <RE.DividingLine/>
                 </div>
 
@@ -121,30 +150,54 @@ export default function RequestEstimatePage():JSX.Element{
                 <div>
                     <RE.Bubble>해당 컨설팅에 대해 자세히 설명해주세요.</RE.Bubble>
                     <div style={{display:'flex', flexDirection:'column', gap:'18px', paddingTop:'40px',paddingLeft:"6px"}}>
-                        <RE.PostTitle type='text' placeholder='제목을 입력해주세요.'/>
-                        {/* <RE.TitleText>0/20</RE.TitleText> */}
+                        <TitleContainer>
+                            <RE.PostTitle 
+                            type='text' 
+                            placeholder='제목을 입력해주세요.'
+                            value={titleValue}
+                            onChange={handleValue}
+                            />
+                            <RE.TitleText>{0}/20</RE.TitleText>
+                        </TitleContainer>
 
                         <InputContainer>
-                            <RE.PostContent placeholder='제목을 입력해주세요.'/>
-                            <CameraIcon/>
+                            <RE.PostContent
+                            placeholder='내용을 입력해주세요.'
+                            value={contentValue}
+                            onChange={handleContentValue}
+                            />
+                            <div style={{position:'absolute',bottom:'20px',left:'26px'}}><CameraIcon/></div>
                         </InputContainer>
-                        {/* <RE.ContentText>0/3000</RE.ContentText> */}
-                    </div>
-                </div>
+                        <RE.ContentText>{0}/3000</RE.ContentText>
 
-                <div style={{display:'flex', alignItems:'center',justifyContent:'center'}}>
-                    <RE.Button>견적 조회하기</RE.Button>
+                    </div>
+                    <ApplyBtn>
+                        <RE.Button>견적 조회하기</RE.Button>
+                    </ApplyBtn>
                 </div>
 
                 </div>
             </RE.Container>
+        
         </div>
+
     )
 }
 
 
-const InputContainer = styled.div`
-  position: relative;  
-  width: 1194px;
-`;
 
+const TitleContainer = styled.div`
+`
+
+const InputContainer = styled.div`
+position: relative;
+z-index:1;
+width: 1194px;
+`
+
+const ApplyBtn = styled.div`
+display:flex;
+justify-content:center;
+margin-bottom:350px;
+margin-top:172px;
+`

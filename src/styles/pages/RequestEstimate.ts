@@ -20,6 +20,7 @@ align-items:center;
 gap:2px;
 p{
     color:rgba(87, 87, 87, 1);
+    white-space:nowrap;
 }
 `
 
@@ -28,6 +29,7 @@ padding-left:1008px;
 p{
     margin:0;
     color:rgba(87, 87, 87, 1);
+    white-space:nowrap;
 }
 `
 
@@ -48,7 +50,7 @@ display:flex;
 align-items:center;
 justify-content:center;
 font-size:18px;
-font-family:'Pretendard'
+font-family: 'PretendardSemiBold';
 color:rgba(44, 44, 44, 1);
 `
 export const Chip = styled.div<{isSelected:boolean}>`
@@ -103,9 +105,10 @@ export const InputContainer = styled.div`
 display:grid;
 grid-template-columns:repeat(2, 1fr);
 width:594px;
-height: 486px;
+height:186px;
 gap:30px;
 padding-top:40px;
+
 `
 
 export const MinBudget = styled.input`
@@ -157,6 +160,14 @@ justify-content:center;
 align-items:center;
 font-size:16px;
 font-family:'PretendardRegular'
+position:relative;
+`
+
+export const TitleText = styled.span`
+color:rgba(129, 129, 129, 1);
+font-size:14px;
+min-width:31px;
+white-space: nowrap;
 `
 
 
@@ -174,8 +185,17 @@ export const PostContent = styled.textarea`
 
 
 
-export const TitleText = styled.div`
-`
-
 export const ContentText = styled.div`
+color:rgba(129, 129, 129, 1);
+font-size:14px;
+min-width:49px;
+white-space: nowrap;
+`
+export const TypeBudget = styled.div`
+display:flex;
+gap:10px;
+height:44px;
+margin-bottom:198px;
+margin-top:18px;
+padding-left:6px;
 `
