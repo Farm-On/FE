@@ -2,8 +2,11 @@ import * as RE from '../../styles/pages/RequestEstimate';
 import HomeIcon from '../../assets/icons/Home.svg?react';
 import GreyRightIcon from '../../assets/icons/GreyRight.svg?react';
 import CameraIcon from '../../assets/icons/camera.svg?react';
+import XIcon from '../../assets/icons/x.svg?react';
 import { useState } from 'react';
 import { EstimateBudget } from '@/components/EstimateBudget';
+import { ChoiceCity } from '@/components/ChoiceCity';
+import { StateScroll } from '@/components/StateScroll';
 import styled from '@emotion/styled';
 
 // interface REprops{
@@ -79,115 +82,125 @@ export default function RequestEstimatePage():JSX.Element{
 
 
     return(
-        <div>
-            <RE.Title>
-                <h2>견적요청</h2>
-                <RE.Wrapper>
-                    <RE.Category>
-                        <HomeIcon/>
-                        <GreyRightIcon/>
-                        <p>곡물</p>
-                        <GreyRightIcon/>
-                        <p>쌀</p>
-                    </RE.Category>
+        <RE.PageWrapper>
+            <RE.CenteredContainer>
+                <RE.Title>
+                    <h2>견적요청</h2>
+                    <RE.Wrapper>
+                        <RE.Category>
+                            <HomeIcon/>
+                            <GreyRightIcon/>
+                            <p>곡물</p>
+                            <GreyRightIcon/>
+                            <p>쌀</p>
+                        </RE.Category>
 
-                    <RE.Process>
-                        <p>진행률 0%</p>
-                    </RE.Process>
-                </RE.Wrapper>
-            </RE.Title>
-
-            <RE.Container>
-                <div style={{paddingLeft:'360px'}}>
-
+                        <RE.Process>
+                            <p>진행률 0%</p>
+                        </RE.Process>
+                    </RE.Wrapper>
+                </RE.Title>
+                <RE.Container>
                 <div>
-                    <RE.Bubble>어떤 컨설팅을 원하세요?</RE.Bubble>
-                    <RE.Chips>
-                        {initialCategories.map((category)=>{
-                            return(
-                                <div key={category.id}>
-                                    <RE.Chip
-                                    isSelected = {selected === category.id} 
-                                    onClick={()=>handleChipClick(category.id)}>
-                                    {category.title}
-                                    </RE.Chip>
-                                </div>
-                            )
-                        })}
-                    </RE.Chips>
-                    <RE.DividingLine/>
-                </div>
 
-
-                <div>
-                    <RE.Bubble>컨설팅 위치는 어디인가요?</RE.Bubble>
-                    <RE.DividingLine/>
-                </div>
-
-                <div>
-                    <RE.Bubble>예산은 어느 정도인가요?</RE.Bubble>
-                    <RE.InputContainer>
-                        <EstimateBudget id='10~50' value='10~50' label='10만원 ~ 50만원' checked={isChecked ==='10~50'} onChange={()=>handleMoney('10~50')}/>
-                        <EstimateBudget id='50~100' value='50~100' label='50만원 ~ 100만원' checked={isChecked ==='50~100'} onChange={()=>handleMoney('50~100')}/>
-                        <EstimateBudget id='100~200' value='100~200' label='100만원 ~ 200만원' checked={isChecked ==='100~200'} onChange={()=>handleMoney('100~200')}/>
-                        <EstimateBudget id='200~500' value='200~500' label='200만원 ~ 500만원' checked={isChecked ==='200~500'} onChange={()=>handleMoney('200~500')}/>
-                        <EstimateBudget id='500~1000' value='500~1000' label='500만원 ~ 1,000만원' checked={isChecked ==='500~1000'} onChange={()=>handleMoney('500~1000')}/>
-                        <EstimateBudget id='1000이상' value='1000이상' label='1,000만원 이상' checked={isChecked ==='1000이상'} onChange={()=>handleMoney('1000이상')}/>
-                        <EstimateBudget id='직접입력' value='직접입력' label='직접입력' checked={isChecked ==='직접입력'} onChange={()=>handleMoney('직접입력')}/>
-                    </RE.InputContainer>
-
-                    <RE.TypeBudget>
-                        <RE.MinBudget placeholder='500,000' disabled={isdisabled}></RE.MinBudget>
-                        <p style={{width:'8px'}}>-</p>
-                        <RE.MaxBudget placeholder='50,000,000' disabled={isdisabled}></RE.MaxBudget>
-                        <RE.Apply>적용</RE.Apply>
-                    </RE.TypeBudget>
-                    <RE.DividingLine/>
-                </div>
-
-
-
-                <div>
-                    <RE.Bubble>해당 컨설팅에 대해 자세히 설명해주세요.</RE.Bubble>
-                    <div style={{display:'flex', flexDirection:'column', gap:'18px', paddingTop:'40px',paddingLeft:"6px"}}>
-                        <TitleContainer>
-                            <RE.PostTitle 
-                            type='text' 
-                            placeholder='제목을 입력해주세요.'
-                            value={titleValue}
-                            onChange={handleValue}
-                            />
-                            <RE.TitleText>{0}/20</RE.TitleText>
-                        </TitleContainer>
-
-                        <InputContainer>
-                            <RE.PostContent
-                            placeholder='내용을 입력해주세요.'
-                            value={contentValue}
-                            onChange={handleContentValue}
-                            />
-                            <div style={{position:'absolute',bottom:'20px',left:'26px'}}><CameraIcon/></div>
-                        </InputContainer>
-                        <RE.ContentText>{0}/3000</RE.ContentText>
-
+                    <div>
+                        <RE.Bubble>어떤 컨설팅을 원하세요?</RE.Bubble>
+                        <RE.Chips>
+                            {initialCategories.map((category)=>{
+                                return(
+                                    <div key={category.id}>
+                                        <RE.Chip
+                                        isSelected = {selected === category.id} 
+                                        onClick={()=>handleChipClick(category.id)}>
+                                        {category.title}
+                                        </RE.Chip>
+                                    </div>
+                                )
+                            })}
+                        </RE.Chips>
+                        <StateScroll/>
+                        <RE.DividingLine/>
                     </div>
-                    <ApplyBtn>
-                        <RE.Button>견적 조회하기</RE.Button>
-                    </ApplyBtn>
-                </div>
+
+
+                    <div>
+                        <RE.Bubble>컨설팅 위치는 어디인가요?</RE.Bubble>
+                        <RE.CancleX>
+                            <RE.Chip isSelected={true}>
+                                경기 이천시
+                                <div style={{width:'20px',height:'20px'}}>
+                                    <XIcon style={{paddingTop:'1px'}}/>
+                                </div>
+                            </RE.Chip>
+                        </RE.CancleX>
+                    
+                        <div style={{paddingBottom:'18px',paddingLeft:'6px'}}>
+                            <ChoiceCity/>
+                        </div>
+                        <RE.DividingLine/>
+                    </div>
+
+                    <div>
+                        <RE.Bubble>예산은 어느 정도인가요?</RE.Bubble>
+                        <RE.InputContainer>
+                            <EstimateBudget id='10~50' value='10~50' label='10만원 ~ 50만원' checked={isChecked ==='10~50'} onChange={()=>handleMoney('10~50')}/>
+                            <EstimateBudget id='50~100' value='50~100' label='50만원 ~ 100만원' checked={isChecked ==='50~100'} onChange={()=>handleMoney('50~100')}/>
+                            <EstimateBudget id='100~200' value='100~200' label='100만원 ~ 200만원' checked={isChecked ==='100~200'} onChange={()=>handleMoney('100~200')}/>
+                            <EstimateBudget id='200~500' value='200~500' label='200만원 ~ 500만원' checked={isChecked ==='200~500'} onChange={()=>handleMoney('200~500')}/>
+                            <EstimateBudget id='500~1000' value='500~1000' label='500만원 ~ 1,000만원' checked={isChecked ==='500~1000'} onChange={()=>handleMoney('500~1000')}/>
+                            <EstimateBudget id='1000이상' value='1000이상' label='1,000만원 이상' checked={isChecked ==='1000이상'} onChange={()=>handleMoney('1000이상')}/>
+                            <EstimateBudget id='직접입력' value='직접입력' label='직접입력' checked={isChecked ==='직접입력'} onChange={()=>handleMoney('직접입력')}/>
+                        </RE.InputContainer>
+
+                        <RE.TypeBudget>
+                            <RE.MinBudget placeholder='500,000' disabled={isdisabled}></RE.MinBudget>
+                            <p style={{width:'8px'}}>-</p>
+                            <RE.MaxBudget placeholder='50,000,000' disabled={isdisabled}></RE.MaxBudget>
+                            <RE.Apply>적용</RE.Apply>
+                        </RE.TypeBudget>
+                        <RE.DividingLine/>
+                    </div>
+
+
+
+                    <div>
+                        <RE.Bubble>해당 컨설팅에 대해 자세히 설명해주세요.</RE.Bubble>
+                        <div style={{display:'flex', flexDirection:'column', gap:'18px', paddingTop:'40px',paddingLeft:"6px"}}>
+                            <div>
+                                <RE.PostTitle 
+                                type='text' 
+                                placeholder='제목을 입력해주세요.'
+                                value={titleValue}
+                                onChange={handleValue}
+                                />
+                                <RE.TitleLength>{0}/20</RE.TitleLength>
+                            </div>
+
+                            <InputContainer>
+                                <RE.PostContent
+                                placeholder='내용을 입력해주세요.'
+                                value={contentValue}
+                                onChange={handleContentValue}
+                                />
+                                <div style={{position:'absolute',bottom:'20px',left:'26px'}}><CameraIcon/></div>
+                            </InputContainer>
+                            <RE.ContentLength>{0}/3000</RE.ContentLength>
+
+                        </div>
+                        <ApplyBtn>
+                            <RE.Button>견적 조회하기</RE.Button>
+                        </ApplyBtn>
+                    </div>
 
                 </div>
-            </RE.Container>
-        
-        </div>
+                </RE.Container>
+            </RE.CenteredContainer>
+        </RE.PageWrapper>
 
     )
 }
 
 
-
-const TitleContainer = styled.div`
-`
 
 const InputContainer = styled.div`
 position: relative;

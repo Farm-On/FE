@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
 export const Title = styled.div`
 height:100px;
 background-color:rgba(255, 255, 255, 1);
-padding-left:360px;
+//padding-left:360px;
 h2{
     margin:0;
 }
@@ -58,7 +58,7 @@ min-width: 60px;
 width:fit-content;
 height:22px;
 padding: 10px 20px 10px 20px;
-gap: 10px;
+gap: 4px;
 border-radius: 60px;
 border: 1px solid ${(props)=> (props.isSelected ? 'rgba(0, 160, 94, 1)' : 'rgba(183, 183, 183, 1)')};
 color:${(props)=> (props.isSelected ? 'rgba(0, 160, 94, 1)' : 'rgba(93, 93, 93, 1)')};
@@ -147,6 +147,7 @@ align-items:center;
 color:rgba(217, 217, 217, 1);
 font-size:16px;
 white-space:nowrap;
+background-color:rgba(255, 255, 255, 1);
 `
 
 export const PostTitle = styled.input`
@@ -163,7 +164,7 @@ font-family:'PretendardRegular'
 position:relative;
 `
 
-export const TitleText = styled.span`
+export const TitleLength = styled.span`
 color:rgba(129, 129, 129, 1);
 font-size:14px;
 min-width:31px;
@@ -185,7 +186,7 @@ export const PostContent = styled.textarea`
 
 
 
-export const ContentText = styled.div`
+export const ContentLength = styled.div`
 color:rgba(129, 129, 129, 1);
 font-size:14px;
 min-width:49px;
@@ -199,3 +200,25 @@ margin-bottom:198px;
 margin-top:18px;
 padding-left:6px;
 `
+export const CancleX = styled.div`
+padding-top:30px;
+padding-bottom:12px; 
+padding-left:6px;
+`
+
+export const PageWrapper = styled.div`
+width: 100%;
+min-height: 100vh;
+display: flex;
+justify-content: center;
+//background-color: 배경색 지정
+`;
+
+export const CenteredContainer = styled.div`
+width: 100%;
+max-width: 1200px;  // 또는 원하는 최대 너비
+margin: 0 auto;
+padding: 0 20px;  // 좌우 여백
+box-sizing: border-box;
+position:relative;
+`;
