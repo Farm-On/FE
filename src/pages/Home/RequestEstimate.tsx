@@ -103,7 +103,7 @@ export default function RequestEstimatePage():JSX.Element{
                 <RE.Container>
                 <div>
 
-                    <div>
+                    <div style={{position:'relative'}}>
                         <RE.Bubble>어떤 컨설팅을 원하세요?</RE.Bubble>
                         <RE.Chips>
                             {initialCategories.map((category)=>{
@@ -118,8 +118,9 @@ export default function RequestEstimatePage():JSX.Element{
                                 )
                             })}
                         </RE.Chips>
-                        <StateScroll/>
+                        
                         <RE.DividingLine/>
+                        <StateScroll />
                     </div>
 
 
@@ -166,7 +167,7 @@ export default function RequestEstimatePage():JSX.Element{
                     <div>
                         <RE.Bubble>해당 컨설팅에 대해 자세히 설명해주세요.</RE.Bubble>
                         <div style={{display:'flex', flexDirection:'column', gap:'18px', paddingTop:'40px',paddingLeft:"6px"}}>
-                            <div>
+                            <div style={{position:'relative'}}>
                                 <RE.PostTitle 
                                 type='text' 
                                 placeholder='제목을 입력해주세요.'
@@ -176,15 +177,15 @@ export default function RequestEstimatePage():JSX.Element{
                                 <RE.TitleLength>{0}/20</RE.TitleLength>
                             </div>
 
-                            <InputContainer>
+                            <InputContainer style={{position:'relative'}}>
                                 <RE.PostContent
                                 placeholder='내용을 입력해주세요.'
                                 value={contentValue}
                                 onChange={handleContentValue}
                                 />
                                 <div style={{position:'absolute',bottom:'20px',left:'26px'}}><CameraIcon/></div>
+                            <RE.ContentLength style={{position:'absolute',right:'15px',top:'25px'}}>{0}/3000</RE.ContentLength>
                             </InputContainer>
-                            <RE.ContentLength>{0}/3000</RE.ContentLength>
 
                         </div>
                         <ApplyBtn>

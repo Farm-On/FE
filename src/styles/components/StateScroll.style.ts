@@ -1,13 +1,12 @@
 import styled from '@emotion/styled';
 
 export const StateScroll = styled.div`
-//position:relative;
-//top:10px;
-//left:1200px;
 display:flex;
 gap:21px;
-//padding-top:100px;
-//padding-left:1300px;
+position:absolute;
+top:70px;
+left:1400px;
+
 `
 
 export const Line = styled.div`

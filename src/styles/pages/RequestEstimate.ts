@@ -160,15 +160,19 @@ display:flex;
 justify-content:center;
 align-items:center;
 font-size:16px;
-font-family:'PretendardRegular'
+font-family:'PretendardRegular';
 position:relative;
 `
 
-export const TitleLength = styled.span`
+export const TitleLength = styled.div`
 color:rgba(129, 129, 129, 1);
 font-size:14px;
 min-width:31px;
 white-space: nowrap;
+position: absolute;
+right: 15px;
+top: 24px;
+transform: translateX(35px);
 `
 
 
@@ -217,7 +221,7 @@ justify-content: center;
 export const CenteredContainer = styled.div`
 width: 100%;
 max-width: 1200px;  // 또는 원하는 최대 너비
-margin: 0 auto;
+//margin: 0 auto;
 padding: 0 20px;  // 좌우 여백
 box-sizing: border-box;
 position:relative;
