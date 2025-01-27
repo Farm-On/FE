@@ -3,7 +3,12 @@ import styled from "@emotion/styled";
 
 
 export const Title = styled.div`
-height:100px;
+//width:100%;
+height:51px;
+display:flex;
+//margin-left:360px;
+//justify-content:center;
+align-items:center;
 background-color:rgba(255, 255, 255, 1);
 //padding-left:360px;
 h2{
@@ -13,10 +18,13 @@ h2{
 export const Wrapper = styled.div`
 display:flex;
 align-items:center;
+//padding-left:360px;
+
 `
 export const Category = styled.div`
 display:flex;
 align-items:center;
+height:24px;
 gap:2px;
 p{
     color:rgba(87, 87, 87, 1);
@@ -215,7 +223,7 @@ width: 100%;
 min-height: 100vh;
 display: flex;
 justify-content: center;
-//background-color: 배경색 지정
+background-color: #F9F9F9;
 `;
 
 export const CenteredContainer = styled.div`
