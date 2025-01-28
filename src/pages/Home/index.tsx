@@ -7,18 +7,17 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { InquiryBanner } from '@/components/InquiryBanner';
 import { Community } from '@/components/Community';
-import { Search } from '@/components/Search/Search';
+import { Search } from '@/components/search/search';
 import { Announcements } from '@/components/Announcements';
 import { Trendings } from '@/components/Trendings';
-import RequestEstimatePage from '../Home/RequestEstimate';
+
 
 export default function Home() {
   return (
     <>
       <Navbar />
       <H.HomeContainer>
-        <RequestEstimatePage/>
-        {/* <H.MainContent>
+        <H.MainContent>
           <H.SearchSection>
             <Search />
           </H.SearchSection>
@@ -37,7 +36,7 @@ export default function Home() {
           <H.BannerSection>
             <InquiryBanner />
           </H.BannerSection>
-        </H.MainContent> */}
+        </H.MainContent>
         <H.FooterWrapper>
           <Footer />
         </H.FooterWrapper>

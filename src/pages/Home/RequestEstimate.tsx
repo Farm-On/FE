@@ -2,7 +2,6 @@ import * as RE from '../../styles/pages/RequestEstimate';
 import HomeIcon from '../../assets/icons/Home.svg?react';
 import GreyRightIcon from '../../assets/icons/GreyRight.svg?react';
 import CameraIcon from '../../assets/icons/camera.svg?react';
-// import XIcon from '../../assets/icons/x.svg?react';
 import { useState } from 'react';
 import { EstimateBudget } from '@/components/EstimateBudget';
 import { ChoiceCity } from '@/components/ChoiceCity/ChoiceCity';
