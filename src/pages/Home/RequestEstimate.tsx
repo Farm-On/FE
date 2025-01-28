@@ -2,10 +2,10 @@ import * as RE from '../../styles/pages/RequestEstimate';
 import HomeIcon from '../../assets/icons/Home.svg?react';
 import GreyRightIcon from '../../assets/icons/GreyRight.svg?react';
 import CameraIcon from '../../assets/icons/camera.svg?react';
-import XIcon from '../../assets/icons/x.svg?react';
+// import XIcon from '../../assets/icons/x.svg?react';
 import { useState } from 'react';
 import { EstimateBudget } from '@/components/EstimateBudget';
-import { ChoiceCity } from '@/components/ChoiceCity';
+import { ChoiceCity } from '@/components/ChoiceCity/ChoiceCity';
 import { StateScroll } from '@/components/StateScroll';
 import styled from '@emotion/styled';
 import React, { useRef } from 'react';
@@ -39,23 +39,21 @@ export default function RequestEstimatePage(): JSX.Element {
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [isChecked, setIsChecked] = useState<string>('');
   const [isApplied,setIsApplied] = useState<boolean>(false);
-
+  const [processing,setProcessing] = useState<number>(0);
+  const [currentSection, setCurrentSection] = useState<'category' | 'location' | 'budget' | 'detail'>('category');
   const categoryRef = useRef<HTMLDivElement>(null);
   const locationRef = useRef<HTMLDivElement>(null);
   const budgetRef = useRef<HTMLDivElement>(null);
   const detailRef = useRef<HTMLDivElement>(null);
 
-  // 스크롤 함수
-  const scrollToSection = (ref: React.RefObject<HTMLDivElement>) => {
-      ref.current?.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-      });
-  };
-
+  const scrollToSection = (ref: React.RefObject<HTMLDivElement>, section: 'category' | 'location' | 'budget' | 'detail') => {
+    ref.current?.scrollIntoView({ behavior: 'smooth' });
+    setCurrentSection(section);
+};
   const handleChipClick = (id: string) => {
     setSelected(id);
-    scrollToSection(locationRef)
+    scrollToSection(locationRef,'location');
+    setProcessing(processing + 25);
   };
 
   const handleValue = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,7 +68,8 @@ export default function RequestEstimatePage(): JSX.Element {
 
   const handleApply = ()=>{
     setIsApplied(!isApplied);
-    scrollToSection(detailRef);
+    scrollToSection(detailRef,'detail');
+    setProcessing(processing + 25);
   };
 
   const handleMoney = (value: string) => {
@@ -78,9 +77,20 @@ export default function RequestEstimatePage(): JSX.Element {
     setIsDisabled(value !== '직접입력');
     //적용버튼을 눌렀을 때 자동스크롤
     if(value !== '직접입력'){
-        scrollToSection(detailRef);
+        scrollToSection(detailRef,'detail');
+        setProcessing(processing + 25);
     }
   };
+  
+  const handleSucceed = ()=>{
+    if(contentValue.length >=1 ){
+        setProcessing(processing + 25);
+    }
+  };
+
+
+
+
 
   return (
     <>
@@ -97,7 +107,7 @@ export default function RequestEstimatePage(): JSX.Element {
             <p>쌀</p>
           </RE.Category>
           <RE.Process>
-            <p>진행률 0%</p>
+            <p>진행률 {processing}%</p>
           </RE.Process>
         </RE.Wrapper>
     </div>
@@ -123,22 +133,28 @@ export default function RequestEstimatePage(): JSX.Element {
                   ))}
                 </RE.Chips>
                 <RE.DividingLine />
-                <StateScroll />
+                <StateScroll
+                    currentSection={currentSection}
+                    categoryOnClick={()=>scrollToSection(categoryRef,'category')}
+                    locateOnClick={()=>scrollToSection(locationRef,'location')}
+                    budgetOnClick={()=>scrollToSection(budgetRef,'budget')}
+                    datailOnClick={()=>scrollToSection(detailRef,'detail')}
+                />
               </div>
 
               {/* 두 번째 섹션 */}
               <div ref={locationRef}>
                 <RE.Bubble>컨설팅 위치는 어디인가요?</RE.Bubble>
-                <RE.CancleX>
+                {/* <RE.CancleX>
                   <RE.Chip isSelected={true}>
                     경기 이천시
                     <div style={{ width: '20px', height: '20px' }}>
                       <XIcon style={{ paddingTop: '1px' }} />
                     </div>
                   </RE.Chip>
-                </RE.CancleX>
+                </RE.CancleX> */}
                 <div style={{ paddingBottom: '18px', paddingLeft: '6px' }}>
-                  <ChoiceCity />
+                  <ChoiceCity/>
                 </div>
                 <RE.DividingLine />
               </div>
@@ -187,6 +203,7 @@ export default function RequestEstimatePage(): JSX.Element {
                       placeholder="제목을 입력해주세요."
                       value={titleValue}
                       onChange={handleValue}
+                      onClick={()=>handleSucceed()}
                     />
                     <RE.TitleLength>{titleValue.length}/20</RE.TitleLength>
                   </div>
