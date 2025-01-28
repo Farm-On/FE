@@ -8,13 +8,6 @@ export const StateScroll = styled.div`
     left: 1677px;
     z-index: 100;       
 `
-// export const StateScroll = styled.div`
-// display:flex;
-// gap:21px;
-// position:absolute; 스크롤 고정 버전
-// top:60px;
-// left:1320px;
-// `
 export const Line = styled.div`
 width: 2px;
 height: 196px;
