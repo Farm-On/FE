@@ -11,6 +11,8 @@ import PretendardMedium from '@/assets/fonts/Pretendard-Medium.woff';
 import Home from './pages/Home';
 import MyEstimatePage from './pages/Home/MyEstimate';
 
+import CommunityPage from './pages/Home/Community';
+
 const AppContainer = styled.div`
   width: 100%;
   min-height: 100vh;
@@ -43,6 +45,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/MyEstimate" element={<MyEstimatePage />} />
+
+          <Route path='/Community' element={<CommunityPage/>} />
         </Routes>
       </AppContainer>
     </Router>

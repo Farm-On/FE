@@ -7,7 +7,7 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { InquiryBanner } from '@/components/InquiryBanner';
 import { Community } from '@/components/Community';
-import { Search } from '@/components/Search/Search';
+import { Search } from '@/components/search/search';
 import { Announcements } from '@/components/Announcements';
 import { Trendings } from '@/components/Trendings';
 
@@ -21,7 +21,7 @@ export default function Home() {
             <Search />
           </H.SearchSection>
           <H.CommunitySection>
-            <Header title="궁금한 점을 나눠보세요" link="#" />
+            <Header title="궁금한 점을 나눠보세요" link="/Community" />
             <Community />
           </H.CommunitySection>
           <H.TrendingsSection>
