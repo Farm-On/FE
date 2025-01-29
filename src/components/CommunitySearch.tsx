@@ -9,7 +9,7 @@ interface CSProps{
 
 export const CommunitySearch = ({onChange,value}:CSProps)=>{
     return(
-        <div style={{paddingLeft: "11.4vw", paddingTop: '17.5vw'}}>
+        <div style={{paddingLeft: "7.3vw", paddingTop: '17.5vw'}}>
             <div style={{position:'relative'}}>
                 <Container
                 placeholder='찾고싶은 글을 검색하세요'
