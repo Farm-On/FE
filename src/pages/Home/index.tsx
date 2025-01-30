@@ -7,9 +7,10 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { InquiryBanner } from '@/components/InquiryBanner';
 import { Community } from '@/components/Community';
-import { Search } from '@/components/Search/Search';
+import { Search } from '@/components/search/search';
 import { Announcements } from '@/components/Announcements';
 import { Trendings } from '@/components/Trendings';
+
 
 export default function Home() {
   return (

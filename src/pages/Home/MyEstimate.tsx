@@ -23,7 +23,7 @@ export default function MyEstimatePage() {
           <E.MyCards>
             <EstimateCard productName="쌀" product="곡물" date="2024.12.08" />
             <E.AddCard>
-              <AddBtn onClick={() => navigate('/NewEstimate')} />
+              <AddBtn onClick={() => navigate('/MyEstimate/RequestEstimate')} />
               <p>새 견적 받아보기</p>
             </E.AddCard>
           </E.MyCards>
