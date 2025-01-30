@@ -9,8 +9,6 @@ import { StateScroll } from '@/components/StateScroll';
 import styled from '@emotion/styled';
 import React, { useRef } from 'react';
 
-
-
 interface Category {
   id: string;
   title: string;
@@ -25,33 +23,32 @@ const initialCategories: Category[] = [
   { id: '6', title: '기타' },
 ];
 
-
-
-
-
-
-
 export default function RequestEstimatePage(): JSX.Element {
   const [selected, setSelected] = useState<string>('2');
   const [titleValue, setTitleValue] = useState<string>('');
   const [contentValue, setContentValue] = useState<string>('');
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [isChecked, setIsChecked] = useState<string>('');
-  const [isApplied,setIsApplied] = useState<boolean>(false);
-  const [processing,setProcessing] = useState<number>(0);
-  const [currentSection, setCurrentSection] = useState<'category' | 'location' | 'budget' | 'detail'>('category');
+  const [isApplied, setIsApplied] = useState<boolean>(false);
+  const [processing, setProcessing] = useState<number>(0);
+  const [currentSection, setCurrentSection] = useState<
+    'category' | 'location' | 'budget' | 'detail'
+  >('category');
   const categoryRef = useRef<HTMLDivElement>(null);
   const locationRef = useRef<HTMLDivElement>(null);
   const budgetRef = useRef<HTMLDivElement>(null);
   const detailRef = useRef<HTMLDivElement>(null);
 
-  const scrollToSection = (ref: React.RefObject<HTMLDivElement>, section: 'category' | 'location' | 'budget' | 'detail') => {
+  const scrollToSection = (
+    ref: React.RefObject<HTMLDivElement>,
+    section: 'category' | 'location' | 'budget' | 'detail'
+  ) => {
     ref.current?.scrollIntoView({ behavior: 'smooth' });
     setCurrentSection(section);
-};
+  };
   const handleChipClick = (id: string) => {
     setSelected(id);
-    scrollToSection(locationRef,'location');
+    scrollToSection(locationRef, 'location');
     setProcessing(processing + 25);
   };
 
@@ -65,9 +62,9 @@ export default function RequestEstimatePage(): JSX.Element {
     if (newText.length <= 3000) setContentValue(newText);
   };
 
-  const handleApply = ()=>{
+  const handleApply = () => {
     setIsApplied(!isApplied);
-    scrollToSection(detailRef,'detail');
+    scrollToSection(detailRef, 'detail');
     setProcessing(processing + 25);
   };
 
@@ -75,28 +72,33 @@ export default function RequestEstimatePage(): JSX.Element {
     setIsChecked(value);
     setIsDisabled(value !== '직접입력');
     //적용버튼을 눌렀을 때 자동스크롤
-    if(value !== '직접입력'){
-        scrollToSection(detailRef,'detail');
-        setProcessing(processing + 25);
-    }
-  };
-  
-  const handleSucceed = ()=>{
-    if(contentValue.length >=1 ){
-        setProcessing(processing + 25);
+    if (value !== '직접입력') {
+      scrollToSection(detailRef, 'detail');
+      setProcessing(processing + 25);
     }
   };
 
-
-
-
+  const handleSucceed = () => {
+    if (contentValue.length >= 1) {
+      setProcessing(processing + 25);
+    }
+  };
 
   return (
     <>
-    <div style={{display:'flex', flexDirection:'column',gap:'11px',paddingLeft:"360px",maxWidth:'1200px',paddingBottom:'25px'}}>
-      <RE.Title>
-        <h2>견적요청</h2>
-      </RE.Title>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '11px',
+          paddingLeft: '360px',
+          maxWidth: '1200px',
+          paddingBottom: '25px',
+        }}
+      >
+        <RE.Title>
+          <h2>견적요청</h2>
+        </RE.Title>
         <RE.Wrapper>
           <RE.Category>
             <HomeIcon />
@@ -109,15 +111,14 @@ export default function RequestEstimatePage(): JSX.Element {
             <p>진행률 {processing}%</p>
           </RE.Process>
         </RE.Wrapper>
-    </div>
-
+      </div>
 
       <RE.PageWrapper>
         <RE.CenteredContainer>
           <RE.Container>
             <div>
               {/* 첫 번째 섹션 */}
-              <div style={{ position: 'relative',paddingTop:'44px' }} ref={categoryRef}>
+              <div style={{ position: 'relative', paddingTop: '44px' }} ref={categoryRef}>
                 <RE.Bubble>어떤 컨설팅을 원하세요?</RE.Bubble>
                 <RE.Chips>
                   {initialCategories.map((category) => (
@@ -133,11 +134,11 @@ export default function RequestEstimatePage(): JSX.Element {
                 </RE.Chips>
                 <RE.DividingLine />
                 <StateScroll
-                    currentSection={currentSection}
-                    categoryOnClick={()=>scrollToSection(categoryRef,'category')}
-                    locateOnClick={()=>scrollToSection(locationRef,'location')}
-                    budgetOnClick={()=>scrollToSection(budgetRef,'budget')}
-                    datailOnClick={()=>scrollToSection(detailRef,'detail')}
+                  currentSection={currentSection}
+                  categoryOnClick={() => scrollToSection(categoryRef, 'category')}
+                  locateOnClick={() => scrollToSection(locationRef, 'location')}
+                  budgetOnClick={() => scrollToSection(budgetRef, 'budget')}
+                  datailOnClick={() => scrollToSection(detailRef, 'detail')}
                 />
               </div>
 
@@ -153,7 +154,7 @@ export default function RequestEstimatePage(): JSX.Element {
                   </RE.Chip>
                 </RE.CancleX> */}
                 <div style={{ paddingBottom: '18px', paddingLeft: '6px' }}>
-                  <ChoiceCity/>
+                  <ChoiceCity />
                 </div>
                 <RE.DividingLine />
               </div>
@@ -162,24 +163,30 @@ export default function RequestEstimatePage(): JSX.Element {
               <div ref={budgetRef}>
                 <RE.Bubble>예산은 어느 정도인가요?</RE.Bubble>
                 <RE.InputContainer>
-                  {['10~50만원', '50~100만원', '100~200만원', '200~500만원', '500~1000만원', '1000만원 이상', '직접입력'].map(
-                    (value) => (
-                      <EstimateBudget
-                        key={value}
-                        id={value}
-                        value={value}
-                        label={value}
-                        checked={isChecked === value}
-                        onChange={() => handleMoney(value)}
-                      />
-                    )
-                  )}
+                  {[
+                    '10~50만원',
+                    '50~100만원',
+                    '100~200만원',
+                    '200~500만원',
+                    '500~1000만원',
+                    '1000만원 이상',
+                    '직접입력',
+                  ].map((value) => (
+                    <EstimateBudget
+                      key={value}
+                      id={value}
+                      value={value}
+                      label={value}
+                      checked={isChecked === value}
+                      onChange={() => handleMoney(value)}
+                    />
+                  ))}
                 </RE.InputContainer>
                 <RE.TypeBudget>
                   <RE.MinBudget placeholder="500,000" disabled={isDisabled} />
                   <p style={{ width: '8px' }}>-</p>
                   <RE.MaxBudget placeholder="50,000,000" disabled={isDisabled} />
-                  <RE.Apply onClick={()=>handleApply()}>적용</RE.Apply>
+                  <RE.Apply onClick={() => handleApply()}>적용</RE.Apply>
                 </RE.TypeBudget>
                 <RE.DividingLine />
               </div>
@@ -202,7 +209,7 @@ export default function RequestEstimatePage(): JSX.Element {
                       placeholder="제목을 입력해주세요."
                       value={titleValue}
                       onChange={handleValue}
-                      onClick={()=>handleSucceed()}
+                      onClick={() => handleSucceed()}
                     />
                     <RE.TitleLength>{titleValue.length}/20</RE.TitleLength>
                   </div>
@@ -231,7 +238,6 @@ export default function RequestEstimatePage(): JSX.Element {
     </>
   );
 }
-
 
 const InputContainer = styled.div`
   position: relative;
