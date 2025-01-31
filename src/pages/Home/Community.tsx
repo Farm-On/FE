@@ -10,6 +10,8 @@ import SamrtFarmImg from '../../assets/images/smartFarm.png';
 import StrawberryImg from '../../assets/images/freshStrawberry.png';
 import PlantImg from '../../assets/images/plant.png';
 import CheckListImg from '../../assets/images/checkList.png';
+import { CommuPageBtn } from '@/components/CommuPageBtn';
+
 
 interface Category {
     id: string;
@@ -42,10 +44,15 @@ interface Category {
 export default function CommunityPage(){
     const [selectedCategory,setSelectedCategory] = useState<string>('1');
     const [searchValue,setSearchValue] = useState<string>(''); //검색된 값
-
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const totalPages = 24; // 총 페이지 수(임시)
     const handleCategoryClick = (id:string)=>{
         setSelectedCategory( id === selectedCategory ? '' : id )
     };
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+        // 페이지 변경 
+      };
     return(
         <div style={{display:'flex'}}>
             <div className='left'>
@@ -162,6 +169,13 @@ export default function CommunityPage(){
                                 product='공통'
                                 productDetail=''
                                 imgSrc={CheckListImg}
+                            />
+                        </div>
+                        <div style={{paddingLeft:'20.94vw',paddingBottom:'12.14vw'}}>
+                            <CommuPageBtn
+                                  currentPage={currentPage} 
+                                  totalPages={totalPages} 
+                                  onPageChange={handlePageChange}
                             />
                         </div>
                     </div>
