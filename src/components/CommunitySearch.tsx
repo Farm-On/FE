@@ -10,7 +10,7 @@ interface CSProps{
 export const CommunitySearch = ({onChange,value}:CSProps)=>{
     return(
         <div style={{paddingLeft: "7.3vw", paddingTop: '17.5vw'}}>
-            <div style={{position:'relative'}}>
+            <div style={{position:'relative',width:'876px'}}>
                 <Container
                 placeholder='찾고싶은 글을 검색하세요'
                 onChange={onChange}
@@ -26,7 +26,7 @@ export const CommunitySearch = ({onChange,value}:CSProps)=>{
 }
 
 const Container = styled.input`
-width: 876px;
+width: 814px;
 height: 66px;
 flex-shrink: 0;
 border-radius: 18px;
