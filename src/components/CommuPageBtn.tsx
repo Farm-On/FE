@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
-
+import LeftIcon from '../assets/icons/chevron-left-gray.svg?react';
+import RightIcon from '../assets/icons/chevron-Right-gray.svg?react';
 
 interface PageProps{
     currentPage:number;
@@ -29,9 +30,15 @@ export const CommuPageBtn = ({ currentPage, totalPages, onPageChange }:PageProps
   return (
     <PaginationContainer>
       <NavigationButton onClick={handlePrevGroup} disabled={startPage === 1}>
-        &#8249;
+        <LeftIcon />
       </NavigationButton>
-      
+      <LeftIcon style={{
+          width: '26px',
+          height: '26px',
+          opacity: startPage === 1 ? 0.5 : 1,
+          cursor: startPage === 1 ? '' : 'pointer',
+        }} 
+        onClick={handlePrevGroup}/>
       {Array.from({ length: endPage - startPage + 1 }, (_, index) => {
         const pageNumber = startPage + index;
         return (
@@ -45,12 +52,15 @@ export const CommuPageBtn = ({ currentPage, totalPages, onPageChange }:PageProps
         );
       })}
 
-      <NavigationButton 
-        onClick={handleNextGroup} 
-        disabled={endPage === totalPages}
-      >
-        &#8250;
-      </NavigationButton>
+      <RightIcon
+        style={{
+          width: '26px',
+          height: '26px',
+          opacity: endPage === totalPages ? 0.5 : 1,
+          cursor: endPage === totalPages ? 'not-allowed' : 'pointer',
+        }}
+        onClick={handleNextGroup}
+      />
     </PaginationContainer>
   );
 };
@@ -82,5 +92,8 @@ const PageButton = styled.button<{ isActive?: boolean }>`
 `;
 
 const NavigationButton = styled(PageButton)`
-  color: #666;
+  color: rgba(142, 142, 142, 1);
+  width: 25.89px;
+  height: 25.89px;
+  flex-shrink: 0;
 `;
