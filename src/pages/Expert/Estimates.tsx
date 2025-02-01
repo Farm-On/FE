@@ -91,6 +91,7 @@ export default function Estimates() {
             <E.Grid>
               {dummy.map((data) => (
                 <ExpertEstimateCard
+                  key={data.id}
                   id={data.id}
                   title={data.title}
                   subtitle={data.subtitle}

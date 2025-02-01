@@ -12,6 +12,7 @@ import Home from './pages/Home';
 import MyEstimatePage from './pages/Home/MyEstimate';
 import My from './pages/Expert/My';
 import Estimates from './pages/Expert/Estimates';
+import Estimate from './pages/Expert/Estimate';
 
 const AppContainer = styled.div`
   width: 100%;
@@ -47,6 +48,7 @@ function App() {
           <Route path="/MyEstimate" element={<MyEstimatePage />} />
           <Route path="/expert/my" element={<My />} />
           <Route path="/expert/estimates" element={<Estimates />} />
+          <Route path="/expert/estimate" element={<Estimate />} />
         </Routes>
       </AppContainer>
     </Router>
