@@ -10,6 +10,10 @@ import PretendardMedium from '@/assets/fonts/Pretendard-Medium.woff';
 // 페이지
 import Home from './pages/Home';
 import MyEstimatePage from './pages/Home/MyEstimate';
+import Register from './pages/ExpertRegistration/Register';
+import DetailCategory from './pages/ExpertRegistration/DetailCategory';
+import Location from './pages/ExpertRegistration/Location';
+import RegisterComplete from './pages/ExpertRegistration/RegisterComplete';
 
 const AppContainer = styled.div`
   width: 100%;
@@ -43,6 +47,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/MyEstimate" element={<MyEstimatePage />} />
+          <Route path="/expert-register" element={<Register />} />
+          <Route path="/detail-category/:categoryId" element={<DetailCategory />} />
+          <Route path="/location" element={<Location />} />
+          <Route path="/register-complete" element={<RegisterComplete />} />
         </Routes>
       </AppContainer>
     </Router>
