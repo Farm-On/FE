@@ -5,14 +5,14 @@ export const Card = styled.div`
   width: 290px;
   height: 339px;
   cursor: pointer;
-  @media (max-width: 1200px) {
-    width: 230px;
-    height: 272px;
+  @media (max-width: 768px) {
+    width: 200px;
+    height: 252px;
   }
 
-  @media (max-width: 900px) {
-    width: 220px;
-    height: 257px;
+  @media (max-width: 480px) {
+    width: 200px;
+    height: 247px;
   }
 `;
 
