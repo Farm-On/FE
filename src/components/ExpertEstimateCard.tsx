@@ -1,4 +1,5 @@
 import * as E from '@/styles/components/ExpertEsimateCard.style';
+import { CSSProperties } from 'react';
 
 interface ExpertEstimateCardProps {
   id: number;
@@ -6,6 +7,7 @@ interface ExpertEstimateCardProps {
   subtitle: string;
   estimatedCost: string;
   date: string;
+  cardStyle?: CSSProperties;
 }
 
 export const ExpertEstimateCard = ({
@@ -14,8 +16,9 @@ export const ExpertEstimateCard = ({
   subtitle,
   estimatedCost,
   date,
+  cardStyle,
 }: ExpertEstimateCardProps) => (
-  <E.Card key={id}>
+  <E.Card key={id} style={cardStyle}>
     <E.CardTitle>{title}</E.CardTitle>
     <E.CardProperties>{subtitle}</E.CardProperties>
     <E.CardDivider />
