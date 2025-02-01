@@ -6,6 +6,7 @@ export const PaginationContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
   align-self: center;
 `;
 
@@ -28,6 +29,7 @@ export const PageButton = styled.button<{ active?: boolean }>`
   border: none;
   border-radius: 7.551px;
   background: ${(props) => (props.active ? '#00a05e' : 'transparent')};
+  cursor: pointer;
   color: ${(props) => (props.active ? '#fff' : '#8E8E8E')};
   font-family: PretendardRegular;
   font-size: 16px;

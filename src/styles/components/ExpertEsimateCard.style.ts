@@ -10,8 +10,33 @@ export const Card = styled.div`
   background: #fff;
 `;
 
-export const CardTitle = styled.span`
+export const CardHeader = styled.div`
   margin-bottom: 6px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const DoneChip = styled.div`
+  display: flex;
+  padding: 4px 13px;
+  justify-content: center;
+  align-items: center;
+  gap: 29px;
+  flex-shrink: 0;
+  border-radius: 17px;
+  background: #ffd27f;
+  color: #f18912;
+  font-family: PretendardRegular;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%; /* 21px */
+  text-transform: uppercase;
+`;
+
+export const CardTitle = styled.span`
   color: #000;
   font-family: PretendardRegular;
   font-size: 20px;
@@ -19,6 +44,9 @@ export const CardTitle = styled.span`
   font-weight: 500;
   line-height: 150%; /* 30px */
   text-transform: uppercase;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 
 export const CardProperties = styled.span`

@@ -1,14 +1,21 @@
 import * as P from '@/styles/components/Pagination.style';
+import { CSSProperties } from 'react';
 
 interface PaginationProps {
   totalPages: number;
   currentPage: number;
   onPageClick: (page: number) => void;
+  containerStyle?: CSSProperties;
 }
 
-export const Pagination = ({ totalPages, currentPage, onPageClick }: PaginationProps) => (
-  <P.PaginationContainer>
-    <P.PreviousPage />
+export const Pagination = ({
+  totalPages,
+  currentPage,
+  onPageClick,
+  containerStyle,
+}: PaginationProps) => (
+  <P.PaginationContainer style={containerStyle}>
+    <P.PreviousPage disabled={currentPage === 1} />
     {[...Array(totalPages)].map((_, page) => (
       <P.PageButton
         key={page + 1}
@@ -18,6 +25,6 @@ export const Pagination = ({ totalPages, currentPage, onPageClick }: PaginationP
         {page + 1}
       </P.PageButton>
     ))}
-    <P.NextPage />
+    <P.NextPage disabled={currentPage === totalPages} />
   </P.PaginationContainer>
 );

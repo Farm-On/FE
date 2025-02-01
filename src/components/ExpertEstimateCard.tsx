@@ -7,6 +7,7 @@ interface ExpertEstimateCardProps {
   subtitle: string;
   estimatedCost: string;
   date: string;
+  isDone?: boolean;
   cardStyle?: CSSProperties;
 }
 
@@ -16,10 +17,14 @@ export const ExpertEstimateCard = ({
   subtitle,
   estimatedCost,
   date,
+  isDone,
   cardStyle,
 }: ExpertEstimateCardProps) => (
   <E.Card key={id} style={cardStyle}>
-    <E.CardTitle>{title}</E.CardTitle>
+    <E.CardHeader>
+      <E.CardTitle>{title}</E.CardTitle>
+      {isDone && <E.DoneChip>완료</E.DoneChip>}
+    </E.CardHeader>
     <E.CardProperties>{subtitle}</E.CardProperties>
     <E.CardDivider />
     <E.CardFooter>
