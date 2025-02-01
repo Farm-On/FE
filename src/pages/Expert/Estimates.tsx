@@ -2,6 +2,8 @@ import * as E from '@/styles/pages/Expert/Estimates.style';
 
 import Sliders from '@/assets/icons/Sliders.svg?react';
 import { ExpertEstimateCard } from '@/components/ExpertEstimateCard';
+import { Pagination } from '@/components/Pagination';
+import { useState } from 'react';
 
 const menus = {
   추천: '',
@@ -31,6 +33,8 @@ const activeMenus = {
   기타: false,
 };
 
+const totalPages = 6;
+
 const dummy = [
   {
     id: 1,
@@ -56,6 +60,8 @@ const dummy = [
 ];
 
 export default function Estimates() {
+  const [currentPage, setCurrentPage] = useState(1);
+
   return (
     <div style={{ marginTop: 84 }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
@@ -100,15 +106,11 @@ export default function Estimates() {
                 />
               ))}
             </E.Grid>
-            <E.PaginationContainer>
-              <E.PreviousPage />
-              {[1, 2, 3, 4, 5].map((page) => (
-                <E.PageButton key={page} active>
-                  {page}
-                </E.PageButton>
-              ))}
-              <E.NextPage />
-            </E.PaginationContainer>
+            <Pagination
+              totalPages={totalPages}
+              currentPage={currentPage}
+              onPageClick={(page) => setCurrentPage(page)}
+            />
           </E.Content>
         </E.Container>
       </div>
