@@ -14,6 +14,7 @@ import My from './pages/Expert/My';
 import Estimates from './pages/Expert/Estimates';
 import Estimate from './pages/Expert/Estimate';
 import ExpertMyEstimate from './pages/Expert/MyEstimate';
+import MyEdit from './pages/Expert/MyEdit';
 
 const AppContainer = styled.div`
   width: 100%;
@@ -48,6 +49,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/MyEstimate" element={<MyEstimatePage />} />
           <Route path="/expert/my" element={<My />} />
+          <Route path="/expert/my/edit" element={<MyEdit />} />
           <Route path="/expert/estimates" element={<Estimates />} />
           <Route path="/expert/estimate" element={<Estimate />} />
           <Route path="/expert/myestimate" element={<ExpertMyEstimate />} />
