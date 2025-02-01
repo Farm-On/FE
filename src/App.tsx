@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { css, Global } from '@emotion/react';
+import ReactModal from 'react-modal';
 
 // 폰트
 import PretendardRegular from '@/assets/fonts/Pretendard-Regular.woff';
@@ -20,6 +21,8 @@ const AppContainer = styled.div`
   width: 100%;
   min-height: 100vh;
 `;
+
+ReactModal.setAppElement('#root');
 
 function App() {
   return (
