@@ -57,48 +57,42 @@ export default function CommunityPage(){
         // 페이지 변경 
       };
 
-    const Overlay = styled.div`
-    position:fixed;
-    width:100vw;
-    height:1000vh;
-    opacity: 0.5;
-    background: #000;
-    position:absolute;
-    z-index:50;
-    `;
 
     const handleModal = ()=>{
         setIsModalOpen(true);
-
+    };
+    const closeModal = ()=>{
+      setIsModalOpen(false);
     }
+
     return (
-      <div style={{ display: 'flex' }}>
+      <CP.Container style={{ display: 'flex' }}>
         {/* 모달창 */}
         <div style={{ position: 'absolute', zIndex: '100', top: '12.92vw',left:"38.28vw" }}>
-          {isModalOpen === true ? <CommunityModal /> : null}
+          {isModalOpen === true ? <CommunityModal closeModal={() => closeModal()}/> : null}
         </div>
-        {isModalOpen === true ? <Overlay /> : null}
-        <div className="left">
+        {isModalOpen === true ? <Overlay onClick={()=>closeModal()}/> : null}
+        <CP.LeftCommunity className="left">
           <CP.Title>
             <h2>커뮤니티</h2>
           </CP.Title>
           <CP.Category>
             {Categories.map((item) => {
               return (
-                <div key={item.id} style={{ width: '219px', height: '66px' }}>
+                <CP.CategoryItem key={item.id}>
                   <CP.Item
                     onClick={() => handleCategoryClick(item.id)}
                     isSelected={item.id === selectedCategory}
                   >
                     <p>{item.title}</p>
                   </CP.Item>
-                </div>
+                </CP.CategoryItem>
               );
             })}
           </CP.Category>
-        </div>
+        </CP.LeftCommunity>
 
-        <div className="right">
+        <CP.RightCommunity className="right">
           <div style={{ position: 'relative' }}>
             <CommunitySearch onChange={(e) => setSearchValue(e.target.value)} value={searchValue} />
             <CP.FilterChip onClick={()=>handleModal()}>
@@ -195,12 +189,25 @@ export default function CommunityPage(){
               />
             </div>
           </div>
-        </div>
-      </div>
+        </CP.RightCommunity>
+      </CP.Container>
     );
 };
 
 const StyledDownIcon = styled(DownIcon)`
 width: 16px;
 height: 16px;
-`
+`;
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 1000vh;
+  opacity: 0.5;
+  background: #000;
+  position: absolute;
+  z-index: 50;
+`;

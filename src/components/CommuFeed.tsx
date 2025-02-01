@@ -13,7 +13,7 @@ interface FeedProps {
 
 export const CommuFeed = ({ headline, content, category, product, productDetail,imgSrc }: FeedProps) => {
   return (
-    <div style={{ width: '876px' }}>
+    <Container>
       <SortCategory>
         <p>{category}</p>
         <p> • </p>
@@ -40,9 +40,23 @@ export const CommuFeed = ({ headline, content, category, product, productDetail,
         <p>0</p>
       </C.Interactions>
       <DividingLine />
-    </div>
+    </Container>
   );
 };
+
+
+
+const Container = styled.div`
+  width: 876px;
+  @media (max-width: 768px) {
+    width: 600px;
+  }
+
+  @media (max-width: 480px) {
+    width: 550px;
+  }
+`;
+
 
 const DividingLine = styled.div`
   width: 876px;
@@ -50,6 +64,15 @@ const DividingLine = styled.div`
   background-color: rgba(206, 206, 206, 1);
   margin: 30px 0;
   margin-top: 30px;
+    @media (max-width: 768px) {
+    margin: 20px 0;
+    width: 600px;
+  }
+
+  @media (max-width: 480px) {
+    margin: 15px 0;
+    width: 550px;
+  }
 `;
 
 const Content = styled.div`
@@ -63,6 +86,15 @@ const Content = styled.div`
     font-size: 16px;
     font-family: 'PretendardMedium';
     color: rgba(94, 94, 94, 1);
+        @media (max-width: 768px) {
+    margin: 20px 0;
+    width: 600px;
+  }
+
+  @media (max-width: 480px) {
+    margin: 15px 0;
+    width: 550px;
+  }
   }
 `;
 const SortCategory = styled.div`

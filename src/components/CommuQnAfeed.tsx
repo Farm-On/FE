@@ -8,7 +8,7 @@ interface FeedProps {
   category: string;
   product: string;
   productDetail?: string;
-  imgSrc?:string;
+  imgSrc?: string;
 }
 
 export const CommuQnAFeed = ({
@@ -17,10 +17,10 @@ export const CommuQnAFeed = ({
   category,
   product,
   productDetail,
-  imgSrc
+  imgSrc,
 }: FeedProps) => {
   return (
-    <div style={{ width: '876px' }}>
+    <Container>
       <SortCategory>
         <p>{category}</p>
         <p> • </p>
@@ -40,9 +40,7 @@ export const CommuQnAFeed = ({
             <img src=""></img>
           </C.Content>
         </div>
-        <div>
-          {imgSrc&& <StyledImg src={imgSrc}/>}
-        </div>
+        <div>{imgSrc && <StyledImg src={imgSrc} />}</div>
       </div>
       <C.Interactions>
         <C.StyledLike />
@@ -51,9 +49,20 @@ export const CommuQnAFeed = ({
         <p>0</p>
       </C.Interactions>
       <DividingLine />
-    </div>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  width: 876px;
+  @media (max-width: 768px) {
+    width: 600px;
+  }
+
+  @media (max-width: 480px) {
+    width: 550px;
+  }
+`;
 
 const DividingLine = styled.div`
   width: 876px;
@@ -61,6 +70,16 @@ const DividingLine = styled.div`
   background-color: rgba(206, 206, 206, 1);
   margin: 30px 0;
   margin-top: 30px;
+
+  @media (max-width: 768px) {
+    margin: 20px 0;
+    width: 600px;
+  }
+
+  @media (max-width: 480px) {
+    margin: 15px 0;
+    width: 550px;
+  }
 `;
 
 const SortCategory = styled.div`
@@ -79,8 +98,8 @@ const SortCategory = styled.div`
   }
 `;
 const StyledImg = styled.img`
-  width:100px;
-  height:100px;
-  object-fit:cover;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
   border-radius: 8px;
-`
+`;

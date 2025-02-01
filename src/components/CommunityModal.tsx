@@ -9,8 +9,12 @@ interface FieldProps {
     id: string;
     title: string;
     menu?:string|string[];
-}
-  
+};
+
+interface CommunityModalProps {
+  closeModal: () => void;
+};
+
 const Field: FieldProps[] = [
     {
       id: '1',
@@ -51,7 +55,7 @@ const Field: FieldProps[] = [
       id: '8',
       title: '기타',
       menu: ['전체','종지, 묘목', '기타 작물']
-    },
+    }
   ];
 
   const categoryPositions: { [key: string]: number } = {
@@ -66,7 +70,7 @@ const Field: FieldProps[] = [
   };
 
 
-export const CommunityModal = ()=>{
+export const CommunityModal = ({ closeModal }: CommunityModalProps)=>{
     const [currentField,setCurrentField] = useState<string>('1');
     const [checkedItems, setCheckedItems] = useState<string[]>([]);
     const handleField = (id:string)=>{
@@ -78,7 +82,6 @@ export const CommunityModal = ()=>{
 
     const handleCheck = (menuItem: string) => {
         setCheckedItems(prev => {
-          // 이미 체크된 항목이면 제거, 아니면 추가
           if (prev.includes(menuItem)) {
             return prev.filter(item => item !== menuItem);
           } else {
@@ -90,7 +93,7 @@ export const CommunityModal = ()=>{
     return(
         <CM.ModalContainer>
             <Title>분야</Title>
-            <StyledX/>
+            <StyledX onClick={closeModal}/>
             <CM.FieldTitle>
                 {
                     Field.map((item)=>{
@@ -129,7 +132,7 @@ export const CommunityModal = ()=>{
             </MenuContainer>
 
             <CM.ApplyBtn>
-                <CM.Btn>적용하기</CM.Btn>
+                <CM.Btn onClick={closeModal}>적용하기</CM.Btn>
             </CM.ApplyBtn>
         </CM.ModalContainer>
     )
