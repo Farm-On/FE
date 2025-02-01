@@ -1,6 +1,7 @@
 import * as E from '@/styles/pages/Expert/Estimates.style';
 
 import Sliders from '@/assets/icons/Sliders.svg?react';
+import { ExpertEstimateCard } from '@/components/ExpertEstimateCard';
 
 const menus = {
   추천: '',
@@ -89,15 +90,13 @@ export default function Estimates() {
             </E.Header>
             <E.Grid>
               {dummy.map((data) => (
-                <E.Card key={data.id}>
-                  <E.CardTitle>{data.title}</E.CardTitle>
-                  <E.CardProperties>{data.subtitle}</E.CardProperties>
-                  <E.CardDivider />
-                  <E.CardFooter>
-                    <E.CardEstimatedCost>₩ {data.estimatedCost}</E.CardEstimatedCost>
-                    <E.CardDate>{data.date}</E.CardDate>
-                  </E.CardFooter>
-                </E.Card>
+                <ExpertEstimateCard
+                  id={data.id}
+                  title={data.title}
+                  subtitle={data.subtitle}
+                  estimatedCost={data.estimatedCost}
+                  date={data.date}
+                />
               ))}
             </E.Grid>
             <E.PaginationContainer>
