@@ -1,8 +1,10 @@
 import * as N from '@/styles/components/Navbar.style';
-
 import logo from '@/assets/images/logo.png';
+import useAuthStore from '@/store/useAuthStore';
 
 export const Navbar = () => {
+  const { openLoginModal, openExpertLoginModal } = useAuthStore();
+
   return (
     <N.NavContainer>
       <N.NavContent>
@@ -19,10 +21,10 @@ export const Navbar = () => {
 
         <N.RightSection>
           <N.AuthLinks>
-            <N.RegisterLink to="/expert-register">전문가 등록하기</N.RegisterLink>
-            <N.LoginLink to="/login">로그인</N.LoginLink>
+            <N.ExpertButton onClick={openExpertLoginModal}>전문가 등록하기</N.ExpertButton>
+            <N.LoginButton onClick={openLoginModal}>로그인</N.LoginButton>
           </N.AuthLinks>
-          <N.SignupButton to="/signup">
+          <N.SignupButton to="/agreement">
             <N.SignupText>회원가입</N.SignupText>
           </N.SignupButton>
         </N.RightSection>
@@ -30,3 +32,5 @@ export const Navbar = () => {
     </N.NavContainer>
   );
 };
+
+export default Navbar;

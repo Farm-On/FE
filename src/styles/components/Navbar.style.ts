@@ -64,17 +64,20 @@ export const AuthLinks = styled.div`
   gap: 40px;
 `;
 
-export const RegisterLink = styled(Link)`
+export const ExpertButton = styled.button`
   font-family: 'Pretendard';
   font-weight: 600;
   font-size: 16px;
   line-height: 150%;
   color: #00a05e;
+  background: none;
+  border: none;
   text-decoration: none;
   white-space: nowrap;
+  cursor: pointer;
 `;
 
-export const LoginLink = styled(Link)`
+export const LoginButton = styled.button`
   font-family: 'Pretendard';
   font-weight: 500;
   font-size: 16px;
@@ -82,6 +85,10 @@ export const LoginLink = styled(Link)`
   color: #000000;
   text-decoration: none;
   white-space: nowrap;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 `;
 
 export const SignupButton = styled(Link)`
