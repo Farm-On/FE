@@ -1,6 +1,6 @@
 import { Modal } from '@/components/Modal';
 import * as EFM from '@/styles/components/modals/EstimatesFilterModal.style';
-import { useFilterModalStore } from '@/store/useExpertModalStore';
+import { useFilterModalStore } from '@/store/modals/useExpertModalStore';
 import { Fragment, ReactNode, useState } from 'react';
 
 import CheckGreen from '@/assets/icons/CheckGreen.svg?react';

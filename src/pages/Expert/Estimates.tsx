@@ -3,7 +3,7 @@ import * as E from '@/styles/pages/Expert/Estimates.style';
 import { ExpertEstimateCard } from '@/components/ExpertEstimateCard';
 import { Pagination } from '@/components/Pagination';
 import { useState } from 'react';
-import { useFilterModalStore } from '@/store/useExpertModalStore';
+import { useFilterModalStore } from '@/store/modals/useExpertModalStore';
 import { EstimatesFilterModal } from '@/components/modals/Expert/Estimates.modal';
 
 const menus = {
