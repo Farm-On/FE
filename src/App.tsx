@@ -1,7 +1,11 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { css, Global } from '@emotion/react';
+
+import ReactModal from 'react-modal';
+
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
 
 // 폰트
 import PretendardRegular from '@/assets/fonts/Pretendard-Regular.woff';
@@ -10,6 +14,13 @@ import PretendardMedium from '@/assets/fonts/Pretendard-Medium.woff';
 // 페이지
 import Home from './pages/Home';
 import MyEstimatePage from './pages/Home/MyEstimate';
+
+import My from './pages/Expert/My';
+import Estimates from './pages/Expert/Estimates';
+import Estimate from './pages/Expert/Estimate';
+import ExpertMyEstimate from './pages/Expert/MyEstimate';
+import MyEdit from './pages/Expert/MyEdit';
+
 import Agreement from './pages/Auth/Agreement';
 import Signup from './pages/Auth/Signup';
 import SignupComplete from './pages/Auth/SignupComplete';
@@ -45,6 +56,9 @@ const AppContainer = styled.div`
   min-height: 100vh;
 `;
 
+
+ReactModal.setAppElement('#root');
+
 // 레이아웃 컴포넌트
 const AppRoutes = () => {
   const location = useLocation();
@@ -56,6 +70,11 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/MyEstimate" element={<MyEstimatePage />} />
+        <Route path="/expert/my" element={<My />} />
+        <Route path="/expert/my/edit" element={<MyEdit />} />
+        <Route path="/expert/estimates" element={<Estimates />} />
+        <Route path="/expert/estimate" element={<Estimate />} />
+        <Route path="/expert/myestimate" element={<ExpertMyEstimate />} />
         <Route path="/expert-register" element={<Register />} />
         <Route path="/detail-category/:categoryId" element={<DetailCategory />} />
         <Route path="/location" element={<Location />} />
@@ -73,6 +92,7 @@ const AppRoutes = () => {
     </>
   );
 };
+
 
 function App() {
   const { isLoginModalOpen, closeLoginModal, loginModalType } = useAuthStore();
