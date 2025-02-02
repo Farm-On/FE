@@ -14,7 +14,7 @@ export default function MyEstimatePage() {
   const navigate = useNavigate();
 
   return (
-    <div>
+    <div style={{ paddingBottom: '487px' }}>
       <E.Container>
         <div>
           <E.Title1>
@@ -34,30 +34,24 @@ export default function MyEstimatePage() {
           <E.DividingLine />
         </div>
 
-        <>
+        <div>
           <E.Title2>
             <h2>직접 찾기</h2>
             <h3>원하는 전문가와 직접 연결해보세요</h3>
           </E.Title2>
 
           <E.ExpertCardWrap>
-            <ExpertCard name="김동호" product="곡물,벼" star={4.8} years={10} url={DonghoPhoto} />
+            <ExpertCard name="농사꾼131" product="곡물,벼" star={4.8} years={10} url={DonghoPhoto} />
 
             <ExpertCard name="이수환" product="과일,감귤" star={4.8} years={12} url={SuhwanPhoto} />
 
-            <ExpertCard
-              name="이지민"
-              product="채소작물,버섯"
-              star={4.8}
-              years={20}
-              url={JiminPhoto}
-            />
+            <ExpertCard name="이지민(해충해방)" product="채소작물,버섯" star={4.8} years={20} url={JiminPhoto} />
 
             <E.ChevronRight>
               <ChevronRightB />
             </E.ChevronRight>
           </E.ExpertCardWrap>
-        </>
+        </div>
       </E.Container>
     </div>
   );
