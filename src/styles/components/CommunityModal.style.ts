@@ -6,6 +6,15 @@ height: 600px;
 border-radius: 10px;
 background: #FFF;
 position:relative;
+  @media (max-width: 768px) {
+    width: 450px; 
+    height: 500px;
+  }
+
+  @media (max-width: 480px) {
+    width: 400px;  
+    height: 500px;
+  }
 `
 export const FieldTitle = styled.div`
 width:364px;
@@ -54,6 +63,16 @@ background: #00A05E;
 position:absolute;
 right:28px;
 cursor:pointer;
+
+  @media (max-width: 768px) {
+    right:50px;
+    bottom:130px;
+  }
+
+  @media (max-width: 480px) {
+    right:70px;
+    bottom:130px;
+  }
 
 color:rgba(255, 255, 255, 1);
 font-family: 'PretendardMedium';
