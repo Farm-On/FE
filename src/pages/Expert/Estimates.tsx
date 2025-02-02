@@ -1,9 +1,11 @@
 import * as E from '@/styles/pages/Expert/Estimates.style';
 
-import Sliders from '@/assets/icons/Sliders.svg?react';
 import { ExpertEstimateCard } from '@/components/ExpertEstimateCard';
 import { Pagination } from '@/components/Pagination';
 import { useState } from 'react';
+import { Modal } from '@/components/Modal';
+import { useFilterModalStore } from '@/store/useExpertModalStore';
+import { EstimatesFilterModal } from '@/components/modals/EstimatesFilterModal';
 
 const menus = {
   추천: '',
@@ -62,58 +64,64 @@ const dummy = [
 export default function Estimates() {
   const [currentPage, setCurrentPage] = useState(1);
 
+  // 필터 모달 상태
+  const { openFilterModal } = useFilterModalStore();
+
   return (
-    <div style={{ marginTop: 84 }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        <E.Title>견적 찾기</E.Title>
-        <E.Container>
-          <E.Sidebar>
-            {Object.keys(menus).map((menu) => {
-              if (typeof menus[menu as keyof typeof menus] === 'object') {
-                return (
-                  <div key={menu}>
-                    <E.Menu active={activeMenus[menu as keyof typeof menus]}>{menu}</E.Menu>
-                    <E.SubMenuContainer>
-                      {Object.keys(menus[menu as keyof typeof menus]).map((subMenu) => (
-                        <E.SubMenu key={subMenu}>{subMenu}</E.SubMenu>
-                      ))}
-                    </E.SubMenuContainer>
-                  </div>
-                );
-              } else {
-                return (
-                  <E.Menu key={menu} active={activeMenus[menu as keyof typeof menus]}>
-                    {menu}
-                  </E.Menu>
-                );
-              }
-            })}
-          </E.Sidebar>
-          <E.Content>
-            <E.Header>
-              <E.SelectedCategoryLabel>곡물</E.SelectedCategoryLabel>
-              <Sliders />
-            </E.Header>
-            <E.Grid>
-              {dummy.map((data) => (
-                <ExpertEstimateCard
-                  key={data.id}
-                  id={data.id}
-                  title={data.title}
-                  subtitle={data.subtitle}
-                  estimatedCost={data.estimatedCost}
-                  date={data.date}
-                />
-              ))}
-            </E.Grid>
-            <Pagination
-              totalPages={totalPages}
-              currentPage={currentPage}
-              onPageClick={(page) => setCurrentPage(page)}
-            />
-          </E.Content>
-        </E.Container>
+    <>
+      <EstimatesFilterModal />
+      <div style={{ marginTop: 84 }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <E.Title>견적 찾기</E.Title>
+          <E.Container>
+            <E.Sidebar>
+              {Object.keys(menus).map((menu) => {
+                if (typeof menus[menu as keyof typeof menus] === 'object') {
+                  return (
+                    <div key={menu}>
+                      <E.Menu active={activeMenus[menu as keyof typeof menus]}>{menu}</E.Menu>
+                      <E.SubMenuContainer>
+                        {Object.keys(menus[menu as keyof typeof menus]).map((subMenu) => (
+                          <E.SubMenu key={subMenu}>{subMenu}</E.SubMenu>
+                        ))}
+                      </E.SubMenuContainer>
+                    </div>
+                  );
+                } else {
+                  return (
+                    <E.Menu key={menu} active={activeMenus[menu as keyof typeof menus]}>
+                      {menu}
+                    </E.Menu>
+                  );
+                }
+              })}
+            </E.Sidebar>
+            <E.Content>
+              <E.Header>
+                <E.SelectedCategoryLabel>곡물</E.SelectedCategoryLabel>
+                <E.FilterBtn onClick={() => openFilterModal()} />
+              </E.Header>
+              <E.Grid>
+                {dummy.map((data) => (
+                  <ExpertEstimateCard
+                    key={data.id}
+                    id={data.id}
+                    title={data.title}
+                    subtitle={data.subtitle}
+                    estimatedCost={data.estimatedCost}
+                    date={data.date}
+                  />
+                ))}
+              </E.Grid>
+              <Pagination
+                totalPages={totalPages}
+                currentPage={currentPage}
+                onPageClick={(page) => setCurrentPage(page)}
+              />
+            </E.Content>
+          </E.Container>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

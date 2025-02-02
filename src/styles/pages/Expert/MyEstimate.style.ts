@@ -10,7 +10,7 @@ export const Title = styled.div`
   line-height: 150%; /* 51px */
 `;
 
-export const TabContainer = styled.div`
+export const Tabs = styled.div`
   margin-bottom: 38.5px;
   display: flex;
   flex-direction: row;

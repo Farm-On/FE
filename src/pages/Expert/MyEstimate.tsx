@@ -40,14 +40,14 @@ export default function ExpertMyEstimate() {
     <div style={{ marginTop: 84 }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <ME.Title>내 견적</ME.Title>
-        <ME.TabContainer>
+        <ME.Tabs>
           <ME.Tab active={currentTab === 'all'} onClick={() => setCurrentTab('all')}>
             전체
           </ME.Tab>
           <ME.Tab active={currentTab === 'done'} onClick={() => setCurrentTab('done')}>
             완료된 견적
           </ME.Tab>
-        </ME.TabContainer>
+        </ME.Tabs>
         <ME.Grid>
           {dummy.map((data) => (
             <ExpertEstimateCard

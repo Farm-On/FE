@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 
+import Sliders from '@/assets/icons/Sliders.svg?react';
+
 export const Title = styled.div`
   margin-bottom: 30px;
   color: #000;
@@ -80,6 +82,10 @@ export const SelectedCategoryLabel = styled.span`
   font-style: normal;
   font-weight: 500;
   line-height: 150%; /* 33px */
+`;
+
+export const FilterBtn = styled(Sliders)`
+  cursor: pointer;
 `;
 
 export const Grid = styled.div`

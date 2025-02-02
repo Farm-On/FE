@@ -1,9 +1,9 @@
-import { Dispatch, ReactNode, SetStateAction } from 'react';
+import { ReactNode } from 'react';
 import ReactModal from 'react-modal';
 
 interface ModalProps {
   open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
+  close: () => void;
   width?: string;
   height?: string;
   borderRadius?: string;
@@ -12,7 +12,7 @@ interface ModalProps {
 
 export const Modal = ({
   open,
-  setOpen,
+  close,
   width,
   height,
   borderRadius = '10px',
@@ -20,12 +20,18 @@ export const Modal = ({
 }: ModalProps) => (
   <ReactModal
     isOpen={open}
-    onRequestClose={() => setOpen(false)}
+    onRequestClose={() => close()}
     style={{
       overlay: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         background: 'rgba(0,0,0,0.5)',
       },
       content: {
+        position: 'relative',
+        margin: 0,
+        padding: 0,
         background: '#fff',
         width,
         height,
