@@ -5,7 +5,7 @@ import * as M from '@/styles/components/modals/Expert/My.style';
 
 export const EditMyProfileModal = () => {
   const {
-    isEditMyProfileModal,
+    isEditMyProfileModalOpen,
     closeEditMyProfileModal,
     nickname,
     showNicknameOnly,
@@ -21,7 +21,7 @@ export const EditMyProfileModal = () => {
 
   return (
     <Modal
-      open={isEditMyProfileModal}
+      open={isEditMyProfileModalOpen}
       close={closeEditMyProfileModal}
       width="900px"
       height="458px"
@@ -76,12 +76,12 @@ export const EditMyProfileModal = () => {
         {/* 한 줄 소개 */}
         <M.Title style={{ marginTop: '34px' }}>한 줄 소개</M.Title>
         <M.Input
-          placeholder="한 줄 소개를 작성해주세요"
+          placeholder="한 줄 소개를 작성해주세요."
           maxLength={80}
           onChange={(e) => setProfile({ introduction: e.target.value.trim() })}
         />
         <M.MaxLengthText>33/80자</M.MaxLengthText>
-        <M.SaveBtn active={(introduction ?? '')?.length > 0} onClick={() => saveProfile()}>
+        <M.SaveBtn disabled={(introduction ?? '')?.length === 0} onClick={() => saveProfile()}>
           저장
         </M.SaveBtn>
       </M.Content>

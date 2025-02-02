@@ -3,7 +3,11 @@ import rehypeRaw from 'rehype-raw';
 
 import * as M from '@/styles/pages/Expert/My.style';
 import { EditMyProfileModal } from '@/components/modals/Expert/My.modal';
-import { useEditMyProfileModalStore } from '@/store/modals/useExpertModalStore';
+import {
+  useEditMyPortfolioModalStore,
+  useEditMyProfileModalStore,
+} from '@/store/modals/useExpertModalStore';
+import { useNavigate } from 'react-router-dom';
 
 const dummy = {
   avatar_url:
@@ -55,6 +59,11 @@ export default function My() {
   // 내 프로필 편집 모달
   const { openEditMyProfileModal } = useEditMyProfileModalStore();
 
+  // 활동 지역 편집 모달
+  const { openModal } = useEditMyPortfolioModalStore();
+
+  const navigate = useNavigate();
+
   return (
     <>
       <EditMyProfileModal />
@@ -94,7 +103,14 @@ export default function My() {
           {/* 내 포트폴리오 */}
           <M.Title style={{ marginTop: '55px' }}>내 포트폴리오</M.Title>
           <M.Card>
-            <M.EditText>편집</M.EditText>
+            <M.EditText
+              onClick={() => {
+                navigate('/expert/my/edit');
+                // TODO scroll to top
+              }}
+            >
+              편집
+            </M.EditText>
             <M.PortfolioContainer>
               <Markdown
                 rehypePlugins={[rehypeRaw]}
@@ -118,7 +134,7 @@ export default function My() {
           {/* 활동 지역 */}
           <M.Title style={{ marginTop: '55px' }}>활동 지역</M.Title>
           <M.Card>
-            <M.EditText>편집</M.EditText>
+            <M.EditText onClick={() => openModal('활동 지역')}>편집</M.EditText>
             <M.RegionContainer>
               <M.GPSIcon />
               <M.RegionDetailContainer>

@@ -30,6 +30,10 @@ function App() {
       <AppContainer>
         <Global
           styles={css`
+            * {
+              box-sizing: border-box;
+            }
+
             @font-face {
               font-family: 'PretendardRegular';
               src: url(${PretendardRegular}) format('woff');

@@ -105,6 +105,22 @@ export const CareerListText = styled(Text)`
   }
 `;
 
+export const MainServiceEdit = styled.span`
+  color: #8e8e8e;
+  font-family: PretendardRegular;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 24px */
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: auto;
+  text-decoration-thickness: auto;
+  text-underline-offset: auto;
+  text-underline-position: from-font;
+  cursor: pointer;
+`;
+
 export const Add = styled.button`
   display: inline-flex;
   padding: 18px 300px 18px 30px;

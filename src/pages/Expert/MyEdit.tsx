@@ -1,3 +1,5 @@
+import { EditMyPortfolioModal } from '@/components/modals/Expert/MyEdit.modal';
+import { useEditMyPortfolioModalStore } from '@/store/modals/useExpertModalStore';
 import * as ME from '@/styles/pages/Expert/MyEdit.style';
 
 const careers = [
@@ -47,80 +49,87 @@ const portfolios = [
 ];
 
 export default function MyEdit() {
+  // 내 포폴 편집 모달
+  const { openModal } = useEditMyPortfolioModalStore();
+
   return (
-    <div style={{ marginTop: 84 }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        <ME.Content>
-          <ME.Title>내 포트폴리오 편집</ME.Title>
+    <>
+      <EditMyPortfolioModal />
+      <div style={{ marginTop: 84 }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <ME.Content>
+            <ME.Title>내 포트폴리오 편집</ME.Title>
 
-          {/* 경력 및 추가정보 */}
-          <ME.Label>경력 및 추가정보</ME.Label>
-          <ME.Card>
-            {/* 경력 */}
-            <ME.Section>
-              <ME.CardHeader>경력</ME.CardHeader>
-              <div>
-                <ME.CardContent>
-                  {careers.map((career, index) => (
-                    <ME.CareerContainer key={index}>
-                      <ME.CareerHeader>
-                        <ME.Text>
-                          {career.title} ({career.startYear} ~{' '}
-                          {career.isOngoing ? '현재' : career.endYear})
-                        </ME.Text>
-                        <ME.CareerEdit>편집</ME.CareerEdit>
-                      </ME.CareerHeader>
-                      <ME.CareerListText>{career.detailContent1}</ME.CareerListText>
-                      <ME.CareerListText>{career.detailContent2}</ME.CareerListText>
-                      <ME.CareerListText>{career.detailContent3}</ME.CareerListText>
-                      <ME.CareerListText>{career.detailContent4}</ME.CareerListText>
-                    </ME.CareerContainer>
-                  ))}
-                </ME.CardContent>
-              </div>
-              <ME.Add style={{ marginTop: '42px' }}>+ 추가하기</ME.Add>
-            </ME.Section>
-            {/* 추가정보 */}
-            <ME.Section>
-              <div>
-                <ME.CardHeader>추가정보</ME.CardHeader>
-                <ME.CardContent>
-                  {details.map((detail, index) => (
-                    <ME.DetailContainer key={index}>
-                      <ME.Text>{detail}</ME.Text>
-                      <ME.CareerEdit>편집</ME.CareerEdit>
-                    </ME.DetailContainer>
-                  ))}
-                </ME.CardContent>
-              </div>
-              <ME.Add style={{ marginTop: '42px' }}>+ 추가하기</ME.Add>
-            </ME.Section>
-          </ME.Card>
+            {/* 경력 및 추가정보 */}
+            <ME.Label>경력 및 추가정보</ME.Label>
+            <ME.Card>
+              {/* 경력 */}
+              <ME.Section>
+                <ME.CardHeader>경력</ME.CardHeader>
+                <div>
+                  <ME.CardContent>
+                    {careers.map((career, index) => (
+                      <ME.CareerContainer key={index}>
+                        <ME.CareerHeader>
+                          <ME.Text>
+                            {career.title} ({career.startYear} ~{' '}
+                            {career.isOngoing ? '현재' : career.endYear})
+                          </ME.Text>
+                          <ME.CareerEdit onClick={() => openModal('경력')}>편집</ME.CareerEdit>
+                        </ME.CareerHeader>
+                        <ME.CareerListText>{career.detailContent1}</ME.CareerListText>
+                        <ME.CareerListText>{career.detailContent2}</ME.CareerListText>
+                        <ME.CareerListText>{career.detailContent3}</ME.CareerListText>
+                        <ME.CareerListText>{career.detailContent4}</ME.CareerListText>
+                      </ME.CareerContainer>
+                    ))}
+                  </ME.CardContent>
+                </div>
+                <ME.Add style={{ marginTop: '42px' }}>+ 추가하기</ME.Add>
+              </ME.Section>
+              {/* 추가정보 */}
+              <ME.Section>
+                <div>
+                  <ME.CardHeader>추가정보</ME.CardHeader>
+                  <ME.CardContent>
+                    {details.map((detail, index) => (
+                      <ME.DetailContainer key={index}>
+                        <ME.Text>{detail}</ME.Text>
+                        <ME.CareerEdit onClick={() => openModal('추가정보')}>편집</ME.CareerEdit>
+                      </ME.DetailContainer>
+                    ))}
+                  </ME.CardContent>
+                </div>
+                <ME.Add style={{ marginTop: '42px' }}>+ 추가하기</ME.Add>
+              </ME.Section>
+            </ME.Card>
 
-          {/* 대표 서비스 */}
-          <ME.Label style={{ marginTop: '70px' }}>대표 서비스</ME.Label>
-          <ME.Card>
-            <ME.CardHeader style={{ margin: 0 }}>쌀 (곡물)</ME.CardHeader>
-          </ME.Card>
+            {/* 대표 서비스 */}
+            <ME.Label style={{ marginTop: '70px' }}>대표 서비스</ME.Label>
+            <ME.Card>
+              <ME.CardHeader style={{ margin: 0 }}>쌀 (곡물)</ME.CardHeader>
+              <ME.MainServiceEdit onClick={() => openModal('대표 서비스')}>편집</ME.MainServiceEdit>
+            </ME.Card>
 
-          {/* 포트폴리오 */}
-          <ME.Label style={{ marginTop: '70px' }}>포트폴리오</ME.Label>
-          <ME.PortfolioContainer>
-            {portfolios.map((portfolio, index) => (
-              <ME.PortfolioCard key={index}>
-                <ME.PortfolioCardImage src={portfolio.thumbnailImg} />
-                <ME.PortfolioCardText>{portfolio.name}</ME.PortfolioCardText>
-                <ME.PortfolioCardEdit>편집</ME.PortfolioCardEdit>
-              </ME.PortfolioCard>
-            ))}
-            <ME.AddPortfolioContainer>
-              <ME.AddBtn />
-              <ME.AddText>추가하기</ME.AddText>
-            </ME.AddPortfolioContainer>
-          </ME.PortfolioContainer>
-          <ME.SaveBtn>저장하기</ME.SaveBtn>
-        </ME.Content>
+            {/* 포트폴리오 */}
+            <ME.Label style={{ marginTop: '70px' }}>포트폴리오</ME.Label>
+            <ME.PortfolioContainer>
+              {portfolios.map((portfolio, index) => (
+                <ME.PortfolioCard key={index}>
+                  <ME.PortfolioCardImage src={portfolio.thumbnailImg} />
+                  <ME.PortfolioCardText>{portfolio.name}</ME.PortfolioCardText>
+                  <ME.PortfolioCardEdit>편집</ME.PortfolioCardEdit>
+                </ME.PortfolioCard>
+              ))}
+              <ME.AddPortfolioContainer>
+                <ME.AddBtn />
+                <ME.AddText>추가하기</ME.AddText>
+              </ME.AddPortfolioContainer>
+            </ME.PortfolioContainer>
+            <ME.SaveBtn>저장하기</ME.SaveBtn>
+          </ME.Content>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

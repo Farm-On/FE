@@ -1,33 +1,37 @@
 import styled from '@emotion/styled';
 
 import X from '@/assets/icons/X.svg?react';
+import ChevronDownIcon from '@/assets/icons/ChevronDownGray.svg?react';
 
 export const Header = styled.div`
-  padding-top: 20px;
-  padding-right: 25px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
 `;
 
+export const CloseBtn = styled(X)`
+  margin-top: 34px;
+  margin-right: 34px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  & path {
+    stroke: #2c2c2c;
+  }
+`;
+
 export const Content = styled.div`
-  margin-top: 4px;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-bottom: 40px;
   display: flex;
   flex-direction: column;
 `;
 
-export const CloseBtn = styled(X)`
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
-`;
-
 export const Title = styled.span`
+  margin-top: 4px;
   margin-left: 5px;
-  margin-bottom: 8px;
   color: #000;
   font-family: PretendardRegular;
   font-size: 20px;
@@ -37,27 +41,35 @@ export const Title = styled.span`
 `;
 
 export const Input = styled.input`
-  padding: 11px 18px 11px 18px;
+  padding-top: 11px;
+  padding-left: 16px;
+  padding-bottom: 11px;
+  height: 52px;
   border-radius: 6px;
   border: 1px solid #d9d9d9;
+  color: #000;
+  font-family: PretendardRegular;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 166%; /* 29.88px */
   &::placeholder {
-    padding-top: 11px;
     color: #d9d9d9;
     font-family: PretendardRegular;
     font-size: 18px;
     font-style: normal;
-    font-weight: 400;
+    font-weight: 500;
     line-height: 166%; /* 29.88px */
   }
 `;
 
 export const MaxLengthText = styled.span`
-  margin-top: 4px;
-  margin-right: 7px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
+  margin-top: 4px;
+  margin-right: 9px;
   color: #8e8e8e;
   font-family: PretendardRegular;
   font-size: 14px;
@@ -66,8 +78,53 @@ export const MaxLengthText = styled.span`
   line-height: 150%; /* 21px */
 `;
 
-export const CheckBoxContainer = styled.div`
+export const Dropdowns = styled.div`
   margin-top: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+`;
+
+export const DropdownLabel = styled.span`
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+`;
+
+export const ChevronDown = styled(ChevronDownIcon)<{ selected?: boolean }>`
+  width: 24px;
+  height: 24px;
+  & path {
+    stroke: #000;
+  }
+  cursor: pointer;
+`;
+
+export const Dropdown = styled.div<{ selected?: boolean }>`
+  padding: 12px 14px 10px 16px;
+  width: 150px;
+  height: 52px;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 6px;
+  border: 1px solid #d9d9d9;
+
+  ${DropdownLabel} {
+    color: ${(props) => (props.selected ? '#000' : '#8E8E8E')};
+    font-weight: ${(props) => (props.selected ? 500 : 400)};
+  }
+
+  ${ChevronDown} {
+    & path {
+      stroke: ${(props) => (props.selected ? '#000' : '#8E8E8E')};
+    }
+  }
+`;
+
+export const CheckBoxContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -75,7 +132,7 @@ export const CheckBoxContainer = styled.div`
 `;
 
 export const CheckBox = styled.div<{ checked?: boolean }>`
-  margin-left: 5px;
+  margin-left: 14px;
   width: 18px;
   height: 18px;
   display: flex;
@@ -97,7 +154,7 @@ export const CheckBoxLabel = styled.span`
 `;
 
 export const SaveBtn = styled.button`
-  margin-top: 42px;
+  margin-top: 47px;
   display: flex;
   padding: 10px 54px;
   justify-content: center;
@@ -106,7 +163,7 @@ export const SaveBtn = styled.button`
   gap: 10px;
   border: none;
   border-radius: 8px;
-  background: ${(props) => (props.disabled ? '#d9d9d9' : '#00A05E')};
+  background: ${(props) => (props.disabled ? '#D9D9D9' : '#00a05e')};
   color: #fff;
   font-family: PretendardRegular;
   font-size: 18px;
