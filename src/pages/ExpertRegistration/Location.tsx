@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as L from '@/styles/pages/ExpertRegistration/Location.style';
-import { Navbar } from '@/components/Navbar';
-import { Footer } from '@/components/Footer';
 import XIcon from '@/assets/icons/x.svg?react';
 
 type LocationData = {
@@ -293,13 +291,8 @@ export default function Location() {
 
   return (
     <L.Container>
-      <L.NavWrapper>
-        <Navbar />
-      </L.NavWrapper>
-
       <L.Main>
         <L.Title>주로 활동하는 컨설팅 위치는 어디인가요? (최대 5개 선택 가능)</L.Title>
-
         <L.TagListWrapper>
           {selectedSubLocations.map((item) => (
             <L.TagContainer key={item}>
@@ -312,7 +305,6 @@ export default function Location() {
             </L.TagContainer>
           ))}
         </L.TagListWrapper>
-
         <L.LocationListWrapper>
           <L.SidoListContainer>
             {Object.keys(locationData).map((sido) => (
@@ -325,7 +317,6 @@ export default function Location() {
               </L.SidoItem>
             ))}
           </L.SidoListContainer>
-
           <L.SubLocationListContainer>
             {currentSubLocations.map((sub) => (
               <L.SubLocationItem
@@ -339,17 +330,12 @@ export default function Location() {
           </L.SubLocationListContainer>
         </L.LocationListWrapper>
       </L.Main>
-
       <L.ButtonContainer>
         <L.PrevButton onClick={() => navigate(-1)}>이전으로</L.PrevButton>
         <L.NextButton disabled={selectedSubLocations.length === 0} onClick={handleNextClick}>
           다음으로
         </L.NextButton>
       </L.ButtonContainer>
-
-      <L.FooterWrapper>
-        <Footer />
-      </L.FooterWrapper>
     </L.Container>
   );
 }

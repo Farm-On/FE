@@ -2,8 +2,6 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import * as D from '@/styles/pages/ExpertRegistration/DetailCategory.style';
-import { Navbar } from '@/components/Navbar';
-import { Footer } from '@/components/Footer';
 
 // 서브 카테고리 데이터
 const subCategoryMap: { [key: string]: string[] } = {
@@ -33,9 +31,6 @@ export default function DetailCategory() {
 
   return (
     <D.Container>
-      <D.NavWrapper>
-        <Navbar />
-      </D.NavWrapper>
       <D.Main>
         <D.Title>
           {categoryId === 'grain' && '곡물 종류를 더 구체적으로 선택해주세요'}
@@ -68,10 +63,6 @@ export default function DetailCategory() {
           다음으로
         </D.NextButton>
       </D.ButtonContainer>
-
-      <D.FooterWrapper>
-        <Footer />
-      </D.FooterWrapper>
     </D.Container>
   );
 }

@@ -8,13 +8,6 @@ export const Container = styled.div`
   background-color: #f8f8f8;
   min-height: 100vh;
   position: relative;
-  padding-bottom: 180px;
-`;
-
-export const NavWrapper = styled.div`
-  width: 100%;
-  position: fixed;
-  top: 0;
 `;
 
 export const Main = styled.div`
@@ -201,10 +194,4 @@ export const NextButton = styled.button<{ disabled: boolean }>`
     height: 42px;
     font-size: 16px;
   }
-`;
-
-export const FooterWrapper = styled.div`
-  width: 100%;
-  position: absolute; /* Footer를 페이지의 가장 아래에 고정 */
-  bottom: 0;
 `;

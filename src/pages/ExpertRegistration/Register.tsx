@@ -8,8 +8,6 @@ import insamImg from '@/assets/images/insam.png';
 import flowerImg from '@/assets/images/flower.png';
 import feedImg from '@/assets/images/feed.png';
 import otherImg from '@/assets/images/etc.png';
-import { Navbar } from '@/components/Navbar';
-import { Footer } from '@/components/Footer';
 
 const categories = [
   { id: 'grain', title: '곡물', img: grainImg },
@@ -37,9 +35,6 @@ export default function Register() {
 
   return (
     <R.Container>
-      <R.NavWrapper>
-        <Navbar />
-      </R.NavWrapper>
       <R.Main>
         <R.Title>어떤 분야의 전문가 인가요?</R.Title>
         <R.CategoryContainer>
@@ -60,9 +55,6 @@ export default function Register() {
       <R.NextButton disabled={!selectedCategory} onClick={handleNextClick}>
         <span>다음으로</span>
       </R.NextButton>
-      <R.FooterWrapper>
-        <Footer />
-      </R.FooterWrapper>
     </R.Container>
   );
 }
