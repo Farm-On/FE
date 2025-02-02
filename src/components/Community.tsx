@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Feed } from './Feed';
 
 import * as C from '@/styles/components/MainCommunityStyle.style';
+import { QnAFeed } from './QnAfeed';
 
 interface Category {
   id: string;
@@ -51,7 +52,7 @@ export const Community = () => {
         </C.CategoryWrapper>
 
         <C.FeedWrapper>
-          <Feed
+          <QnAFeed
             topic="Q&A"
             headline="사과 재배 시 수확량을 높이는 비결이 궁금합니다"
             content="올해 사과 농사를 시작한 초보 농업인입니다. 사과 수확량을 높이기 위해 어떤 방법이 효과적인지 궁금합니다. 경험이 많으신 분들의 조언 부탁드립니다."

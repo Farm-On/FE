@@ -12,6 +12,8 @@ import Home from './pages/Home';
 import MyEstimatePage from './pages/Home/MyEstimate';
 import RequestEstimatePage from './pages/Home/RequestEstimate';
 
+import CommunityPage from './pages/Home/Community';
+
 const AppContainer = styled.div`
   width: 100%;
   min-height: 100vh;
@@ -44,6 +46,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/MyEstimate" element={<MyEstimatePage />} />
+          <Route path='/Community' element={<CommunityPage/>} />
           <Route path="/MyEstimate/RequestEstimate" element={<RequestEstimatePage />} />
         </Routes>
       </AppContainer>
