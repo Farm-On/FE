@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as S from '@/styles/pages/Auth/Signup.style';
 import logo from '@/assets/images/logo.png';
 import { Footer } from '@/components/Footer';
 import { Eye, EyeOff } from 'lucide-react';
 import useAuthStore from '@/store/useAuthStore';
 import type { SignupFormField } from '@/store/useAuthStore';
+import { useSignup } from '@/hooks/useAuth';
+import type { AxiosError } from 'axios';
+import type { SignupRequest } from '@/api/types';
 import {
-  validateId,
+  validateEmail,
   validatePassword,
   validatePasswordConfirm,
   validateName,
@@ -17,17 +21,43 @@ import {
 } from '@/utils/validations/signupValidation';
 
 const Signup = () => {
+  const navigate = useNavigate();
   const { signupForm, setSignupForm, setFormError } = useAuthStore();
   const [timeLeft, setTimeLeft] = useState<number>(180);
   const [timerActive, setTimerActive] = useState<boolean>(false);
+
+  const signupMutation = useSignup();
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+
+    if (timerActive && timeLeft > 0) {
+      interval = setInterval(() => {
+        setTimeLeft((prevTime) => {
+          if (prevTime <= 1) {
+            setTimerActive(false);
+            clearInterval(interval);
+            return 0;
+          }
+          return prevTime - 1;
+        });
+      }, 1000);
+    }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [timerActive, timeLeft]);
 
   const validateField = (field: SignupFormField, value: string) => {
     let validationResult;
 
     switch (field) {
-      case 'id':
-        validationResult = validateId(value);
-        setFormError('id', validationResult.message);
+      case 'email':
+        validationResult = validateEmail(value);
+        setFormError('email', validationResult.message);
         break;
 
       case 'password': {
@@ -90,6 +120,7 @@ const Signup = () => {
   };
 
   const handlePhoneVerification = () => {
+    // 실제 API가 없으므로 임시로 처리
     const phoneResult = validatePhone(signupForm.phone1, signupForm.phone2, signupForm.phone3);
     if (phoneResult.isValid) {
       setSignupForm('isPhoneVerifying', true);
@@ -101,6 +132,7 @@ const Signup = () => {
   };
 
   const handleVerificationConfirm = () => {
+    // 실제 API가 없으므로 임시로 처리
     const isValid = signupForm.verificationCode === '35233';
     setSignupForm('isVerificationNumberValid', isValid);
     setSignupForm('isVerificationNumberChecked', true);
@@ -114,11 +146,17 @@ const Signup = () => {
     setTimerActive(true);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const formatTime = (seconds: number): string => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const validationResults = validateForm({
-      id: signupForm.id,
+      email: signupForm.email,
       password: signupForm.password,
       passwordConfirm: signupForm.passwordConfirm,
       name: signupForm.name,
@@ -135,38 +173,29 @@ const Signup = () => {
       setFormError(field as keyof typeof signupForm.errors, result.message);
     });
 
-    if (isFormValid(validationResults) && signupForm.isVerificationNumberValid) {
-      console.log('Form submitted:', signupForm);
-    }
-  };
+    if (isFormValid(validationResults)) {
+      try {
+        const birthDate = `${signupForm.birthYear}-${String(signupForm.birthMonth).padStart(2, '0')}-${String(
+          signupForm.birthDay
+        ).padStart(2, '0')}`;
+        const phone = `${signupForm.phone1}${signupForm.phone2}${signupForm.phone3}`;
 
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
+        const signupData: SignupRequest = {
+          name: signupForm.name,
+          birth: birthDate,
+          gender: signupForm.gender === 'male' ? 'MALE' : ('FEMALE' as const),
+          email: signupForm.email,
+          password: signupForm.password,
+          phone: phone,
+        };
 
-    if (timerActive && timeLeft > 0) {
-      interval = setInterval(() => {
-        setTimeLeft((prevTime) => {
-          if (prevTime <= 1) {
-            setTimerActive(false);
-            clearInterval(interval);
-            return 0;
-          }
-          return prevTime - 1;
-        });
-      }, 1000);
-    }
-
-    return () => {
-      if (interval) {
-        clearInterval(interval);
+        await signupMutation.mutateAsync(signupData);
+        navigate('/signup-complete');
+      } catch (error) {
+        const axiosError = error as AxiosError<{ message: string }>;
+        setFormError('phone', axiosError.response?.data?.message || '회원가입에 실패했습니다.');
       }
-    };
-  }, [timerActive, timeLeft]);
-
-  const formatTime = (seconds: number): string => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+    }
   };
 
   return (
@@ -180,15 +209,17 @@ const Signup = () => {
           <S.FormContainer onSubmit={handleSubmit}>
             <S.InputGroup>
               <S.Label>
-                아이디<S.Required>*</S.Required>
+                이메일<S.Required>*</S.Required>
               </S.Label>
               <S.Input
-                type="text"
-                value={signupForm.id}
-                onChange={handleInput('id')}
-                placeholder="아이디를 입력해 주세요."
+                type="email"
+                value={signupForm.email}
+                onChange={handleInput('email')}
+                placeholder="이메일을 입력해 주세요."
               />
-              {signupForm.errors.id && <S.ErrorMessage>{signupForm.errors.id}</S.ErrorMessage>}
+              {signupForm.errors.email && (
+                <S.ErrorMessage>{signupForm.errors.email}</S.ErrorMessage>
+              )}
             </S.InputGroup>
 
             <S.InputGroup>
@@ -397,7 +428,16 @@ const Signup = () => {
               </S.InputGroup>
             )}
 
-            <S.SubmitButton type="submit">가입하기</S.SubmitButton>
+            {signupForm.errors.submit && (
+              <S.ErrorMessage>{signupForm.errors.submit}</S.ErrorMessage>
+            )}
+
+            <S.SubmitButton
+              type="submit"
+              disabled={signupMutation.isPending || !signupForm.isVerificationNumberValid}
+            >
+              {signupMutation.isPending ? '가입 중...' : '가입하기'}
+            </S.SubmitButton>
           </S.FormContainer>
         </S.Wrapper>
       </S.MainContent>

@@ -4,7 +4,7 @@ export type ValidationResult = {
 };
 
 interface SignupFormData {
-  id: string;
+  email: string;
   password: string;
   passwordConfirm: string;
   name: string;
@@ -17,16 +17,16 @@ interface SignupFormData {
   gender: string;
 }
 
-export const validateId = (value: string): ValidationResult => {
-  if (!value.trim()) {
-    return { isValid: false, message: '아이디를 입력해주세요.' };
+export const validateEmail = (email: string): ValidationResult => {
+  if (!email.trim()) {
+    return { isValid: false, message: '이메일을 입력해주세요.' };
   }
-  if (value.length < 4) {
-    return { isValid: false, message: '아이디는 4자 이상이어야 합니다.' };
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return { isValid: false, message: '유효한 이메일 형식이 아닙니다.' };
   }
-  if (!/^[a-zA-Z0-9]+$/.test(value)) {
-    return { isValid: false, message: '아이디는 영문과 숫자만 사용할 수 있습니다.' };
-  }
+
   return { isValid: true };
 };
 
@@ -120,7 +120,7 @@ export const validatePhone = (phone1: string, phone2: string, phone3: string): V
 
 export const validateForm = (form: SignupFormData): Record<string, ValidationResult> => {
   return {
-    id: validateId(form.id),
+    email: validateEmail(form.email),
     password: validatePassword(form.password),
     passwordConfirm: validatePasswordConfirm(form.password, form.passwordConfirm),
     name: validateName(form.name),
