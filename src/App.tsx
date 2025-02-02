@@ -36,6 +36,7 @@ import LoginModal from './components/LoginModal';
 import useAuthStore from './store/useAuthStore';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
+import ExpertProfile from './pages/Expert/Profile';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -59,6 +60,8 @@ ReactModal.setAppElement('#root');
 const AppRoutes = () => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
+  
+
   const isAuthPage = ['/agreement', '/signup', '/signup-complete'].includes(location.pathname);
 
   const shouldShowNavbarAndFooter = !isHomePage && !isAuthPage;
@@ -69,6 +72,7 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/MyEstimate" element={<MyEstimatePage />} />
+        <Route path="/expert/profile" element={<ExpertProfile />} />
         <Route path="/expert/my" element={<My />} />
         <Route path="/expert/my/edit" element={<MyEdit />} />
         <Route path="/expert/estimates" element={<Estimates />} />

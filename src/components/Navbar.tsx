@@ -31,7 +31,7 @@ export const Navbar = () => {
             <img src={logo} alt="FarmON" />
           </N.Logo>
           <N.MenuContainer className={isMobileMenuOpen ? 'open' : ''}>
-            <N.MenuLink to="/expert-profile">전문가 프로필</N.MenuLink>
+            <N.MenuLink to="/expert/profile">전문가 프로필</N.MenuLink>
             <N.MenuLink to="/chat" className={isActiveChat ? 'active' : ''}>
               채팅
             </N.MenuLink>
@@ -70,7 +70,7 @@ export const Navbar = () => {
       </N.NavContent>
       {isMobileMenuOpen && (
         <N.MobileMenu>
-          <N.MobileMenuLink to="/expert-profile">전문가 프로필</N.MobileMenuLink>
+          <N.MobileMenuLink to="/expert/profile">전문가 프로필</N.MobileMenuLink>
           <N.MobileMenuLink to="/chat" className={isActiveChat ? 'active' : ''}>
             채팅
           </N.MobileMenuLink>
