@@ -8,7 +8,7 @@ interface CSProps {
 
 export const CommunitySearch = ({ onChange, value }: CSProps) => {
   return (
-    <ContainerWrapper style={{ paddingLeft: '7.3vw', paddingTop: '17.5vw' }}>
+    <ContainerWrapper style={{ paddingLeft: '7.3vw', paddingTop: '12.5vw' }}>
       <SearchContainer style={{ position: 'relative', width: '876px' }}>
         <Container
           placeholder="찾고싶은 글을 검색하세요"
@@ -66,7 +66,7 @@ const Container = styled.input`
   }
 
   @media (max-width: 480px) {
-    width: 500px;  
+    width: 360px;  
     height: 46px;
     font-size: 14px;
   }

@@ -36,8 +36,8 @@ export const RightCommunity = styled.div`
 export const Title = styled.div`
   width: 118px;
   height: 51px;
-  padding-left: 18.75vw;
-  padding-top: 11vw;
+  padding-left: 10.75vw;
+  padding-top: 7vw;
   h2 {
     color: #000;
     font-family: 'PretendardMedium';
@@ -103,7 +103,7 @@ export const CategoryItem = styled.div`
   }
 `;
 export const Category = styled.div`
-  padding-left: 18.75vw;
+  padding-left: 10.75vw;
   padding-top: 3.6vw;
   display: flex;
   flex-direction: column;

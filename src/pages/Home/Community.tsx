@@ -1,5 +1,5 @@
 //메인 커뮤니티 페이지!!
-import * as CP from '../../styles/pages/Community.Style'; //머지 후 삭제하고 기존 스타일 파일 연결
+import * as CP from '../../styles/pages/Community.Style'; 
 import { useState } from 'react';
 import { CommunitySearch } from '@/components/CommunitySearch';
 import { CommuFeed } from '@/components/CommuFeed';
@@ -64,14 +64,35 @@ export default function CommunityPage(){
     const closeModal = ()=>{
       setIsModalOpen(false);
     }
+    const Modal = styled.div`
+      position: absolute;
+      z-index: 100;
+      top: 12.92vw;
+      left: 35.28vw;
 
+      @media (max-width: 768px) {
+      position: absolute;
+      z-index: 100;
+      top: 100.92vw;
+      left: 20.28vw;
+      }
+
+      @media (max-width: 480px) {
+      position: absolute;
+      z-index: 100;
+      top: 130.92vw;
+      left: 12.28vw;
+      }
+    `;
     return (
       <CP.Container style={{ display: 'flex' }}>
         {/* 모달창 */}
-        <div style={{ position: 'absolute', zIndex: '100', top: '12.92vw',left:"38.28vw" }}>
+        <Modal>
           {isModalOpen === true ? <CommunityModal closeModal={() => closeModal()}/> : null}
-        </div>
+        </Modal>
+
         {isModalOpen === true ? <Overlay onClick={()=>closeModal()}/> : null}
+
         <CP.LeftCommunity className="left">
           <CP.Title>
             <h2>커뮤니티</h2>
@@ -210,4 +231,22 @@ const Overlay = styled.div`
   background: #000;
   position: absolute;
   z-index: 50;
+
+  @media (max-width: 768px) {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 1000vw;
+  height: 1000vh;
+  }
+
+  @media (max-width: 480px) {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 1000vw;
+  height: 1000vh;
+  }
 `;
