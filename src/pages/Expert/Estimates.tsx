@@ -3,9 +3,8 @@ import * as E from '@/styles/pages/Expert/Estimates.style';
 import { ExpertEstimateCard } from '@/components/ExpertEstimateCard';
 import { Pagination } from '@/components/Pagination';
 import { useState } from 'react';
-import { Modal } from '@/components/Modal';
 import { useFilterModalStore } from '@/store/useExpertModalStore';
-import { EstimatesFilterModal } from '@/components/modals/EstimatesFilterModal';
+import { EstimatesFilterModal } from '@/components/modals/Expert/Estimates.modal';
 
 const menus = {
   추천: '',
