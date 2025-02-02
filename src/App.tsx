@@ -6,7 +6,6 @@ import ReactModal from 'react-modal';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-
 // 폰트
 import PretendardRegular from '@/assets/fonts/Pretendard-Regular.woff';
 import PretendardSemiBold from '@/assets/fonts/Pretendard-SemiBold.woff';
@@ -39,6 +38,7 @@ import LoginModal from './components/LoginModal';
 import useAuthStore from './store/useAuthStore';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
+import ExpertProfile from './pages/Expert/Profile';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -56,20 +56,20 @@ const AppContainer = styled.div`
   min-height: 100vh;
 `;
 
-
 ReactModal.setAppElement('#root');
 
 // 레이아웃 컴포넌트
 const AppRoutes = () => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
-  
+
   return (
     <>
       {!isHomePage && <Navbar />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/MyEstimate" element={<MyEstimatePage />} />
+        <Route path="/expert/profile" element={<ExpertProfile />} />
         <Route path="/expert/my" element={<My />} />
         <Route path="/expert/my/edit" element={<MyEdit />} />
         <Route path="/expert/estimates" element={<Estimates />} />
@@ -92,7 +92,6 @@ const AppRoutes = () => {
     </>
   );
 };
-
 
 function App() {
   const { isLoginModalOpen, closeLoginModal, loginModalType } = useAuthStore();
