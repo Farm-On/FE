@@ -107,6 +107,15 @@ export const Content = styled.div`
     font-size: 16px;
     font-family: 'PretendardMedium';
     color: rgba(94, 94, 94, 1);
+    @media (max-width: 768px) {
+      margin: 20px 0;
+      width: 600px;
+    }
+
+    @media (max-width: 480px) {
+      margin: 15px 0;
+      width: 550px;
+    }
   }
 `;
 

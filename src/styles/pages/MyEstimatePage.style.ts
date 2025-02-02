@@ -2,7 +2,15 @@ import styled from '@emotion/styled';
 
 export const Container = styled.div`
   padding-left: 360px;
-  //background-color:rgba(249, 249, 249, 1);
+  max-width: 1920px;
+  width: 1920px;
+  @media (max-width: 768px) {
+    padding-left: 60px;
+  }
+
+  @media (max-width: 480px) {
+    padding-left: 60px;
+  }
 `;
 export const Title1 = styled.div`
   padding-top: 84px;
@@ -12,6 +20,21 @@ export const Title1 = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0px;
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: start;
+  }
+
+  @media (max-width: 480px) {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: start;
+  }
+
   h2 {
     font-family: 'PretendardSemiBold';
     font-size: 34px;
@@ -50,6 +73,7 @@ export const ViewAll = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+
   h4 {
     font-family: 'PretendardMedium';
     margin: 0;
@@ -79,6 +103,18 @@ export const AddCard = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    width: 150px;
+    height: 120px;
+    top: 260px;
+  }
+
+  @media (max-width: 480px) {
+    width: 158px;
+    height: 118px;
+    top: 260px;
+  }
   p {
     font-size: 14px;
     margin-top: 7px;
@@ -90,6 +126,13 @@ export const DividingLine = styled.div`
   height: 0.7px;
   background-color: rgba(187, 187, 187, 1);
   margin-top: 110px;
+  @media (max-width: 768px) {
+    width: 800px;
+  }
+
+  @media (max-width: 480px) {
+    width: 600px;
+  }
 `;
 
 export const ExpertCardWrap = styled.div`
@@ -98,6 +141,16 @@ export const ExpertCardWrap = styled.div`
   position: absolute;
   top: 573px;
   left: 662px;
+
+  @media (max-width: 768px) {
+    left: 60px;
+    top: 630px;
+  }
+
+  @media (max-width: 480px) {
+    left: 60px;
+    top: 600px;
+  }
 `;
 
 export const ChevronRight = styled.div`
