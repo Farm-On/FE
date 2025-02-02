@@ -1,5 +1,5 @@
 import { Modal } from '@/components/Modal';
-import * as EFM from '@/styles/components/modals/EstimatesFilterModal.style';
+import * as EFM from '@/styles/components/modals/Expert/Estimates.style';
 import { useFilterModalStore } from '@/store/modals/useExpertModalStore';
 import { Fragment, ReactNode, useState } from 'react';
 

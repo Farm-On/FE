@@ -25,3 +25,27 @@ export const useFilterModalStore = create<FilterModal>((set) => ({
   Budget: null,
   setFilter: (filters) => set(() => ({ ...filters })),
 }));
+
+// 전문가, 내 프로필 > 내프로필 편집 모달
+
+interface EditMyProfile {
+  isEditMyProfileModal: boolean;
+  openEditMyProfileModal: () => void;
+  closeEditMyProfileModal: () => void;
+  nickname: string | null;
+  showNicknameOnly: boolean;
+  introduction: string | null;
+  setProfile: (
+    profile: Partial<Pick<EditMyProfile, 'nickname' | 'showNicknameOnly' | 'introduction'>>
+  ) => void;
+}
+
+export const useEditMyProfileModalStore = create<EditMyProfile>((set) => ({
+  isEditMyProfileModal: false,
+  openEditMyProfileModal: () => set(() => ({ isEditMyProfileModal: true })),
+  closeEditMyProfileModal: () => set(() => ({ isEditMyProfileModal: false })),
+  nickname: null,
+  showNicknameOnly: false,
+  introduction: null,
+  setProfile: (profile) => set(() => ({ ...profile })),
+}));

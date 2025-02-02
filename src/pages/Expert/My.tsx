@@ -2,6 +2,8 @@ import Markdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 
 import * as M from '@/styles/pages/Expert/My.style';
+import { EditMyProfileModal } from '@/components/modals/Expert/My.modal';
+import { useEditMyProfileModalStore } from '@/store/modals/useExpertModalStore';
 
 const dummy = {
   avatar_url:
@@ -50,76 +52,84 @@ const dummy = {
 };
 
 export default function My() {
+  // 내 프로필 편집 모달
+  const { openEditMyProfileModal } = useEditMyProfileModalStore();
+
   return (
-    <div style={{ marginTop: 84 }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        {/* 내 프로필 */}
-        <M.Title>내 프로필</M.Title>
-        <M.Card>
-          <M.EditText>편집</M.EditText>
-          <M.MyInfoContainer>
-            <M.AvatarContainer>
-              <M.Avatar src={dummy.avatar_url} alt="" />
-              <M.CameraIcon />
-            </M.AvatarContainer>
-            <M.MyInfo>
-              <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 12 }}>
-                <M.MyName>{dummy.name}</M.MyName>
-                {dummy.verified ? <M.VerifiedBadge>본인인증 완료</M.VerifiedBadge> : undefined}
-              </div>
-              <M.MyIntroduction>“{dummy.introduction}”</M.MyIntroduction>
-              <M.MyStatsContainer>
-                <M.MyStats>
-                  <M.MyStatsText>컨설팅 평점</M.MyStatsText>
-                  <M.StarIcon />
-                  <M.MyStatsText style={{ color: '#2C2C2C' }}>4.8 (10개)</M.MyStatsText>
-                </M.MyStats>
-                <M.MyStats>
-                  <M.MyStatsText>컨설팅 수</M.MyStatsText>
-                  <M.MyStatsText>20건</M.MyStatsText>
-                </M.MyStats>
-              </M.MyStatsContainer>
-            </M.MyInfo>
-          </M.MyInfoContainer>
-        </M.Card>
-        {/* 내 포트폴리오 */}
-        <M.Title style={{ marginTop: '55px' }}>내 포트폴리오</M.Title>
-        <M.Card>
-          <M.EditText>편집</M.EditText>
-          <M.PortfolioContainer>
-            <Markdown
-              rehypePlugins={[rehypeRaw]}
-              components={{
-                img: ({ src, alt }) => {
-                  return (
-                    <M.PortfolioImageCard>
-                      <M.PortfolioImageContainer>
-                        <M.PortfolioImage src={src} />
-                        <M.PortfolioImageAlt>{alt}</M.PortfolioImageAlt>
-                      </M.PortfolioImageContainer>
-                    </M.PortfolioImageCard>
-                  );
-                },
-              }}
-            >
-              {dummy.portfolio}
-            </Markdown>
-          </M.PortfolioContainer>
-        </M.Card>
-        {/* 활동 지역 */}
-        <M.Title style={{ marginTop: '55px' }}>활동 지역</M.Title>
-        <M.Card>
-          <M.EditText>편집</M.EditText>
-          <M.RegionContainer>
-            <M.GPSIcon />
-            <M.RegionDetailContainer>
-              <M.RegionPrimaryText>경기 이천시</M.RegionPrimaryText>
-              <M.RegionSecondaryText>활동 가능 범위: 300km 이동 가능</M.RegionSecondaryText>
-              <M.RegionSecondaryText>도서지방 제외</M.RegionSecondaryText>
-            </M.RegionDetailContainer>
-          </M.RegionContainer>
-        </M.Card>
+    <>
+      <EditMyProfileModal />
+      <div style={{ marginTop: 84 }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          {/* 내 프로필 */}
+          <M.Title>내 프로필</M.Title>
+          <M.Card>
+            <M.EditText onClick={() => openEditMyProfileModal()}>편집</M.EditText>
+            <M.MyInfoContainer>
+              <M.AvatarContainer>
+                <M.Avatar src={dummy.avatar_url} alt="" />
+                <M.CameraIcon />
+              </M.AvatarContainer>
+              <M.MyInfo>
+                <div
+                  style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 12 }}
+                >
+                  <M.MyName>{dummy.name}</M.MyName>
+                  {dummy.verified ? <M.VerifiedBadge>본인인증 완료</M.VerifiedBadge> : undefined}
+                </div>
+                <M.MyIntroduction>“{dummy.introduction}”</M.MyIntroduction>
+                <M.MyStatsContainer>
+                  <M.MyStats>
+                    <M.MyStatsText>컨설팅 평점</M.MyStatsText>
+                    <M.StarIcon />
+                    <M.MyStatsText style={{ color: '#2C2C2C' }}>4.8 (10개)</M.MyStatsText>
+                  </M.MyStats>
+                  <M.MyStats>
+                    <M.MyStatsText>컨설팅 수</M.MyStatsText>
+                    <M.MyStatsText>20건</M.MyStatsText>
+                  </M.MyStats>
+                </M.MyStatsContainer>
+              </M.MyInfo>
+            </M.MyInfoContainer>
+          </M.Card>
+          {/* 내 포트폴리오 */}
+          <M.Title style={{ marginTop: '55px' }}>내 포트폴리오</M.Title>
+          <M.Card>
+            <M.EditText>편집</M.EditText>
+            <M.PortfolioContainer>
+              <Markdown
+                rehypePlugins={[rehypeRaw]}
+                components={{
+                  img: ({ src, alt }) => {
+                    return (
+                      <M.PortfolioImageCard>
+                        <M.PortfolioImageContainer>
+                          <M.PortfolioImage src={src} />
+                          <M.PortfolioImageAlt>{alt}</M.PortfolioImageAlt>
+                        </M.PortfolioImageContainer>
+                      </M.PortfolioImageCard>
+                    );
+                  },
+                }}
+              >
+                {dummy.portfolio}
+              </Markdown>
+            </M.PortfolioContainer>
+          </M.Card>
+          {/* 활동 지역 */}
+          <M.Title style={{ marginTop: '55px' }}>활동 지역</M.Title>
+          <M.Card>
+            <M.EditText>편집</M.EditText>
+            <M.RegionContainer>
+              <M.GPSIcon />
+              <M.RegionDetailContainer>
+                <M.RegionPrimaryText>경기 이천시</M.RegionPrimaryText>
+                <M.RegionSecondaryText>활동 가능 범위: 300km 이동 가능</M.RegionSecondaryText>
+                <M.RegionSecondaryText>도서지방 제외</M.RegionSecondaryText>
+              </M.RegionDetailContainer>
+            </M.RegionContainer>
+          </M.Card>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

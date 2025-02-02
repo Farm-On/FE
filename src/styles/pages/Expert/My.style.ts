@@ -40,6 +40,7 @@ export const EditText = styled.span`
   text-decoration-thickness: auto;
   text-underline-offset: auto;
   text-underline-position: from-font;
+  cursor: pointer;
 `;
 
 export const AvatarContainer = styled.div`
