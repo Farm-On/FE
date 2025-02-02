@@ -15,6 +15,7 @@ import DetailCategory from './pages/ExpertRegistration/DetailCategory';
 import Location from './pages/ExpertRegistration/Location';
 import RegisterComplete from './pages/ExpertRegistration/RegisterComplete';
 import RequestEstimatePage from './pages/Home/RequestEstimate';
+import MenuBar from './pages/MenuBar';
 import CommunityPage from './pages/Home/Community';
 
 const AppContainer = styled.div`
@@ -55,6 +56,7 @@ function App() {
           <Route path="/register-complete" element={<RegisterComplete />} />
           <Route path='/Community' element={<CommunityPage/>} />
           <Route path="/MyEstimate/RequestEstimate" element={<RequestEstimatePage />} />
+          <Route path="/menu" element={<MenuBar />} />
         </Routes>
       </AppContainer>
     </Router>
