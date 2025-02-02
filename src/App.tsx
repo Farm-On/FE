@@ -14,6 +14,8 @@ import Register from './pages/ExpertRegistration/Register';
 import DetailCategory from './pages/ExpertRegistration/DetailCategory';
 import Location from './pages/ExpertRegistration/Location';
 import RegisterComplete from './pages/ExpertRegistration/RegisterComplete';
+import RequestEstimatePage from './pages/Home/RequestEstimate';
+import CommunityPage from './pages/Home/Community';
 
 const AppContainer = styled.div`
   width: 100%;
@@ -51,6 +53,8 @@ function App() {
           <Route path="/detail-category/:categoryId" element={<DetailCategory />} />
           <Route path="/location" element={<Location />} />
           <Route path="/register-complete" element={<RegisterComplete />} />
+          <Route path='/Community' element={<CommunityPage/>} />
+          <Route path="/MyEstimate/RequestEstimate" element={<RequestEstimatePage />} />
         </Routes>
       </AppContainer>
     </Router>
