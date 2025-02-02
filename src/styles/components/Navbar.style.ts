@@ -113,17 +113,20 @@ export const AuthLinks = styled.div`
   }
 `;
 
-export const RegisterLink = styled(Link)`
+export const ExpertButton = styled.button`
   font-family: 'Pretendard';
   font-weight: 600;
   font-size: 16px;
   line-height: 150%;
   color: #00a05e;
+  background: none;
+  border: none;
   text-decoration: none;
   white-space: nowrap;
+  cursor: pointer;
 `;
 
-export const LoginLink = styled(Link)`
+export const LoginButton = styled.button`
   font-family: 'Pretendard';
   font-weight: 500;
   font-size: 16px;
@@ -131,6 +134,10 @@ export const LoginLink = styled(Link)`
   color: #000000;
   text-decoration: none;
   white-space: nowrap;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 `;
 
 export const SignupButton = styled(Link)`
@@ -227,4 +234,72 @@ export const MobileSignupButton = styled(Link)`
   font-size: 16px;
   color: #ffffff;
   margin-top: 8px;
+`;
+
+export const UserSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 24px;
+`;
+
+export const NotificationIcon = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: #666666;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+`;
+
+export const UserName = styled.div`
+  font-family: 'Pretendard';
+  font-weight: 600;
+  font-size: 16px;
+  color: #2c2c2c;
+  padding: 8px;
+`;
+
+export const DropdownContent = styled.div`
+  display: none;
+  position: absolute;
+  right: 0;
+  min-width: 120px;
+  background-color: #fff;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 8px;
+  z-index: 1;
+`;
+
+export const UserDropdown = styled.div`
+  position: relative;
+  display: inline-block;
+
+  &:hover {
+    cursor: pointer;
+
+    ${DropdownContent} {
+      display: block;
+    }
+  }
+`;
+
+export const DropdownButton = styled.button`
+  width: 100%;
+  padding: 8px 16px;
+  text-align: left;
+  background: none;
+  border: none;
+  font-family: 'Pretendard';
+  font-size: 14px;
+  color: #2c2c2c;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f5f5f5;
+    border-radius: 4px;
+  }
 `;

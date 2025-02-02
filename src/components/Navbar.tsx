@@ -1,10 +1,12 @@
 import * as N from '@/styles/components/Navbar.style';
 import logo from '@/assets/images/logo.png';
+import useAuthStore from '@/store/useAuthStore';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { Menu } from 'lucide-react';
+import { Bell, Menu } from 'lucide-react';
 
 export const Navbar = () => {
+  const { isLoggedIn, userInfo, openLoginModal, openExpertLoginModal, logout } = useAuthStore();
   const location = useLocation();
   const [isActiveChat, setIsActiveChat] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -12,6 +14,10 @@ export const Navbar = () => {
   useEffect(() => {
     setIsActiveChat(location.pathname.includes('/chat'));
   }, [location]);
+
+  const handleLogout = () => {
+    logout();
+  };
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -32,18 +38,34 @@ export const Navbar = () => {
             <N.MenuLink to="/community">커뮤니티</N.MenuLink>
           </N.MenuContainer>
         </N.LeftSection>
-
         <N.RightSection>
-          <N.AuthLinks>
-            <N.RegisterLink to="/expert-register">전문가 등록하기</N.RegisterLink>
-            <N.LoginLink to="/login">로그인</N.LoginLink>
-          </N.AuthLinks>
-          <N.SignupButton to="/signup">
-            <N.SignupText>회원가입</N.SignupText>
-          </N.SignupButton>
-          <N.MobileMenuButton onClick={toggleMobileMenu}>
-            <Menu size={24} />
-          </N.MobileMenuButton>
+          {isLoggedIn ? (
+            <N.UserSection>
+              <N.NotificationIcon>
+                <Bell />
+              </N.NotificationIcon>
+              <N.MenuLink to="/my-estimate">내 견적</N.MenuLink>
+              <N.UserDropdown>
+                <N.UserName>{userInfo?.name ?? '사용자'} ▼</N.UserName>
+                <N.DropdownContent>
+                  <N.DropdownButton onClick={handleLogout}>로그아웃</N.DropdownButton>
+                </N.DropdownContent>
+              </N.UserDropdown>
+            </N.UserSection>
+          ) : (
+            <>
+              <N.AuthLinks>
+                <N.ExpertButton onClick={openExpertLoginModal}>전문가 등록하기</N.ExpertButton>
+                <N.LoginButton onClick={openLoginModal}>로그인</N.LoginButton>
+              </N.AuthLinks>
+              <N.SignupButton to="/agreement">
+                <N.SignupText>회원가입</N.SignupText>
+              </N.SignupButton>
+              <N.MobileMenuButton onClick={toggleMobileMenu}>
+                <Menu size={24} />
+              </N.MobileMenuButton>
+            </>
+          )}
         </N.RightSection>
       </N.NavContent>
       {isMobileMenuOpen && (
@@ -64,3 +86,5 @@ export const Navbar = () => {
     </N.NavContainer>
   );
 };
+
+export default Navbar;

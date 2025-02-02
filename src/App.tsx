@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { css, Global } from '@emotion/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
 // 폰트
 import PretendardRegular from '@/assets/fonts/Pretendard-Regular.woff';
 import PretendardSemiBold from '@/assets/fonts/Pretendard-SemiBold.woff';
@@ -8,6 +10,9 @@ import PretendardMedium from '@/assets/fonts/Pretendard-Medium.woff';
 // 페이지
 import Home from './pages/Home';
 import MyEstimatePage from './pages/Home/MyEstimate';
+import Agreement from './pages/Auth/Agreement';
+import Signup from './pages/Auth/Signup';
+import SignupComplete from './pages/Auth/SignupComplete';
 import Register from './pages/ExpertRegistration/Register';
 import DetailCategory from './pages/ExpertRegistration/DetailCategory';
 import Location from './pages/ExpertRegistration/Location';
@@ -17,9 +22,23 @@ import ChatList from './pages/chat/ChatList';
 import ChatRoom from './pages/chat/ChatRoom';
 import MenuBar from './pages/MenuBar';
 import CommunityPage from './pages/Home/Community';
+
 // 컴포넌트
+import LoginModal from './components/LoginModal';
+import useAuthStore from './store/useAuthStore';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000, // 5분
+      gcTime: 10 * 60 * 1000, // 10분 (이전의 cacheTime)
+    },
+  },
+});
 
 const AppContainer = styled.div`
   width: 100%;
@@ -46,6 +65,9 @@ const AppRoutes = () => {
         <Route path="/menu" element={<MenuBar />} />
         <Route path="/chat" element={<ChatList />} />
         <Route path="/chat/:roomId" element={<ChatRoom />} />
+        <Route path="/agreement" element={<Agreement />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/signup-complete" element={<SignupComplete />} />
       </Routes>
       {!isHomePage && <Footer />}
     </>
@@ -53,35 +75,40 @@ const AppRoutes = () => {
 };
 
 function App() {
+  const { isLoginModalOpen, closeLoginModal, loginModalType } = useAuthStore();
+
   return (
-    <Router>
-      <AppContainer>
-        <Global
-          styles={css`
-            @font-face {
-              font-family: 'PretendardRegular';
-              src: url(${PretendardRegular}) format('woff');
-              font-weight: 500;
-            }
-            @font-face {
-              font-family: 'PretendardSemiBold';
-              src: url(${PretendardSemiBold}) format('woff');
-              font-weight: 600;
-            }
-            @font-face {
-              font-family: 'PretendardMedium';
-              src: url(${PretendardMedium}) format('woff');
-              font-weight: 500;
-            }
-            body {
-              margin: 0;
-              padding: 0;
-            }
-          `}
-        />
-        <AppRoutes />
-      </AppContainer>
-    </Router>
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <AppContainer>
+          <Global
+            styles={css`
+              @font-face {
+                font-family: 'PretendardRegular';
+                src: url(${PretendardRegular}) format('woff');
+                font-weight: 500;
+              }
+              @font-face {
+                font-family: 'PretendardSemiBold';
+                src: url(${PretendardSemiBold}) format('woff');
+                font-weight: 600;
+              }
+              @font-face {
+                font-family: 'PretendardMedium';
+                src: url(${PretendardMedium}) format('woff');
+                font-weight: 500;
+              }
+              body {
+                margin: 0;
+                padding: 0;
+              }
+            `}
+          />
+          <AppRoutes />
+          <LoginModal isOpen={isLoginModalOpen} onClose={closeLoginModal} type={loginModalType} />
+        </AppContainer>
+      </Router>
+    </QueryClientProvider>
   );
 }
 
