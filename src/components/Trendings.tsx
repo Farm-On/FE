@@ -36,17 +36,17 @@ const dummy_trendings = [
   {
     id: 0,
     thumbnail_url:
-      'https://s3-alpha-sig.figma.com/img/69bb/de2a/18415efc0483d6a47fe54fdf248cf085?Expires=1737331200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=mOYFlxL0zoURubHjmNFlKU3bS0-gSknVs4hQ6JmNoZ0XNgSJDjImtx6C0a2wayBYDiKD-ER1iCVJXVKdo6HtLHhkMR8DdruaIRylDJzk08iVomdgN~i275Fu3Pv2dliRlccRWC807bG781FDMinDdqmajRz5lviKlAY8iBSXpX5vKpLV-Ia-Vo5JByReHy0s6ZK3K2e5xkkeCk2l5YkiONy9ueJgvbCyJR0F6kuaWTwPKiBrMq43elDBir~cdlpTGPHeGg9I36zREG2TcMjZ4uPeHvMpJRl55DEur17NwNKfGXTnsF1NET6OtX1pC1x067i4~RyrxavstmFIkvzIrA__',
+      'https://www.figma.com/file/lUNHiREZRQJqQihbPdLdOv/image/69bbde2a18415efc0483d6a47fe54fdf248cf085',
     title: '스마트팜, 농업의 미래를 열다',
     description: '구축 시 고려해야 할 초기 비용과 운영...',
     author_avatar_url:
-      'https://s3-alpha-sig.figma.com/img/ec3f/ed4d/a01a668e28f955a728e8e8eea6e870e7?Expires=1737331200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=mhyYhxMCP~NZtDIYWnOrC-NzKh0BZQhMZI-u1eUqtllLF17z2V5h73Bs31h8ybXgkh2SFDYCrVWrQjgw9EKZQa1QJKpcqvN6SYAbIZsKPzs6BN56KSdZ0I-o9HmgwYRft0iU0qAdrfp9hu43xlBW-SSP5kGzqUqy4Uyp2RLMFu-JDRJvMjt9ID-MyZfb8n7ChQZu41y4tweTdhCMioYZFWlRBt77qJvqjjSvwVYGnKJEIuGq8ufNVEh7H2CdlueFnFoRPWhAl~5MRENsXPfcwrUnm45a~irtBW894mGKqCJCerNdVBqrlEmbCZTtL65g9lyaPGYwGzpL1dVsNyoWcA__',
+      'https://s3-alpha-sig.figma.com/img/ec3f/ed4d/a01a668e28f955a728e8e8eea6e870e7?Expires=1739145600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=ALTKlgeL3YBGpj16q7mi6PHDsNA7L68eGoLDtNrfaqavl~nJJMQRkUV6qq4zStJyp9Baytl1izdIyQSvMx4n7qciTpsofaVYObZDbCVSs7CF1OC1HHH5bjBSBtn-gcjJ-CbZur-~HR0SvD4xCS9A8XgfBxWVwg1OLqP3n7bLVoH9s~En5nwmRjmIHBA7tWcU6M1Ap~fITpM4XDXgG89N~PhRmyt2ELEU~DE2Pmp1OufcP~m3rqzRxgYTLpe468frsskmmN5Ey72nU5p3VlDX3zmVyMWGZAmQm~Jz4TlnX88uh6-klxAdjYbuSxdGGdzN-x5cwaUcqpKhWwy2IJg8nw__',
     author_username: '김용수',
   },
   {
     id: 1,
     thumbnail_url:
-      'https://s3-alpha-sig.figma.com/img/432b/43df/940c71971b0e2ba05b77608ea33a3aa8?Expires=1737331200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=UUmcyESMNnftlhmUU7I-a8k1BUzXzGtXTKjz8AwNGUER1PFZ~2DUK7lFbXjzZJTp13g-AH~yprB-u0eZ~BTHue-6TuFMANXd8oRDYcja-~90EuFgofrkMMquJfZpNeE7PyfQ3jdeGbBb-U2kLWNXwQvVo5iK~N6Sfr5~UC1nWGu5yx5ABsnrzkDNpKSHXApwPU0vz8b3Q7Zcm8VYiZq5UpUMlW0njSJPqaYxpl5hpmCK-IlE6ng5ApLiVKCsbwHlpQXICyJNLGJQkLvbkr7RBNYSq843PIje~73sMOY0brBtKM8wpBhk9T5PJRQjtQ0KPbQ8CL02gKTIic9P5uTVMQ__',
+      'https://s3-alpha-sig.figma.com/img/432b/43df/940c71971b0e2ba05b77608ea33a3aa8?Expires=1739145600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=m0vKG5DpNF80ucIRAax254zlJaxorJWVW7FMCJHKbWZMGACd4KF0SRWbe0OKFxHn5J2dqU2BEb202igHsaKzbse5Xa5C-7uafcFQg-JOUZ5rHagH7U0IOuLJHigdnp0Cfi4uD9uKQ4dNMM6bFBaZ8PIjg8OXN4TnGQbR--ldpqwMhwIxXIBHz2C3PCfPZ5j-jy-YhBbzApN5AcE3j~AVIpq53bkwJHDnETRdIkP9dQoQQ8F2JD37GBK9H1wQY1rz6gH~6Mg28x9MAIr7N3b8zHjegqJQZyAwGCgQm6~6DujNNZ9R8A0dW2d33~vd5ARxF2D5OPkNB9i~-ypBlVipJg__',
     title: '신선딸기 수출의 과제',
     description: '수출 딸기의 확대를 위해 해결해야 할...',
     author_avatar_url:
@@ -56,7 +56,7 @@ const dummy_trendings = [
   {
     id: 2,
     thumbnail_url:
-      'https://s3-alpha-sig.figma.com/img/2de7/25cd/885e2894e9db634d3067a7875532d39e?Expires=1737331200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=Yl3zDeVg9XAlJe26~vNBgRC668gXcH-4LX4KHqklUHPvrekQEws1vUVE7-otucTitGNYxWKEe56ea52DcGKwXtsHVCP9vs~HNZJUljmlGmQGWbI71DOIY8kZnQJAvm9y1ynjKVxV3qk1icqCMmRlYK2wuu0B28Zd3qr8fUnUcmxEX2k0i1govpH9WynwQexZTnQccuGtsHQM2jiEwNUJ7UesMQmDAJ8WP8cb-j1ts-90R6COt8fiHVxkywjGO6MsmGzqqkBTBrkfB~LUjYM5xhZ3nWy-8m62rcYym7qdqo8~MkEIZA3ZAX2lUHRCM6V47EXCx6igcfcs~-tsxPBATQ__',
+      'https://s3-alpha-sig.figma.com/img/2de7/25cd/885e2894e9db634d3067a7875532d39e?Expires=1739145600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=Xhh8kW~6LF88ciMR9PBRd7NaDTwN5AXOtY~DerpR6IE8R4wIBIij82B7MNtoZhqm0rpRquTTawYx6RWGNlDHakZm5HjLa2gZdo-eVhVAjN6RZqFEWOITQfMi~8upj--sHzJGQROQsNM86~cA7WsDVt5gp2iOxMpELzlsBbE8KYYyU6n-aeLMypXWRxus2X4SJtoJzqOSnzl9-lyHss-bApKPPOPgQwkmfNjieT7~T2MBg25y921PI6RQFYbGETxMOr~8pDCrGskes39~~nor-6WRuAHBf5cSr~rTVebQt9xMgIvp6oZxpODYgKRN0U5clos4HWKhbQwujrIc-jP7CQ__',
     title: '작물별 병해충 예방 및 대처법',
     description: '건강한 작물을 위한 필수 관리',
     author_avatar_url: undefined,
@@ -69,7 +69,7 @@ const dummy_trendings = [
     title: '귀농인의 첫해, 꼭 알아야 할...',
     description: '초보 농업인들을 위한 체크리스트',
     author_avatar_url:
-      'https://s3-alpha-sig.figma.com/img/1417/14f2/fe9cfc56f74e78334b8c4cc1d163d9e2?Expires=1737331200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KUeSyh2rPLYQtlIYZDRyc7HyOCwdaY4Oa7jkjdLhJanfvluj1je6yUFyv-88XQj6WZpJ~w0B3GITNtSj~gTpXh5dnSL8Z6bEPDUW2swMr3UPzRZSE1tRPxj1toUDO4SP9HOLVz-nK4xRBEIZcYhpbLIGJHTNJ4r9cb6SkmP89Qyc7XaVztFLrZl7GP227to4JGxoOBYWk1pXqTZPAMJxpV~TxKKNR7BYCZ3c0NlFOm3LOY-zdMYuaJsnK4myg0JoNWKL52fZ-Al-CKXSx8ED1HDonAYeiD2nWYbztMlt7m4fKVuBSVGvsMu~jvFVLZxfb4KgXegujhFEzsC9r3WHgQ__',
+      'https://s3-alpha-sig.figma.com/img/1417/14f2/fe9cfc56f74e78334b8c4cc1d163d9e2?Expires=1739145600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=EePwORJNvhv1eLjirs0pQC5pthGapDEgKIts9I-JwX9AHCfy60LEgNqRbw76G3WjmhVx2my~V4Dxmn5eFObb81wOzZYjGiq8elp4IY6C7wFXjOi~HgzIYns5DbH0jVhzB3GUyccuN7M8bMVTZakmnWc30RhUvCq62JsA0-2MBysbF7WOTbz7cECb98jbVpHh2oI7qf7XwFmDBu4BLvB~MPACtFwL5i9GHOYlDMkhta7iLAzey80NFnBehJH91DtrhfeKlTWOck5-5zCxU~oXduqIEMNBVABx~WxaFc40QlisZdRb82ggg78bxbppwto6XdpC18mpdmpcZdVw8Rxjew__',
     author_username: '이수환',
   },
 ];
