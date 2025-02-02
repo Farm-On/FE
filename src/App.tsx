@@ -1,11 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { css, Global } from '@emotion/react';
-
 import ReactModal from 'react-modal';
-
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
 
 // 폰트
 import PretendardRegular from '@/assets/fonts/Pretendard-Regular.woff';
@@ -56,17 +53,19 @@ const AppContainer = styled.div`
   min-height: 100vh;
 `;
 
-
 ReactModal.setAppElement('#root');
 
 // 레이아웃 컴포넌트
 const AppRoutes = () => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
-  
+  const isAuthPage = ['/agreement', '/signup', '/signup-complete'].includes(location.pathname);
+
+  const shouldShowNavbarAndFooter = !isHomePage && !isAuthPage;
+
   return (
     <>
-      {!isHomePage && <Navbar />}
+      {shouldShowNavbarAndFooter && <Navbar />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/MyEstimate" element={<MyEstimatePage />} />
@@ -88,11 +87,10 @@ const AppRoutes = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/signup-complete" element={<SignupComplete />} />
       </Routes>
-      {!isHomePage && <Footer />}
+      {shouldShowNavbarAndFooter && <Footer />}
     </>
   );
 };
-
 
 function App() {
   const { isLoginModalOpen, closeLoginModal, loginModalType } = useAuthStore();
