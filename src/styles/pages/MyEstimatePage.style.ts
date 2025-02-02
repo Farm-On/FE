@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 export const Container = styled.div`
-  padding-left: 360px;
+  padding-left: 160px;
   max-width: 1920px;
   width: 1920px;
   @media (max-width: 768px) {
@@ -127,11 +127,11 @@ export const DividingLine = styled.div`
   background-color: rgba(187, 187, 187, 1);
   margin-top: 110px;
   @media (max-width: 768px) {
-    width: 800px;
+    width: 700px;
   }
 
   @media (max-width: 480px) {
-    width: 600px;
+    width: 440px;
   }
 `;
 
@@ -140,16 +140,16 @@ export const ExpertCardWrap = styled.div`
   gap: 14px;
   position: absolute;
   top: 573px;
-  left: 662px;
+  left: 462px;
 
   @media (max-width: 768px) {
     left: 60px;
-    top: 630px;
+    top: 660px;
   }
 
   @media (max-width: 480px) {
     left: 60px;
-    top: 600px;
+    top: 700px;
   }
 `;
 

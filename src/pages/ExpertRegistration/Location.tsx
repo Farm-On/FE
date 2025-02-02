@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as L from '@/styles/pages/ExpertRegistration/Location.style';
-import XIcon from '@/assets/icons/greenX.svg';
+import XIcon from '@/assets/icons/greenX.svg?react';
 
 type LocationData = {
   [key: string]: string[];
