@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 interface SignupForm {
-  id: string;
+  email: string;
   password: string;
   passwordConfirm: string;
   name: string;
@@ -20,7 +20,7 @@ interface SignupForm {
   showPassword: boolean;
   showPasswordConfirm: boolean;
   errors: {
-    id?: string;
+    email?: string;
     password?: string;
     passwordConfirm?: string;
     name?: string;
@@ -29,6 +29,8 @@ interface SignupForm {
     birthDay?: string;
     phone?: string;
     gender?: string;
+    globalError?: string;
+    submit?: string;
   };
 }
 
@@ -36,7 +38,7 @@ interface UserInfo {
   name: string;
 }
 
-type SignupFormField = keyof SignupForm;
+type SignupFormField = keyof Omit<SignupForm, 'errors'>;
 
 interface AuthStore {
   // 로그인 모달 관련 상태
@@ -60,7 +62,7 @@ interface AuthStore {
 }
 
 const initialSignupForm: SignupForm = {
-  id: '',
+  email: '',
   password: '',
   passwordConfirm: '',
   name: '',
