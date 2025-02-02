@@ -32,15 +32,23 @@ interface SignupForm {
   };
 }
 
+interface UserInfo {
+  name: string;
+}
+
 type SignupFormField = keyof SignupForm;
 
 interface AuthStore {
   // 로그인 모달 관련 상태
   isLoginModalOpen: boolean;
   loginModalType: 'default' | 'expert';
+  isLoggedIn: boolean;
+  userInfo: UserInfo | null;
   openLoginModal: () => void;
   openExpertLoginModal: () => void;
   closeLoginModal: () => void;
+  login: (userInfo: UserInfo) => void;
+  logout: () => void;
 
   // 회원가입 폼 관련 상태
   signupForm: SignupForm;
@@ -77,9 +85,13 @@ const useAuthStore = create<AuthStore>((set) => ({
   // 로그인 모달 관련 상태와 액션
   isLoginModalOpen: false,
   loginModalType: 'default',
+  isLoggedIn: false,
+  userInfo: null,
   openLoginModal: () => set({ isLoginModalOpen: true, loginModalType: 'default' }),
   openExpertLoginModal: () => set({ isLoginModalOpen: true, loginModalType: 'expert' }),
   closeLoginModal: () => set({ isLoginModalOpen: false }),
+  login: (userInfo) => set({ isLoggedIn: true, userInfo, isLoginModalOpen: false }),
+  logout: () => set({ isLoggedIn: false, userInfo: null }),
 
   // 회원가입 폼 관련 상태와 액션
   signupForm: initialSignupForm,
@@ -119,5 +131,5 @@ const useAuthStore = create<AuthStore>((set) => ({
     })),
 }));
 
-export type { SignupForm, SignupFormField };
+export type { SignupForm, SignupFormField, UserInfo };
 export default useAuthStore;

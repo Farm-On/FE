@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { css, Global } from '@emotion/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 // 폰트
 import PretendardRegular from '@/assets/fonts/Pretendard-Regular.woff';
@@ -12,10 +13,22 @@ import Home from './pages/Home';
 import MyEstimatePage from './pages/Home/MyEstimate';
 import Agreement from './pages/Auth/Agreement';
 import Signup from './pages/Auth/Signup';
+import SignupComplete from './pages/Auth/SignupComplete';
 
 // 컴포넌트
 import LoginModal from './components/LoginModal';
 import useAuthStore from './store/useAuthStore';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000, // 5분
+      gcTime: 10 * 60 * 1000, // 10분 (이전의 cacheTime)
+    },
+  },
+});
 
 const AppContainer = styled.div`
   width: 100%;
@@ -26,42 +39,45 @@ function App() {
   const { isLoginModalOpen, closeLoginModal, loginModalType } = useAuthStore();
 
   return (
-    <Router>
-      <AppContainer>
-        <Global
-          styles={css`
-            @font-face {
-              font-family: 'PretendardRegular';
-              src: url(${PretendardRegular}) format('woff');
-              font-weight: 500;
-            }
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <AppContainer>
+          <Global
+            styles={css`
+              @font-face {
+                font-family: 'PretendardRegular';
+                src: url(${PretendardRegular}) format('woff');
+                font-weight: 500;
+              }
 
-            @font-face {
-              font-family: 'PretendardSemiBold';
-              src: url(${PretendardSemiBold}) format('woff');
-              font-weight: 600;
-            }
-            @font-face {
-              font-family: 'PretendardMedium';
-              src: url(${PretendardMedium}) format('woff');
-              font-weight: 500;
-            }
+              @font-face {
+                font-family: 'PretendardSemiBold';
+                src: url(${PretendardSemiBold}) format('woff');
+                font-weight: 600;
+              }
+              @font-face {
+                font-family: 'PretendardMedium';
+                src: url(${PretendardMedium}) format('woff');
+                font-weight: 500;
+              }
 
-            body {
-              margin: 0;
-              padding: 0;
-            }
-          `}
-        />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/MyEstimate" element={<MyEstimatePage />} />
-          <Route path="/agreement" element={<Agreement />} />
-          <Route path="/signup" element={<Signup />} /> {/* 추가 */}
-        </Routes>
-        <LoginModal isOpen={isLoginModalOpen} onClose={closeLoginModal} type={loginModalType} />
-      </AppContainer>
-    </Router>
+              body {
+                margin: 0;
+                padding: 0;
+              }
+            `}
+          />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/MyEstimate" element={<MyEstimatePage />} />
+            <Route path="/agreement" element={<Agreement />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/signup-complete" element={<SignupComplete />} />
+          </Routes>
+          <LoginModal isOpen={isLoginModalOpen} onClose={closeLoginModal} type={loginModalType} />
+        </AppContainer>
+      </Router>
+    </QueryClientProvider>
   );
 }
 

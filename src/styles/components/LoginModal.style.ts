@@ -90,7 +90,7 @@ export const LogoImage = styled.img`
   @media (max-width: 768px) {
     width: 130px;
     height: 27px;
-    margin: 30px auto 40px;
+    margin: 30px auto 60px;
   }
 `;
 

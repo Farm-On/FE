@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as S from '@/styles/components/LoginModal.style';
 import logo from '@/assets/images/logo.png';
+import { useLogin } from '@/hooks/useAuth';
+import { validateEmail, validatePassword } from '@/utils/validations/loginValidation';
+import type { AxiosError } from 'axios';
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -8,13 +12,21 @@ interface LoginModalProps {
   type?: 'default' | 'expert';
 }
 
+interface ErrorResponse {
+  message: string;
+  code: string;
+  data?: unknown;
+}
+
 const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, type = 'default' }) => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
 
-  // 모달이 닫힐 때 상태 초기화
+  const loginMutation = useLogin();
+
   useEffect(() => {
     if (!isOpen) {
       if (!rememberMe) {
@@ -27,12 +39,29 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, type = 'defaul
 
   if (!isOpen) return null;
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // 여기에 실제 로그인 로직이 들어갈 예정
-    // 임시로 항상 실패하는 것으로 처리
-    setError('이메일 또는 비밀번호가 올바르지 않습니다. 다시 확인해주세요.');
+    const emailValidation = validateEmail(email);
+    const passwordValidation = validatePassword(password);
+
+    if (!emailValidation.isValid) {
+      setError(emailValidation.message || '이메일을 입력해주세요.');
+      return;
+    }
+
+    if (!passwordValidation.isValid) {
+      setError(passwordValidation.message || '비밀번호를 입력해주세요.');
+      return;
+    }
+
+    try {
+      await loginMutation.mutateAsync({ email, password });
+      handleModalClose();
+    } catch (error) {
+      const axiosError = error as AxiosError<ErrorResponse>;
+      setError(axiosError.response?.data?.message || '로그인에 실패했습니다.');
+    }
   };
 
   const handleModalClose = () => {
@@ -42,6 +71,11 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, type = 'defaul
     }
     setError('');
     onClose();
+  };
+
+  const handleSignupClick = () => {
+    handleModalClose();
+    navigate('/agreement');
   };
 
   return (
@@ -64,6 +98,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, type = 'defaul
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="이메일을 입력해 주세요."
                 isError={!!error}
+                disabled={loginMutation.isPending}
               />
             </S.InputWrapper>
 
@@ -74,12 +109,15 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, type = 'defaul
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="비밀번호를 입력해 주세요."
                 isError={!!error}
+                disabled={loginMutation.isPending}
               />
             </S.InputWrapper>
 
             {error && <S.ErrorMessage>{error}</S.ErrorMessage>}
 
-            <S.LoginButton type="submit">로그인</S.LoginButton>
+            <S.LoginButton type="submit" disabled={loginMutation.isPending}>
+              {loginMutation.isPending ? '로그인 중...' : '로그인'}
+            </S.LoginButton>
 
             <S.OptionsContainer>
               <S.RememberContainer>
@@ -94,7 +132,9 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, type = 'defaul
               <S.FindAccountLink>아이디 / 비밀번호 찾기</S.FindAccountLink>
             </S.OptionsContainer>
 
-            <S.SignupButton type="button">회원가입</S.SignupButton>
+            <S.SignupButton type="button" onClick={handleSignupClick}>
+              회원가입
+            </S.SignupButton>
             <S.SignupText>아직 FarmON 회원이 아니신가요?</S.SignupText>
           </form>
         </S.FormContainer>

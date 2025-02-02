@@ -1,9 +1,14 @@
 import * as N from '@/styles/components/Navbar.style';
 import logo from '@/assets/images/logo.png';
 import useAuthStore from '@/store/useAuthStore';
+import { Bell } from 'lucide-react';
 
 export const Navbar = () => {
-  const { openLoginModal, openExpertLoginModal } = useAuthStore();
+  const { isLoggedIn, userInfo, openLoginModal, openExpertLoginModal, logout } = useAuthStore();
+
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
     <N.NavContainer>
@@ -20,13 +25,30 @@ export const Navbar = () => {
         </N.LeftSection>
 
         <N.RightSection>
-          <N.AuthLinks>
-            <N.ExpertButton onClick={openExpertLoginModal}>전문가 등록하기</N.ExpertButton>
-            <N.LoginButton onClick={openLoginModal}>로그인</N.LoginButton>
-          </N.AuthLinks>
-          <N.SignupButton to="/agreement">
-            <N.SignupText>회원가입</N.SignupText>
-          </N.SignupButton>
+          {isLoggedIn ? (
+            <N.UserSection>
+              <N.NotificationIcon>
+                <Bell />
+              </N.NotificationIcon>
+              <N.MenuLink to="/my-estimate">내 견적</N.MenuLink>
+              <N.UserDropdown>
+                <N.UserName>{userInfo?.name ?? '사용자'} ▼</N.UserName>
+                <N.DropdownContent>
+                  <N.DropdownButton onClick={handleLogout}>로그아웃</N.DropdownButton>
+                </N.DropdownContent>
+              </N.UserDropdown>
+            </N.UserSection>
+          ) : (
+            <>
+              <N.AuthLinks>
+                <N.ExpertButton onClick={openExpertLoginModal}>전문가 등록하기</N.ExpertButton>
+                <N.LoginButton onClick={openLoginModal}>로그인</N.LoginButton>
+              </N.AuthLinks>
+              <N.SignupButton to="/agreement">
+                <N.SignupText>회원가입</N.SignupText>
+              </N.SignupButton>
+            </>
+          )}
         </N.RightSection>
       </N.NavContent>
     </N.NavContainer>
