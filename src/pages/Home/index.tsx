@@ -11,6 +11,7 @@ import { Search } from '@/components/search/search';
 import { Announcements } from '@/components/Announcements';
 import { Trendings } from '@/components/Trendings';
 
+
 export default function Home() {
   return (
     <>
