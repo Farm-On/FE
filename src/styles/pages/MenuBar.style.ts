@@ -7,15 +7,6 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   background-color: #ffffff;
-  padding: 40px 20px;
-
-  @media (max-width: 1024px) {
-    padding: 30px;
-  }
-
-  @media (max-width: 768px) {
-    padding: 20px;
-  }
 `;
 
 export const Title = styled.h1`
@@ -37,7 +28,7 @@ export const Title = styled.h1`
 
   @media (max-width: 480px) {
     font-size: 24px;
-    margin-right: 200px;
+    margin-right: 220px;
   }
 `;
 
@@ -205,6 +196,7 @@ export const SubcategoryContainer = styled.div`
   }
 
   @media (max-width: 480px) {
+    grid-template-columns: 100px 100px;
     gap: 8px 20px;
     margin-bottom: 20px;
   }
