@@ -8,6 +8,15 @@ export const Card = styled.div`
   height: 122px;
   top: 245px;
   left: 360px;
+  @media (max-width: 768px) {
+    width: 150px;
+    height: 120px;
+  }
+
+  @media (max-width: 480px) {
+    width: 158px;
+    height: 118px;
+  }
 `;
 
 export const Content = styled.div`
@@ -17,9 +26,26 @@ export const Content = styled.div`
   padding-top: 20px;
   margin: 0;
   line-height: 21px;
+
+  @media (max-width: 768px) {
+    width: 80px;
+    height: 120px;
+  }
+
+  @media (max-width: 480px) {
+    width: 70px;
+    height: 118px;
+  }
   h4 {
     font-size: 16px;
     margin: 0;
+    @media (max-width: 768px) {
+      font-size: 13px;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 13px;
+    }
   }
   p {
     font-size: 14px;
