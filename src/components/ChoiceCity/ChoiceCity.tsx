@@ -3,8 +3,7 @@ import * as RE from '../../styles/pages/RequestEstimate';
 import styled from '@emotion/styled';
 import { regions } from './CityData';
 import { useState } from 'react';
-import XIcon from '../../assets/icons/x.svg?react';
-
+import XIcon2 from '../../assets/icons/greenX.svg?react';
 //상태관리 라이브러리 설치 후 진행률 올라가게 만들어야함
 
 export const ChoiceCity = () => {
@@ -37,7 +36,7 @@ export const ChoiceCity = () => {
             <div>{selectCity}</div>
             {selectDistrict}
             <div style={{ width: '20px', height: '20px' }}>
-              <XIcon style={{ paddingTop: '1px' }} onClick={() => handleClear()} />
+              <XIcon2 style={{ paddingTop: '1px' }} onClick={() => handleClear()} />
             </div>
           </RE.Chip>
         </RE.CancleX>
@@ -46,8 +45,8 @@ export const ChoiceCity = () => {
         <CC.Vertical />
         <CC.Horizon />
         <City>
-          <p style={{ paddingLeft: '105px' }}>시/도</p>
-          <p style={{ paddingRight: '239px' }}>시/구/군</p>
+          <Sido>시/도</Sido>
+          <GuGun>시/구/군</GuGun>
         </City>
 
         <CC.CityContainer>
@@ -102,4 +101,35 @@ const DividingLine = styled.div`
   height: 0px;
   border: 0.5px solid #d1d1d1;
   margin-left: 10px;
+
+  @media (max-width: 768px) {
+    width: 750px;
+  }
+
+  @media (max-width: 480px) {
+    width: 460px;
+  }
+
+`;
+const Sido = styled.p`
+  padding-left: 105px;
+
+  @media (max-width: 768px) {
+    padding-left: 95px;
+  }
+
+  @media (max-width: 480px) {
+    padding-left: 65px;
+  }
+`;
+const GuGun = styled.p`
+  padding-right: 239px;
+
+  @media (max-width: 768px) {
+    padding-right: 200px;
+  }
+
+  @media (max-width: 480px) {
+    padding-right: 105px;
+  }
 `;

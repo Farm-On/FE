@@ -84,18 +84,11 @@ export default function RequestEstimatePage(): JSX.Element {
     }
   };
 
+
+
   return (
     <>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '11px',
-          paddingLeft: '360px',
-          maxWidth: '1200px',
-          paddingBottom: '25px',
-        }}
-      >
+      <TopContainer>
         <RE.Title>
           <h2>견적요청</h2>
         </RE.Title>
@@ -111,7 +104,7 @@ export default function RequestEstimatePage(): JSX.Element {
             <p>진행률 {processing}%</p>
           </RE.Process>
         </RE.Wrapper>
-      </div>
+      </TopContainer>
 
       <RE.PageWrapper>
         <RE.CenteredContainer>
@@ -145,14 +138,6 @@ export default function RequestEstimatePage(): JSX.Element {
               {/* 두 번째 섹션 */}
               <div ref={locationRef}>
                 <RE.Bubble>컨설팅 위치는 어디인가요?</RE.Bubble>
-                {/* <RE.CancleX>
-                  <RE.Chip isSelected={true}>
-                    경기 이천시
-                    <div style={{ width: '20px', height: '20px' }}>
-                      <XIcon style={{ paddingTop: '1px' }} />
-                    </div>
-                  </RE.Chip>
-                </RE.CancleX> */}
                 <div style={{ paddingBottom: '18px', paddingLeft: '6px' }}>
                   <ChoiceCity />
                 </div>
@@ -222,7 +207,7 @@ export default function RequestEstimatePage(): JSX.Element {
                     <div style={{ position: 'absolute', bottom: '20px', left: '26px' }}>
                       <CameraIcon />
                     </div>
-                    <RE.ContentLength style={{ position: 'absolute', right: '15px', top: '25px' }}>
+                    <RE.ContentLength>
                       {contentValue.length}/3000
                     </RE.ContentLength>
                   </InputContainer>
@@ -249,4 +234,25 @@ const ApplyBtn = styled.div`
   display: flex;
   justify-content: center;
   margin: 172px 0 350px;
+`;
+const TopContainer = styled.div`
+display: flex;
+flex-direction: column;
+gap: 11px;
+padding-left: 180px;
+max-width: 1200px;
+padding-bottom: 25px;
+padding-top: 70px;
+
+@media (max-width: 768px) {
+  padding-left: 30px;
+  padding-bottom: 25px;
+  padding-top: 70px;
+}
+
+@media (max-width: 480px) {
+  padding-left: 20px;
+  padding-bottom: 25px;
+  padding-top: 70px;
+}
 `;
