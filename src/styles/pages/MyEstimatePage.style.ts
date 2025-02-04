@@ -26,6 +26,7 @@ export const Title1 = styled.div`
     flex-direction: column;
     gap: 10px;
     align-items: start;
+    padding-top: 70px;
   }
 
   @media (max-width: 480px) {
@@ -33,6 +34,7 @@ export const Title1 = styled.div`
     flex-direction: column;
     gap: 10px;
     align-items: start;
+    padding-top: 70px;
   }
 
   h2 {
@@ -87,6 +89,8 @@ export const ViewAll = styled.div`
     height: 20px;
     color: rgba(0, 160, 94, 1);
   }
+  
+
 `;
 export const MyCards = styled.div`
   display: grid;
@@ -112,7 +116,9 @@ export const MyCards = styled.div`
 `;
 export const AddCard = styled.div`
   background-color: rgba(255, 255, 255, 1);
-  background-image: url("data:image/svg+xml,%3Csvg width='320' height='122' viewBox='0 0 320 122' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='0.5' y='0.5' width='319' height='121' rx='9.5' fill='white' stroke='%23BBBBBB' stroke-dasharray='6 6'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' viewBox='0 0 320 122' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='0.5' y='0.5' width='319' height='121' rx='9.5' fill='white' stroke='%23BBBBBB' stroke-dasharray='6 6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-size: contain;
   width: 390px;
   height: 149px;
   display: flex;
@@ -121,22 +127,24 @@ export const AddCard = styled.div`
   align-items: center;
   cursor: pointer;
   gap:10px;
-
+  background-size: 100% 100%;
   @media (max-width: 768px) {
-    width: 150px;
+    width: 180px;
     height: 120px;
-    top: 260px;
+    background-image: none;
   }
 
   @media (max-width: 480px) {
-    width: 158px;
-    height: 118px;
+    width: 138px;
+    height: 108px;
     top: 260px;
+    background-image:none;
   }
   p {
     font-size: 14px;
     color:#5D5D5D;
     margin:0;
+    white-space: nowrap;
   }
 `;
 
