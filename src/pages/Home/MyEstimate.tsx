@@ -24,13 +24,60 @@ export default function MyEstimatePage() {
               <GreenRight />
             </E.ViewAll>
           </E.Title1>
+
           <E.MyCards>
-            <EstimateCard productName="쌀" product="곡물" date="2024.12.08" />
-            <E.AddCard>
-              <AddBtn onClick={() => navigate('/MyEstimate/RequestEstimate')} />
+            <EstimateCard 
+              productName="콩" 
+              product="곡물" 
+              date="2024.11.11" 
+              title='토양 관리 및 물 관리 방법' 
+              category='토양 및 환경관리'
+              region='경기 이천시'
+              money='500만원~1,000만원'
+              />
+            <EstimateCard 
+              productName="쌀" 
+              product="곡물" 
+              date="2024.11.11" 
+              title='논 배수와 비료 사용법' 
+              category='토양 및 환경관리'
+              region='경기 이천시'
+              money='500만원~1,000만원'
+              />
+            <EstimateCard 
+              productName="콩" 
+              product="곡물" 
+              date="2024.11.11"  
+              title='논 배수와 비료 사용법' 
+              category='토양 및 환경관리'
+              region='경기 이천시'
+              money='500만원~1,000만원'
+              />
+            <EstimateCard 
+              productName="콩" 
+              product="곡물" 
+              date="2024.11.11"  
+              title='쌀농사 토양, 물 관리 관련 컨설팅...' 
+              category='토양 및 환경관리'
+              region='경기 이천시'
+              money='500만원~1,000만원'
+              />
+            <EstimateCard 
+              productName="옥수수" 
+              product="곡물" 
+              date="2024.11.11"  
+              title='옥수수 재배 초보 입니다. 비료 사...' 
+              category='토양 및 환경관리'
+              region='경기 이천시'
+              money='500만원~1,000만원'
+              />
+
+            <E.AddCard onClick={() => navigate('/MyEstimate/RequestEstimate')}>
+              <AddBtn />
               <p>새 견적 받아보기</p>
             </E.AddCard>
           </E.MyCards>
+
           <E.DividingLine />
         </div>
 
