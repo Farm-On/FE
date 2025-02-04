@@ -1,7 +1,7 @@
 import * as RE from '../../styles/pages/RequestEstimate';
 import HomeIcon from '../../assets/icons/Home.svg?react';
 import GreyRightIcon from '../../assets/icons/GreyRight.svg?react';
-import CameraIcon from '../../assets/icons/camera.svg?react';
+import CameraIcon from '../../assets/icons/RQcamera.svg?react';
 import { useState } from 'react';
 import { EstimateBudget } from '@/components/EstimateBudget';
 import { ChoiceCity } from '@/components/ChoiceCity/ChoiceCity';
@@ -27,9 +27,9 @@ export default function RequestEstimatePage(): JSX.Element {
   const [selected, setSelected] = useState<string>('2');
   const [titleValue, setTitleValue] = useState<string>('');
   const [contentValue, setContentValue] = useState<string>('');
-  const [isDisabled, setIsDisabled] = useState<boolean>(true);
+  //const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [isChecked, setIsChecked] = useState<string>('');
-  const [isApplied, setIsApplied] = useState<boolean>(false);
+  //const [isApplied, setIsApplied] = useState<boolean>(false);
   const [processing, setProcessing] = useState<number>(0);
   const [currentSection, setCurrentSection] = useState<
     'category' | 'location' | 'budget' | 'detail'
@@ -62,20 +62,10 @@ export default function RequestEstimatePage(): JSX.Element {
     if (newText.length <= 3000) setContentValue(newText);
   };
 
-  const handleApply = () => {
-    setIsApplied(!isApplied);
-    scrollToSection(detailRef, 'detail');
-    setProcessing(processing + 25);
-  };
 
   const handleMoney = (value: string) => {
     setIsChecked(value);
-    setIsDisabled(value !== '직접입력');
-    //적용버튼을 눌렀을 때 자동스크롤
-    if (value !== '직접입력') {
-      scrollToSection(detailRef, 'detail');
-      setProcessing(processing + 25);
-    }
+    scrollToSection(detailRef,'detail')
   };
 
   const handleSucceed = () => {
@@ -84,7 +74,9 @@ export default function RequestEstimatePage(): JSX.Element {
     }
   };
 
-
+  const handleCityClick = ()=>{
+    scrollToSection(budgetRef, 'budget')
+  };
 
   return (
     <>
@@ -139,7 +131,7 @@ export default function RequestEstimatePage(): JSX.Element {
               <div ref={locationRef}>
                 <RE.Bubble>컨설팅 위치는 어디인가요?</RE.Bubble>
                 <div style={{ paddingBottom: '18px', paddingLeft: '6px' }}>
-                  <ChoiceCity />
+                  <ChoiceCity onClick={handleCityClick}/>
                 </div>
                 <RE.DividingLine />
               </div>
@@ -154,8 +146,8 @@ export default function RequestEstimatePage(): JSX.Element {
                     '100~200만원',
                     '200~500만원',
                     '500~1000만원',
-                    '1000만원 이상',
-                    '직접입력',
+                    '1000만원 이상'
+                    
                   ].map((value) => (
                     <EstimateBudget
                       key={value}
@@ -167,12 +159,6 @@ export default function RequestEstimatePage(): JSX.Element {
                     />
                   ))}
                 </RE.InputContainer>
-                <RE.TypeBudget>
-                  <RE.MinBudget placeholder="500,000" disabled={isDisabled} />
-                  <p style={{ width: '8px' }}>-</p>
-                  <RE.MaxBudget placeholder="50,000,000" disabled={isDisabled} />
-                  <RE.Apply onClick={() => handleApply()}>적용</RE.Apply>
-                </RE.TypeBudget>
                 <RE.DividingLine />
               </div>
 

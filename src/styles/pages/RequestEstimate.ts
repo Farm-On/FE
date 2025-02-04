@@ -145,6 +145,7 @@ export const InputContainer = styled.div`
   height: 186px;
   gap: 30px;
   padding-top: 40px;
+  padding-left: 10px;
 `;
 
 export const MinBudget = styled.input`

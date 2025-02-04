@@ -6,7 +6,11 @@ import { useState } from 'react';
 import XIcon2 from '../../assets/icons/greenX.svg?react';
 //상태관리 라이브러리 설치 후 진행률 올라가게 만들어야함
 
-export const ChoiceCity = () => {
+interface CCProps{
+  onClick:()=>void;
+}
+
+export const ChoiceCity = ({onClick}:CCProps) => {
   const [selectCity, setSelectCity] = useState<string | null>(null); //선택된 도시 이름 개별 관리
   const [selectDistrict, setSelectDistrict] = useState<string | null>(null); //선택된 군/구 개별 관리
 
@@ -16,6 +20,9 @@ export const ChoiceCity = () => {
   };
   const handleDistrictPick = (dist: string) => {
     setSelectDistrict(dist);
+    if(selectCity){
+      onClick()
+    }
   };
 
   const getDistrict = () => {
