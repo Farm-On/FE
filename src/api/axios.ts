@@ -10,10 +10,14 @@ export const axiosInstance = axios.create({
   },
 });
 
+// 401 에러 해결을 위해 인터셉터 수정
 axiosInstance.interceptors.request.use(
   (config) => {
+    // 인증이 필요없는 엔드포인트 목록
+    const publicEndpoints = ['/generate', '/verify', '/user/join', '/login'];
+
     const token = localStorage.getItem('token');
-    if (token) {
+    if (token && !publicEndpoints.some((endpoint) => config.url?.includes(endpoint))) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
@@ -24,13 +28,18 @@ axiosInstance.interceptors.request.use(
 );
 
 axiosInstance.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('token');
-      window.location.href = '/';
+      if (
+        !error.config.url?.includes('/generate') &&
+        !error.config.url?.includes('/verify') &&
+        !error.config.url?.includes('/user/join') &&
+        !error.config.url?.includes('/login')
+      ) {
+        localStorage.removeItem('token');
+        window.location.href = '/';
+      }
     }
     return Promise.reject(error);
   }

@@ -8,7 +8,7 @@ import useAuthStore from '@/store/useAuthStore';
 import type { SignupFormField } from '@/store/useAuthStore';
 import { useSignup } from '@/hooks/useAuth';
 import type { AxiosError } from 'axios';
-import type { SignupRequest } from '@/api/types';
+import type { SignupRequest, ErrorResponse } from '@/api/types';
 import {
   validateEmail,
   validatePassword,
@@ -19,6 +19,7 @@ import {
   validateForm,
   isFormValid,
 } from '@/utils/validations/signupValidation';
+import { generateVerificationCode, verifyCode } from '@/api/auth';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -119,31 +120,56 @@ const Signup = () => {
     setFormError('gender', undefined);
   };
 
-  const handlePhoneVerification = () => {
-    // 실제 API가 없으므로 임시로 처리
+  const handlePhoneVerification = async () => {
+    const phoneNumber = `${signupForm.phone1}${signupForm.phone2}${signupForm.phone3}`;
+
     const phoneResult = validatePhone(signupForm.phone1, signupForm.phone2, signupForm.phone3);
-    if (phoneResult.isValid) {
+    if (!phoneResult.isValid) {
+      setFormError('phone', phoneResult.message);
+      return;
+    }
+
+    try {
+      await generateVerificationCode(phoneNumber);
       setSignupForm('isPhoneVerifying', true);
       setTimeLeft(180);
       setTimerActive(true);
-    } else {
-      setFormError('phone', phoneResult.message);
+    } catch (error) {
+      const axiosError = error as AxiosError<ErrorResponse>;
+      setFormError('phone', axiosError.response?.data?.message || '인증번호 발송에 실패했습니다.');
     }
   };
 
-  const handleVerificationConfirm = () => {
-    // 실제 API가 없으므로 임시로 처리
-    const isValid = signupForm.verificationCode === '35233';
-    setSignupForm('isVerificationNumberValid', isValid);
-    setSignupForm('isVerificationNumberChecked', true);
-    if (isValid) {
-      setTimerActive(false);
+  const handleVerificationConfirm = async () => {
+    const phoneNumber = `${signupForm.phone1}${signupForm.phone2}${signupForm.phone3}`;
+
+    try {
+      const response = await verifyCode(phoneNumber, signupForm.verificationCode);
+      const isValid = response.isSuccess;
+      setSignupForm('isVerificationNumberValid', isValid);
+      setSignupForm('isVerificationNumberChecked', true);
+      if (isValid) {
+        setTimerActive(false);
+      }
+    } catch (error) {
+      const axiosError = error as AxiosError<ErrorResponse>;
+      setFormError('phone', axiosError.response?.data?.message || '인증번호 확인에 실패했습니다.');
     }
   };
 
-  const handleResendVerification = () => {
-    setTimeLeft(180);
-    setTimerActive(true);
+  const handleResendVerification = async () => {
+    const phoneNumber = `${signupForm.phone1}${signupForm.phone2}${signupForm.phone3}`;
+    try {
+      await generateVerificationCode(phoneNumber);
+      setTimeLeft(180);
+      setTimerActive(true);
+    } catch (error) {
+      const axiosError = error as AxiosError<ErrorResponse>;
+      setFormError(
+        'phone',
+        axiosError.response?.data?.message || '인증번호 재발송에 실패했습니다.'
+      );
+    }
   };
 
   const formatTime = (seconds: number): string => {
@@ -173,6 +199,11 @@ const Signup = () => {
       setFormError(field as keyof typeof signupForm.errors, result.message);
     });
 
+    if (!signupForm.isVerificationNumberValid) {
+      setFormError('phone', '휴대폰 인증이 필요합니다.');
+      return;
+    }
+
     if (isFormValid(validationResults)) {
       try {
         const birthDate = `${signupForm.birthYear}-${String(signupForm.birthMonth).padStart(2, '0')}-${String(
@@ -193,7 +224,7 @@ const Signup = () => {
         navigate('/signup-complete');
       } catch (error) {
         const axiosError = error as AxiosError<{ message: string }>;
-        setFormError('phone', axiosError.response?.data?.message || '회원가입에 실패했습니다.');
+        setFormError('submit', axiosError.response?.data?.message || '회원가입에 실패했습니다.');
       }
     }
   };

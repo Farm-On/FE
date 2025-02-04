@@ -6,6 +6,7 @@ import type {
   SignupResponse,
   ExpertSignupRequest,
   ExpertSignupResponse,
+  CommonResponse,
 } from './types';
 
 export const login = async (data: LoginRequest): Promise<LoginResponse> => {
@@ -28,4 +29,18 @@ export const expertSignup = async (
 
 export const withdraw = async (userId: number): Promise<void> => {
   await axiosInstance.patch(`/withdraw/${userId}`);
+};
+
+export const generateVerificationCode = async (phoneNum: string): Promise<CommonResponse> => {
+  const response = await axiosInstance.post<CommonResponse>('/generate', null, {
+    params: { phoneNum },
+  });
+  return response.data;
+};
+
+export const verifyCode = async (phoneNum: string, inputCode: string): Promise<CommonResponse> => {
+  const response = await axiosInstance.post<CommonResponse>('/verify', null, {
+    params: { phoneNum, inputCode },
+  });
+  return response.data;
 };
