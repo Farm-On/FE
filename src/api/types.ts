@@ -18,11 +18,11 @@ export interface LoginResponse {
 
 export interface SignupRequest {
   name: string;
-  birth: string;
+  birth: string; // "YYYY-MM-DD" 형식
   gender: 'MALE' | 'FEMALE';
   email: string;
   password: string;
-  phone: string;
+  phone: string; // -없이 숫자만
 }
 
 export interface SignupResponse {
@@ -49,4 +49,18 @@ export interface ExpertSignupResponse {
     expertId: number;
     createdAt: string;
   };
+}
+
+export interface CommonResponse {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  result: string;
+}
+
+export interface ErrorResponse {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  data?: unknown;
 }
