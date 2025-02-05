@@ -3,8 +3,29 @@ import { useEditMyPortfolioModalStore } from '@/store/modals/useExpertModalStore
 
 import * as ME from '@/styles/components/modals/Expert/MyEdit.style';
 
+const Check = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" viewBox="0 0 14 15" fill="none">
+    <path
+      d="M11.6673 4.41406L5.25065 10.8307L2.33398 7.91406"
+      stroke="white"
+      strokeWidth="1.16667"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
 export const EditMyPortfolioModal = () => {
-  const { closeModal, openedModalName, career, setCareer } = useEditMyPortfolioModalStore();
+  const {
+    closeModal,
+    openedModalName,
+    career,
+    setCareer,
+    additionalInfo,
+    setAdditionalInfo,
+    mainService,
+    setMainService,
+  } = useEditMyPortfolioModalStore();
 
   // 모달들
   switch (openedModalName) {
@@ -66,21 +87,7 @@ export const EditMyPortfolioModal = () => {
                   checked={career.isOngoing === true}
                   onClick={() => setCareer({ isOngoing: !career.isOngoing })}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="14"
-                    height="14"
-                    viewBox="0 0 14 14"
-                    fill="none"
-                  >
-                    <path
-                      d="M11.6654 3.5L5.2487 9.91667L2.33203 7"
-                      stroke="white"
-                      strokeWidth="1.16667"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                  <Check />
                 </ME.CheckBox>
                 <ME.CheckBoxLabel>진행 중</ME.CheckBoxLabel>
               </ME.CheckBoxContainer>
@@ -88,9 +95,7 @@ export const EditMyPortfolioModal = () => {
 
             {/* 상세 설명 */}
             <ME.Title style={{ marginTop: '42px' }}>상세 설명</ME.Title>
-            <div
-              style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '14px' }}
-            >
+            <ME.Inputs>
               <ME.Input
                 placeholder="내용을 입력해주세요."
                 onChange={(e) => setCareer({ detail1: e.target.value.trim() })}
@@ -107,7 +112,7 @@ export const EditMyPortfolioModal = () => {
                 placeholder="내용을 입력해주세요."
                 onChange={(e) => setCareer({ detail4: e.target.value.trim() })}
               />
-            </div>
+            </ME.Inputs>
             <ME.SaveBtn
               disabled={(() => {
                 /* TODO */
@@ -122,37 +127,121 @@ export const EditMyPortfolioModal = () => {
       );
     }
 
-    case '추가정보':
+    case '추가정보': {
+      const saveAdditionalInfo = () => {
+        console.log(additionalInfo);
+        closeModal();
+      };
+
       return (
         <Modal
           open={openedModalName === '추가정보'}
           close={() => closeModal()}
-          width="900px"
-          height="458px"
+          width="660px"
+          height="591px"
           borderRadius="20px"
-        ></Modal>
+        >
+          <ME.Header>
+            <ME.CloseBtn onClick={() => closeModal()} />
+          </ME.Header>
+          <ME.Content>
+            {/* 추가정보 */}
+            <ME.Title>추가정보</ME.Title>
+            <ME.TextArea
+              placeholder="내용을 입력해주세요"
+              onChange={(e) => setAdditionalInfo(e.target.value.trim())}
+            />
+            <ME.MaxLengthText style={{ marginRight: '3px' }}>0/100자</ME.MaxLengthText>
+            <ME.SaveBtn onClick={() => saveAdditionalInfo()}>저장</ME.SaveBtn>
+          </ME.Content>
+        </Modal>
       );
+    }
 
-    case '대표 서비스':
+    case '대표 서비스': {
+      const fields = ['곡물', '채소작물', '과일', '특용', '등등'];
+      const detailedFields = ['감자', '엽채류', '과채류', '버섯', '기타 뿌리채소', '등등'];
+
+      const saveMainService = () => {
+        console.log(mainService);
+        closeModal();
+      };
+
       return (
         <Modal
           open={openedModalName === '대표 서비스'}
           close={() => closeModal()}
-          width="900px"
-          height="458px"
+          width="660px"
+          height="870px"
           borderRadius="20px"
-        ></Modal>
+        >
+          <ME.Header>
+            <ME.CloseBtn onClick={() => closeModal()} />
+          </ME.Header>
+          <ME.Content>
+            {mainService.field && (
+              <ME.Chip>
+                <ME.ChipLabel>
+                  {mainService.field}{' '}
+                  {mainService.detailedField ? `(${mainService.detailedField})` : null}
+                </ME.ChipLabel>
+                <ME.ChipXBtn onClick={() => setMainService({ field: null, detailedField: null })} />
+              </ME.Chip>
+            )}
+            <ME.FieldContainer>
+              <ME.Fields>
+                <ME.FieldsHeader>시/도</ME.FieldsHeader>
+                <ME.FieldScroller>
+                  {fields.map((field) => (
+                    <ME.Field
+                      key={field}
+                      selected={mainService.field === field}
+                      onClick={() => setMainService({ field })}
+                    >
+                      {field}
+                    </ME.Field>
+                  ))}
+                </ME.FieldScroller>
+              </ME.Fields>
+              <ME.Divider />
+              <ME.DetailedFields>
+                <ME.DetailedFieldsHeader>시/구</ME.DetailedFieldsHeader>
+                <ME.FieldScroller>
+                  {detailedFields.map((detailedField) => (
+                    <ME.DetailedField
+                      key={detailedField}
+                      selected={mainService.detailedField === detailedField}
+                      onClick={() => setMainService({ detailedField })}
+                    >
+                      {detailedField}
+                    </ME.DetailedField>
+                  ))}
+                </ME.FieldScroller>
+              </ME.DetailedFields>
+            </ME.FieldContainer>
+            <ME.Title style={{ marginTop: '34px' }}>상세 설명</ME.Title>
+            <ME.Inputs>
+              <ME.Input
+                placeholder="내용을 입력해주세요."
+                onChange={(e) => setMainService({ detail1: e.target.value.trim() })}
+              />
+              <ME.Input
+                placeholder="내용을 입력해주세요."
+                onChange={(e) => setMainService({ detail2: e.target.value.trim() })}
+              />
+              <ME.Input
+                placeholder="내용을 입력해주세요."
+                onChange={(e) => setMainService({ detail3: e.target.value.trim() })}
+              />
+              <ME.Input
+                placeholder="내용을 입력해주세요."
+                onChange={(e) => setMainService({ detail4: e.target.value.trim() })}
+              />
+            </ME.Inputs>
+            <ME.SaveBtn onClick={() => saveMainService()}>저장</ME.SaveBtn>
+          </ME.Content>
+        </Modal>
       );
-
-    case '활동 지역':
-      return (
-        <Modal
-          open={openedModalName === '활동 지역'}
-          close={() => closeModal()}
-          width="900px"
-          height="458px"
-          borderRadius="20px"
-        ></Modal>
-      );
+    }
   }
 };

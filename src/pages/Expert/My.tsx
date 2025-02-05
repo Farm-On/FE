@@ -3,10 +3,7 @@ import rehypeRaw from 'rehype-raw';
 
 import * as M from '@/styles/pages/Expert/My.style';
 import { EditMyProfileModal } from '@/components/modals/Expert/My.modal';
-import {
-  useEditMyPortfolioModalStore,
-  useEditMyProfileModalStore,
-} from '@/store/modals/useExpertModalStore';
+import { useEditMyProfileModalStore } from '@/store/modals/useExpertModalStore';
 import { useNavigate } from 'react-router-dom';
 
 const dummy = {
@@ -56,11 +53,8 @@ const dummy = {
 };
 
 export default function My() {
-  // 내 프로필 편집 모달
-  const { openEditMyProfileModal } = useEditMyProfileModalStore();
-
-  // 활동 지역 편집 모달
-  const { openModal } = useEditMyPortfolioModalStore();
+  // 내 프로필, 활동 지역 모달
+  const { openModal } = useEditMyProfileModalStore();
 
   const navigate = useNavigate();
 
@@ -72,7 +66,7 @@ export default function My() {
           {/* 내 프로필 */}
           <M.Title>내 프로필</M.Title>
           <M.Card>
-            <M.EditText onClick={() => openEditMyProfileModal()}>편집</M.EditText>
+            <M.EditText onClick={() => openModal('내 프로필')}>편집</M.EditText>
             <M.MyInfoContainer>
               <M.AvatarContainer>
                 <M.Avatar src={dummy.avatar_url} alt="" />
