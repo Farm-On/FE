@@ -29,6 +29,14 @@ export const CategoryWrapper = styled.div`
   display: flex;
   gap: 10px;
   margin-bottom: 40px;
+
+  @media (max-width: 768px) {
+    margin-left: 10px;
+  }
+
+  @media (max-width: 480px) {
+    margin-left: 50px;
+  }
 `;
 
 export const Category = styled.div<{ isSelected: boolean }>`
@@ -62,6 +70,14 @@ export const Category = styled.div<{ isSelected: boolean }>`
 
 export const FeedWrapper = styled.div`
   width: 100%;
+
+  @media (max-width: 768px) {
+    margin-left: 10px;
+  }
+
+  @media (max-width: 480px) {
+    margin-left: 50px;
+  }
 `;
 
 export const GreenBox = styled.div`
@@ -109,12 +125,12 @@ export const Content = styled.div`
     color: rgba(94, 94, 94, 1);
     @media (max-width: 768px) {
       margin: 20px 0;
-      width: 600px;
+      width: 700px;
     }
 
     @media (max-width: 480px) {
       margin: 15px 0;
-      width: 550px;
+      width: 450px;
     }
   }
 `;
@@ -137,4 +153,12 @@ export const DividingLine = styled.div`
   height: 1px;
   background-color: rgba(206, 206, 206, 1);
   margin: 14px 0;
+
+  @media (max-width: 768px) {
+    width: 720px;
+  }
+
+  @media (max-width: 480px) {
+    width: 470px;
+  }
 `;
