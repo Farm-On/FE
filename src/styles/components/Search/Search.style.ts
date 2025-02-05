@@ -67,7 +67,7 @@ export const SearchBar = styled.div`
   height: 66px;
   background-color: #f5f5f5;
   border-radius: 16px;
-  margin-bottom: 95px;
+  margin-bottom: 50px;
 `;
 
 export const StyledImage = styled.img`
