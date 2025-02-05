@@ -1,23 +1,41 @@
 import * as EC from '@/styles/components/EstimateCard.style';
 
 interface CardProps {
-  productName: string;
+  title: string;
   product: string;
   date: string;
+  category: string;
+  region: string;
+  productName: string;
+  money: string;
 }
 
-export const EstimateCard = ({ productName, product, date }: CardProps) => {
+export const EstimateCard = ({
+  title,
+  category,
+  product,
+  region,
+  date,
+  productName,
+  money,
+}: CardProps) => {
   return (
-    <div>
+    <EC.Container>
       <EC.Card>
         <EC.Content>
-          <h4>
-            {productName} ({product})
-          </h4>
-          <h4>신청 견적 보기</h4>
-          <p>{date}</p>
+          <h2>{title}</h2>
+          <h3>
+            {productName}
+            {`(${product})`} | {category} | {region}
+          </h3>
+          <EC.ContentLine />
+          <EC.Bottom>
+            <h4>₩ {money}</h4>
+            <p>{date}</p>
+          </EC.Bottom>
         </EC.Content>
       </EC.Card>
-    </div>
+    </EC.Container>
   );
 };
+

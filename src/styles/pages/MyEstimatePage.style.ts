@@ -26,6 +26,7 @@ export const Title1 = styled.div`
     flex-direction: column;
     gap: 10px;
     align-items: start;
+    padding-top: 70px;
   }
 
   @media (max-width: 480px) {
@@ -33,6 +34,7 @@ export const Title1 = styled.div`
     flex-direction: column;
     gap: 10px;
     align-items: start;
+    padding-top: 70px;
   }
 
   h2 {
@@ -75,7 +77,7 @@ export const ViewAll = styled.div`
   cursor: pointer;
 
   h4 {
-    font-family: 'PretendardMedium';
+    font-family: 'PretendardRegular';
     margin: 0;
     font-size: 16px;
     line-height: 24px;
@@ -87,37 +89,62 @@ export const ViewAll = styled.div`
     height: 20px;
     color: rgba(0, 160, 94, 1);
   }
+  
+
 `;
 export const MyCards = styled.div`
-  display: flex;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 15px;
+  row-gap: 18px;
   margin-top: 30px;
+  max-width: 1200px;
+
+  @media (max-width: 768px) {
+    max-width: 700px;  
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 5px;
+    row-gap: 8px;
+  }
+
+  @media (max-width: 480px) {
+    max-width: 400px;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 5px;
+    row-gap: 8px;
+  }
 `;
 export const AddCard = styled.div`
   background-color: rgba(255, 255, 255, 1);
-  background-image: url("data:image/svg+xml,%3Csvg width='320' height='122' viewBox='0 0 320 122' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='0.5' y='0.5' width='319' height='121' rx='9.5' fill='white' stroke='%23BBBBBB' stroke-dasharray='6 6'/%3E%3C/svg%3E");
-  width: 320px;
-  height: 122px;
+  background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' viewBox='0 0 320 122' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='0.5' y='0.5' width='319' height='121' rx='9.5' fill='white' stroke='%23BBBBBB' stroke-dasharray='6 6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-size: contain;
+  width: 390px;
+  height: 149px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-
+  gap:10px;
+  background-size: 100% 100%;
   @media (max-width: 768px) {
-    width: 150px;
+    width: 180px;
     height: 120px;
-    top: 260px;
+    background-image: none;
   }
 
   @media (max-width: 480px) {
-    width: 158px;
-    height: 118px;
+    width: 138px;
+    height: 108px;
     top: 260px;
+    background-image:none;
   }
   p {
     font-size: 14px;
-    margin-top: 7px;
+    color:#5D5D5D;
+    margin:0;
+    white-space: nowrap;
   }
 `;
 
@@ -131,7 +158,7 @@ export const DividingLine = styled.div`
   }
 
   @media (max-width: 480px) {
-    width: 440px;
+    width: 400px;
   }
 `;
 
@@ -139,17 +166,17 @@ export const ExpertCardWrap = styled.div`
   display: flex;
   gap: 14px;
   position: absolute;
-  top: 573px;
+  top: 753px;
   left: 462px;
 
   @media (max-width: 768px) {
     left: 60px;
-    top: 660px;
+    top: 800px;
   }
 
   @media (max-width: 480px) {
     left: 60px;
-    top: 700px;
+    top: 750px;
   }
 `;
 

@@ -24,13 +24,62 @@ export default function MyEstimatePage() {
               <GreenRight />
             </E.ViewAll>
           </E.Title1>
+
           <E.MyCards>
-            <EstimateCard productName="쌀" product="곡물" date="2024.12.08" />
-            <E.AddCard>
-              <AddBtn onClick={() => navigate('/MyEstimate/RequestEstimate')} />
-              <p>새 견적 받아보기</p>
+            <EstimateCard
+              productName="콩"
+              product="곡물"
+              date="2024.11.11"
+              title="토양 관리 및 물 관리 방법"
+              category="토양 및 환경관리"
+              region="경기 이천시"
+              money="500만원~1,000만원"
+            />
+            <EstimateCard
+              productName="쌀"
+              product="곡물"
+              date="2024.11.11"
+              title="논 배수와 비료 사용법"
+              category="토양 및 환경관리"
+              region="경기 이천시"
+              money="500만원~1,000만원"
+            />
+            <EstimateCard
+              productName="콩"
+              product="곡물"
+              date="2024.11.11"
+              title="논 배수와 비료 사용법"
+              category="토양 및 환경관리"
+              region="경기 이천시"
+              money="500만원~1,000만원"
+            />
+            <EstimateCard
+              productName="콩"
+              product="곡물"
+              date="2024.11.11"
+              title="쌀농사 토양, 물 관리 관련 컨설팅..."
+              category="토양 및 환경관리"
+              region="경기 이천시"
+              money="500만원~1,000만원"
+            />
+            <EstimateCard
+              productName="옥수수"
+              product="곡물"
+              date="2024.11.11"
+              title="옥수수 재배 초보 입니다. 비료 사..."
+              category="토양 및 환경관리"
+              region="경기 이천시"
+              money="500만원~1,000만원"
+            />
+
+            <E.AddCard onClick={() => navigate('/MyEstimate/RequestEstimate')}>
+              <div style={{display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center',gap:'10px'}}>
+                <StyledBtn />
+                <StyledP>새 견적 받아보기</StyledP>
+              </div>
             </E.AddCard>
           </E.MyCards>
+
           <E.DividingLine />
         </div>
 
@@ -41,11 +90,23 @@ export default function MyEstimatePage() {
           </E.Title2>
 
           <E.ExpertCardWrap>
-            <ExpertCard name="농사꾼131" product="곡물,벼" star={4.8} years={10} url={DonghoPhoto} />
+            <ExpertCard
+              name="농사꾼131"
+              product="곡물,벼"
+              star={4.8}
+              years={10}
+              url={DonghoPhoto}
+            />
 
             <ExpertCard name="이수환" product="과일,감귤" star={4.8} years={12} url={SuhwanPhoto} />
 
-            <ExpertCard name="이지민(해충해방)" product="채소작물,버섯" star={4.8} years={20} url={JiminPhoto} />
+            <ExpertCard
+              name="이지민(해충해방)"
+              product="채소작물,버섯"
+              star={4.8}
+              years={20}
+              url={JiminPhoto}
+            />
 
             <E.ChevronRight>
               <ChevronRightB />
@@ -63,3 +124,26 @@ const ChevronRightB = styled(ChevronRight)`
   top: 717px;
   left: 1536px;
 `;
+
+const StyledBtn = styled(AddBtn)`
+  @media (max-width: 768px) {
+    width: 40px;
+    height: 40px;  
+  }
+
+  @media (max-width: 480px) {
+    width: 20px;
+    height: 20px;
+  }
+
+`
+const StyledP = styled.p`
+  @media (max-width: 768px) {
+    font-size: 14px !important;
+  }
+
+  @media (max-width: 480px) {
+    font-size:10px !important;
+  }
+
+`
