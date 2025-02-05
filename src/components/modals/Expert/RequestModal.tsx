@@ -1,7 +1,11 @@
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 
-export const RequestModal = () => {
+interface ModalProps{
+    onClick:()=>void;
+}
+
+export const RequestModal = ({onClick}:ModalProps) => {
   const navigate = useNavigate();
   return (
     <ModalOverlay>
@@ -12,7 +16,7 @@ export const RequestModal = () => {
         </Top>
         <CheckP>신청하시겠습니까?</CheckP>
         <ButtonWrapper>
-          <BackBtn>돌아가기</BackBtn>
+          <BackBtn onClick={onClick}>돌아가기</BackBtn>
           <ApplyBtn onClick={() => navigate('/')}>신청하기</ApplyBtn>
         </ButtonWrapper>
       </Container>
@@ -35,6 +39,11 @@ const BackBtn = styled.button`
   font-weight: 500;
   font-family: Pretendard;
   white-space: nowrap;
+
+  &:hover {
+    background: #8e8e8e;
+    color:  rgba(255, 255, 255, 1);
+  }
 
   @media (max-width: 768px) {
     width: 157px;

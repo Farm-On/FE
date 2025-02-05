@@ -35,7 +35,7 @@ export default function EstimateCheckPage() {
     <div style={{ backgroundColor:"#F9F9F9", paddingTop:84}}>
 
       {
-        isModalOpen === true ? <RequestModal/> : null
+        isModalOpen === true ? <RequestModal onClick={handleModalOpen}/> : null
       }
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <E.Title>쌀(곡물) 컨설팅 요청 내역</E.Title>
