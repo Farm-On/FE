@@ -61,7 +61,6 @@ ReactModal.setAppElement('#root');
 const AppRoutes = () => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
-  
 
   const isAuthPage = ['/agreement', '/signup', '/signup-complete'].includes(location.pathname);
 
@@ -91,8 +90,11 @@ const AppRoutes = () => {
         <Route path="/agreement" element={<Agreement />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signup-complete" element={<SignupComplete />} />
-        <Route path="/MyEstimate/allEstimates" element={<AllEstimates/>} />
-        <Route path="/MyEstimate/RequestEstimate/CheckMyEstimate" element={<CheckMyEstimatePage/>} />
+        <Route path="/MyEstimate/allEstimates" element={<AllEstimates />} />
+        <Route
+          path="/MyEstimate/RequestEstimate/CheckMyEstimate"
+          element={<CheckMyEstimatePage />}
+        />
       </Routes>
       {shouldShowNavbarAndFooter && <Footer />}
     </>
@@ -108,6 +110,17 @@ function App() {
         <AppContainer>
           <Global
             styles={css`
+              *,
+              *::before,
+              *::after {
+                box-sizing: border-box;
+              }
+
+              :root {
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+              }
+
               @font-face {
                 font-family: 'PretendardRegular';
                 src: url(${PretendardRegular}) format('woff');
