@@ -1,6 +1,9 @@
 import { useParams } from 'react-router-dom';
 import AddBtn from '../../assets/icons/dashedAddGray.svg?react';
 import * as E from '../../styles/pages/EstimateCheck.style';
+import { RequestModal } from '@/components/modals/Expert/RequestModal';
+import { useState } from 'react';
+import styled from '@emotion/styled';
 
 // 더미 데이터
 const dummy = {
@@ -22,9 +25,18 @@ export default function EstimateCheckPage() {
   // 견적서 상세페이지
 
   const { id } = useParams();
+  const [isModalOpen,setIsModalOpen] = useState<boolean>(false);
+
+  const handleModalOpen = ()=>{
+    setIsModalOpen(!isModalOpen);
+  };
 
   return (
     <div style={{ backgroundColor:"#F9F9F9", paddingTop:84}}>
+
+      {
+        isModalOpen === true ? <RequestModal/> : null
+      }
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <E.Title>쌀(곡물) 컨설팅 요청 내역</E.Title>
         <E.Subtitle>컨설팅 신청 정보가 올바른지 확인해주세요</E.Subtitle>
@@ -80,10 +92,11 @@ export default function EstimateCheckPage() {
             </E.ConsultingImageContainer>
             <E.ConsultingContent>{dummy.content}</E.ConsultingContent>
           </E.Card>
-          <E.ChatButton>신청하기</E.ChatButton>
+          <E.ChatButton onClick={handleModalOpen}>신청하기</E.ChatButton>
         </E.Content>
       </div>
     </div>
   );
 }
+
 
