@@ -35,6 +35,17 @@ const BackBtn = styled.button`
   font-weight: 500;
   font-family: Pretendard;
   white-space: nowrap;
+
+  @media (max-width: 768px) {
+    width: 157px;
+    height: 61px;
+  }
+
+  @media (max-width: 480px) {
+    width: 127px;
+    height: 41px;
+    font-size: 15px;
+  }
 `;
 
 const ApplyBtn = styled.button`
@@ -44,7 +55,7 @@ const ApplyBtn = styled.button`
   justify-content: center;
   align-items: center;
   border-radius: 10px;
-  border:none;
+  border: none;
   background: #00a05e;
   color: rgba(255, 255, 255, 1);
   cursor: pointer;
@@ -52,6 +63,17 @@ const ApplyBtn = styled.button`
   font-weight: 500;
   font-family: Pretendard;
   white-space: nowrap;
+
+  @media (max-width: 768px) {
+    width: 157px;
+    height: 61px;
+  }
+
+  @media (max-width: 480px) {
+    width: 127px;
+    height: 41px;
+    font-size: 15px;
+  }
 `;
 
 const CheckP = styled.p`
