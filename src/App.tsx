@@ -30,6 +30,7 @@ import ChatList from './pages/chat/ChatList';
 import ChatRoom from './pages/chat/ChatRoom';
 import MenuBar from './pages/MenuBar';
 import CommunityPage from './pages/Home/Community';
+import CheckMyEstimatePage from './pages/Home/EstimateCheckPage';
 
 // 컴포넌트
 import LoginModal from './components/LoginModal';
@@ -91,6 +92,7 @@ const AppRoutes = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/signup-complete" element={<SignupComplete />} />
         <Route path="/MyEstimate/allEstimates" element={<AllEstimates/>} />
+        <Route path="/MyEstimate/RequestEstimate/CheckMyEstimate" element={<CheckMyEstimatePage/>} />
       </Routes>
       {shouldShowNavbarAndFooter && <Footer />}
     </>
