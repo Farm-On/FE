@@ -19,7 +19,7 @@ export default function MyEstimatePage() {
         <div>
           <E.Title1>
             <h2>내 견적</h2>
-            <E.ViewAll>
+            <E.ViewAll onClick={()=>navigate('/MyEstimate/allEstimates')}>
               <h4>전체보기</h4>
               <GreenRight />
             </E.ViewAll>

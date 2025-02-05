@@ -11,7 +11,7 @@ import PretendardMedium from '@/assets/fonts/Pretendard-Medium.woff';
 // 페이지
 import Home from './pages/Home';
 import MyEstimatePage from './pages/Home/MyEstimate';
-
+import AllEstimates from './pages/Home/AllEstimates';
 import My from './pages/Expert/My';
 import Estimates from './pages/Expert/Estimates';
 import Estimate from './pages/Expert/Estimate';
@@ -90,6 +90,7 @@ const AppRoutes = () => {
         <Route path="/agreement" element={<Agreement />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signup-complete" element={<SignupComplete />} />
+        <Route path="/MyEstimate/allEstimates" element={<AllEstimates/>} />
       </Routes>
       {shouldShowNavbarAndFooter && <Footer />}
     </>
