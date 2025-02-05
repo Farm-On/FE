@@ -1,6 +1,9 @@
 import { useParams } from 'react-router-dom';
-
-import * as E from '@/styles/pages/Expert/Estimate.style';
+import AddBtn from '../../assets/icons/dashedAddGray.svg?react';
+import * as E from '../../styles/pages/EstimateCheck.style';
+import { RequestModal } from '@/components/modals/Expert/RequestModal';
+import { useState } from 'react';
+import styled from '@emotion/styled';
 
 // 더미 데이터
 const dummy = {
@@ -18,19 +21,31 @@ const dummy = {
 또 물 관리는 어떻게 해야 논 상태를 더 잘 유지할 수 있을지 고민입니다. 배수나 물 공급 방법에 대해 효율적인 팁이 있다면 알려주시면 좋겠습니다. 현재 토양의 상태 사진 첨부합니다. 병충해도 미리 예방할 수 있는 방법이 있다면 함께 조언 부탁드립니다.`,
 };
 
-export default function Estimate() {
+export default function EstimateCheckPage() {
   // 견적서 상세페이지
 
   const { id } = useParams();
+  const [isModalOpen,setIsModalOpen] = useState<boolean>(false);
+
+  const handleModalOpen = ()=>{
+    setIsModalOpen(!isModalOpen);
+  };
 
   return (
-    <div style={{ backgroundColor:"#F9F9F9", paddingTop:84 }}>
+    <div style={{ backgroundColor:"#F9F9F9", paddingTop:84}}>
+
+      {
+        isModalOpen === true ? <RequestModal onClick={handleModalOpen}/> : null
+      }
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <E.Title>쌀(곡물) 컨설팅 요청 내역</E.Title>
-        <E.Subtitle>컨설팅 요청 내역을 확인하세요</E.Subtitle>
+        <E.Subtitle>컨설팅 신청 정보가 올바른지 확인해주세요</E.Subtitle>
         <E.Content>
           {/* 제목 */}
           <E.Card style={{ padding: '21px 48px 21px 48px' }}>
+            <E.Modify>
+                <p>수정</p>
+            </E.Modify>
             <E.Inline>
               <E.Name>제목</E.Name>
               <E.Value>{dummy.title}</E.Value>
@@ -39,11 +54,10 @@ export default function Estimate() {
 
           {/* 상세정보 */}
           <E.Card style={{ padding: '41px 48px 41px 48px' }}>
+            <E.Modify>
+                <p>수정</p>
+            </E.Modify>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
-              <E.Inline>
-                <E.Name>신청자</E.Name>
-                <E.Value>{dummy.applicant}</E.Value>
-              </E.Inline>
               <E.Inline>
                 <E.Name>종류</E.Name>
                 <E.Value>{dummy.category}</E.Value>
@@ -61,6 +75,9 @@ export default function Estimate() {
 
           {/* 컨설팅 설명 */}
           <E.Card style={{ padding: '41px 48px 41px 48px' }}>
+            <E.Modify>
+                <p>수정</p>
+            </E.Modify>
             <E.Inline>
               <E.Name>컨설팅 설명</E.Name>
             </E.Inline>
@@ -68,12 +85,18 @@ export default function Estimate() {
               {dummy.images.map((image) => (
                 <E.ConsultingImage key={image} src={image} alt="" />
               ))}
+              <E.AddWrapper>
+                <AddBtn/>
+                <p style={{whiteSpace:'nowrap'}}>사진 추가하기</p>
+              </E.AddWrapper>
             </E.ConsultingImageContainer>
             <E.ConsultingContent>{dummy.content}</E.ConsultingContent>
           </E.Card>
-          <E.ChatButton>채팅하기</E.ChatButton>
+          <E.ChatButton onClick={handleModalOpen}>신청하기</E.ChatButton>
         </E.Content>
       </div>
     </div>
   );
 }
+
+

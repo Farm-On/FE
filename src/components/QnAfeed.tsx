@@ -1,4 +1,5 @@
 import * as C from '@/styles/components/MainCommunityStyle.style';
+import styled from '@emotion/styled';
 
 interface FeedProps {
   topic: string;
@@ -8,7 +9,7 @@ interface FeedProps {
 
 export const QnAFeed = ({ topic, headline, content }: FeedProps) => {
   return (
-    <div>
+    <CardWrapper>
       <C.GreenBox>
         <p>{topic}</p>
       </C.GreenBox>
@@ -26,6 +27,19 @@ export const QnAFeed = ({ topic, headline, content }: FeedProps) => {
         <p>0</p>
       </C.Interactions>
       <C.DividingLine />
-    </div>
+    </CardWrapper>
   );
 };
+
+const CardWrapper = styled.div`
+
+  @media (max-width: 768px) {
+    width: 720px;
+  }
+
+  @media (max-width: 480px) {
+    width: 460px;
+  }
+
+
+`

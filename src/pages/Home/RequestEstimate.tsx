@@ -8,6 +8,7 @@ import { ChoiceCity } from '@/components/ChoiceCity/ChoiceCity';
 import { StateScroll } from '@/components/StateScroll';
 import styled from '@emotion/styled';
 import React, { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface Category {
   id: string;
@@ -77,7 +78,7 @@ export default function RequestEstimatePage(): JSX.Element {
   const handleCityClick = ()=>{
     scrollToSection(budgetRef, 'budget')
   };
-
+  const navigate = useNavigate();
   return (
     <>
       <TopContainer>
@@ -199,7 +200,7 @@ export default function RequestEstimatePage(): JSX.Element {
                   </InputContainer>
                 </div>
                 <ApplyBtn>
-                  <RE.Button>견적 조회하기</RE.Button>
+                  <RE.Button onClick={()=>navigate('/MyEstimate/RequestEstimate/CheckMyEstimate')}>견적 조회하기</RE.Button>
                 </ApplyBtn>
               </div>
             </div>
