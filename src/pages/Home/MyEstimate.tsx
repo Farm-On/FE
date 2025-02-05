@@ -14,7 +14,7 @@ export default function MyEstimatePage() {
   const navigate = useNavigate();
 
   return (
-    <div style={{ paddingBottom: '487px' }}>
+    <E.PageWrapper>
       <E.Container>
         <div>
           <E.Title1>
@@ -66,7 +66,7 @@ export default function MyEstimatePage() {
               productName="옥수수"
               product="곡물"
               date="2024.11.11"
-              title="옥수수 재배 초보 입니다. 비료 사..."
+              title="옥수수 재배 초보 입니다. 비료 사.."
               category="토양 및 환경관리"
               region="경기 이천시"
               money="500만원~1,000만원"
@@ -114,7 +114,7 @@ export default function MyEstimatePage() {
           </E.ExpertCardWrap>
         </div>
       </E.Container>
-    </div>
+    </E.PageWrapper>
   );
 }
 

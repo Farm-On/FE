@@ -1,9 +1,21 @@
 import styled from '@emotion/styled';
 
+
+export const PageWrapper = styled.div`
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 487px;
+  box-sizing: border-box;
+`
+
+
 export const Container = styled.div`
   padding-left: 160px;
   max-width: 1920px;
-  width: 1920px;
+  width: 90%;
+  margin:0 auto;
   @media (max-width: 768px) {
     padding-left: 60px;
   }
