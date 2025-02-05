@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { useSearchParams } from 'react-router-dom';
 import * as M from '@/styles/pages/MenuBar.style';
 import grainImg from '@/assets/images/grain.png';
 import vegetableImg from '@/assets/images/vegetable.png';
@@ -69,27 +69,23 @@ const categories = [
 export default function MenuBar() {
   const [activeCategory, setActiveCategory] = useState(categories[0].id);
   const categoryRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    const handleScroll = () => {
-      let currentCategory = categories[0].id;
-
-      for (const category of categories) {
-        const element = categoryRefs.current[category.id];
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          if (rect.top <= 150 && rect.bottom > 150) {
-            currentCategory = category.id;
-          }
-        }
+    const categoryFromUrl = searchParams.get('category');
+    if (categoryFromUrl) {
+      setActiveCategory(categoryFromUrl);
+      const element = categoryRefs.current[categoryFromUrl];
+      if (element) {
+        setTimeout(() => {
+          window.scrollTo({
+            top: element.offsetTop - 100, // 네비게이션 바 고려
+            behavior: 'smooth',
+          });
+        }, 300); // 페이지 전환 후 스크롤 이동
       }
-
-      setActiveCategory(currentCategory);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    }
+  }, [searchParams]); // URL이 바뀌면 실행
 
   //클릭 시 해당 카테고리로 스크롤 이동
   const handleSidebarClick = (categoryId: string) => {
