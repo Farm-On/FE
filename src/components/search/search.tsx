@@ -9,11 +9,13 @@ export const Search = () => {
     <S.Container>
       <S.SearchSection>
         <S.BackgroundBlur />
-        <S.Title1>지금 당신에게</S.Title1>
-        <S.Title2>필요한 컨설팅을 찾아보세요.</S.Title2>
+        <S.Title>
+          지금 당신에게 <br />
+          필요한 컨설팅을 찾아보세요.
+        </S.Title>
         <S.SearchBar>
           <S.StyledImage src={SearchImg} alt="Search" />
-          <S.Input placeholder="인삼 재배법이 궁금하다면?" />
+          <S.Input placeholder="어떤 서비스가 필요하세요?" />
         </S.SearchBar>
         <S.CategoryContainer>
           <Category />

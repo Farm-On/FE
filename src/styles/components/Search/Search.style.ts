@@ -46,24 +46,18 @@ export const BackgroundBlur = styled.div`
   top: -158px;
   left: 50%;
   transform: translateX(-50%);
+  mix-blend-mode: difference;
 `;
 
-export const Title1 = styled.h1`
+export const Title = styled.h1`
   font-family: 'Pretendard';
   font-size: 44px;
   font-weight: bold;
-  margin: 0;
-  margin-top: 137px;
+  margin-top: 135px;
   text-align: center;
-`;
-
-export const Title2 = styled.h1`
-  font-family: 'Pretendard';
-  font-size: 44px;
-  font-weight: bold;
-  margin: 0;
+  color: #002415;
+  line-height: 1.4;
   margin-bottom: 86px;
-  text-align: center;
 `;
 
 export const SearchBar = styled.div`
@@ -73,7 +67,7 @@ export const SearchBar = styled.div`
   height: 66px;
   background-color: #f5f5f5;
   border-radius: 16px;
-  margin-bottom: 40px;
+  margin-bottom: 95px;
 `;
 
 export const StyledImage = styled.img`
@@ -88,7 +82,7 @@ export const Input = styled.input`
   height: 100%;
   border: none;
   outline: none;
-  font-family: 'Pretendard';
+  font-family: 'PretendardMedium';
   font-size: 18px;
   color: #8e8e8e;
   background: none;

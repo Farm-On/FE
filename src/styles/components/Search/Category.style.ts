@@ -16,8 +16,8 @@ export const CategoryContainer = styled.div`
 
 export const ImgContainer = styled.div`
   display: flex;
-  height: 4.375rem;
-  width: 4.3753rem;
+  height: 70px;
+  width: 70px;
   background-color: #f5f5f5;
   border-radius: 4.658vw 0 4.658vw 4.658vw;
   align-items: center;
@@ -25,8 +25,8 @@ export const ImgContainer = styled.div`
 `;
 
 export const StyledImage = styled.img`
-  width: 80%;
-  height: 80%;
+  width: 50px;
+  height: 50px;
   object-fit: cover;
 `;
 
