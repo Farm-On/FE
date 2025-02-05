@@ -75,7 +75,7 @@ export default function EstimateCheckPage() {
               ))}
               <E.AddWrapper>
                 <AddBtn/>
-                <p>사진 추가하기</p>
+                <p style={{whiteSpace:'nowrap'}}>사진 추가하기</p>
               </E.AddWrapper>
             </E.ConsultingImageContainer>
             <E.ConsultingContent>{dummy.content}</E.ConsultingContent>

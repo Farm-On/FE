@@ -7,6 +7,14 @@ export const Title = styled.div`
   font-style: normal;
   font-weight: 600;
   line-height: 150%; /* 51px */
+
+  @media (max-width: 768px) {
+    padding-left: 20px;
+  }
+
+  @media (max-width: 480px) {
+    padding-left: 20px;
+  }
 `;
 
 export const Subtitle = styled.span`
@@ -18,6 +26,19 @@ export const Subtitle = styled.span`
   font-style: normal;
   font-weight: 400;
   line-height: 166%; /* 29.88px */
+  @media (max-width: 768px) {
+    width: 80px;
+    height: 24px;
+    font-size: 12px;
+    padding: 10px 60px 10px 16px;
+  }
+
+  @media (max-width: 480px) {
+    width: 80px;
+    height: 14px;
+    font-size: 12px;
+    padding: 10px 60px 10px 16px;
+  }
 `;
 
 export const Content = styled.div`
@@ -88,6 +109,15 @@ export const ConsultingContent = styled.pre`
   font-weight: 400;
   line-height: 150%; /* 24px */
   white-space: pre-wrap;
+
+  @media (max-width: 768px) {
+    width: 720px;
+    padding-right:20px;
+  }
+
+  @media (max-width: 480px) {
+    width: 450px;
+  }
 `;
 
 export const ChatButton = styled.button`
@@ -126,25 +156,25 @@ export const Modify = styled.div`
     text-decoration-thickness: auto;
     text-underline-offset: auto;
     text-underline-position: from-font;
-    cursor:pointer;
-    margin:0;
+    cursor: pointer;
+    margin: 0;
   }
 `;
 
 export const AddWrapper = styled.div`
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-gap:8px;
-margin-left:30px;
-p{
-color: var(--gray-400, #8E8E8E);
-font-family: Pretendard;
-font-size: 12px;
-font-style: normal;
-font-weight: 500;
-line-height: 120%; /* 14.4px */
-margin:0;
-}
-`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-left: 30px;
+  p {
+    color: var(--gray-400, #8e8e8e);
+    font-family: Pretendard;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 120%; /* 14.4px */
+    margin: 0;
+  }
+`;
