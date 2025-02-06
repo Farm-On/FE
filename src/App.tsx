@@ -31,6 +31,7 @@ import ChatRoom from './pages/chat/ChatRoom';
 import MenuBar from './pages/MenuBar';
 import CommunityPage from './pages/Home/Community';
 import CheckMyEstimatePage from './pages/Home/EstimateCheckPage';
+import EstimateSheet from './pages/Home/EstimateSheet';
 
 // 컴포넌트
 import LoginModal from './components/LoginModal';
@@ -38,6 +39,7 @@ import useAuthStore from './store/useAuthStore';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import ExpertProfile from './pages/Expert/Profile';
+
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -93,6 +95,7 @@ const AppRoutes = () => {
         <Route path="/signup-complete" element={<SignupComplete />} />
         <Route path="/MyEstimate/allEstimates" element={<AllEstimates/>} />
         <Route path="/MyEstimate/RequestEstimate/CheckMyEstimate" element={<CheckMyEstimatePage/>} />
+        <Route path="/MyEstimate/EstimateId" element={<EstimateSheet/>} />
       </Routes>
       {shouldShowNavbarAndFooter && <Footer />}
     </>
