@@ -1,14 +1,15 @@
-import { useParams } from 'react-router-dom';
-import AddBtn from '../../assets/icons/dashedAddGray.svg?react';
-import * as E from '../../styles/pages/EstimateCheck.style';
-import { RequestModal } from '@/components/modals/Expert/RequestModal';
-import { useState } from 'react';
-//import styled from '@emotion/styled';
+//import { useParams } from 'react-router-dom';
+import styled from '@emotion/styled';
+import * as E from '@/styles/pages/Expert/Estimate.style';
+import { SuggestedExpertProfile } from '@/components/SuggestedExpertProfile';
+import Sangwoo from '../../assets/images/jimin.png';
+import Dongho from '../../assets/images/dongho.png';
 
 // 더미 데이터
 const dummy = {
   title: '쌀농사 토양, 물 관리 관련 컨설팅 문의',
-  applicant: '김팜온',
+  product: '곡물',
+  productName: '쌀',
   category: '토양 및 환경관리',
   location: '경기 이천시 마장면 덕평로663번길 100-41',
   estimatedCost: '500만원 ~ 1,000만원',
@@ -21,43 +22,34 @@ const dummy = {
 또 물 관리는 어떻게 해야 논 상태를 더 잘 유지할 수 있을지 고민입니다. 배수나 물 공급 방법에 대해 효율적인 팁이 있다면 알려주시면 좋겠습니다. 현재 토양의 상태 사진 첨부합니다. 병충해도 미리 예방할 수 있는 방법이 있다면 함께 조언 부탁드립니다.`,
 };
 
-export default function EstimateCheckPage() {
+export default function EstimateSheet() {
   // 견적서 상세페이지
 
-  const { id } = useParams();
-  const [isModalOpen,setIsModalOpen] = useState<boolean>(false);
-
-  const handleModalOpen = ()=>{
-    setIsModalOpen(!isModalOpen);
-  };
+  //const { id } = useParams();
 
   return (
-    <div style={{ backgroundColor:"#F9F9F9", paddingTop:84}}>
-
-      {
-        isModalOpen === true ? <RequestModal onClick={handleModalOpen}/> : null
-      }
+    <div style={{ backgroundColor: '#F9F9F9', paddingTop: 84 }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        <E.Title>쌀(곡물) 컨설팅 요청 내역</E.Title>
-        <E.Subtitle>컨설팅 신청 정보가 올바른지 확인해주세요</E.Subtitle>
+        <E.Title>쌀농사 토양, 물 관리 관련 컨설팅 문의</E.Title>
+        <E.Subtitle>2025.01.11</E.Subtitle>
         <E.Content>
           {/* 제목 */}
           <E.Card style={{ padding: '21px 48px 21px 48px' }}>
-            <E.Modify>
-                <p>수정</p>
-            </E.Modify>
             <E.Inline>
               <E.Name>제목</E.Name>
-              <E.Value>{dummy.title}</E.Value>
+              <E.Value style={{color:'#2C2C2C',fontWeight:'600'}}>{dummy.title}</E.Value>
             </E.Inline>
           </E.Card>
 
           {/* 상세정보 */}
           <E.Card style={{ padding: '41px 48px 41px 48px' }}>
-            <E.Modify>
-                <p>수정</p>
-            </E.Modify>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
+              <E.Inline>
+                <E.Name>분야</E.Name>
+                <E.Value>
+                  {dummy.productName} ({dummy.product})
+                </E.Value>
+              </E.Inline>
               <E.Inline>
                 <E.Name>종류</E.Name>
                 <E.Value>{dummy.category}</E.Value>
@@ -75,9 +67,6 @@ export default function EstimateCheckPage() {
 
           {/* 컨설팅 설명 */}
           <E.Card style={{ padding: '41px 48px 41px 48px' }}>
-            <E.Modify>
-                <p>수정</p>
-            </E.Modify>
             <E.Inline>
               <E.Name>컨설팅 설명</E.Name>
             </E.Inline>
@@ -85,18 +74,90 @@ export default function EstimateCheckPage() {
               {dummy.images.map((image) => (
                 <E.ConsultingImage key={image} src={image} alt="" />
               ))}
-              <E.AddWrapper>
-                <AddBtn/>
-                <p style={{whiteSpace:'nowrap'}}>사진 추가하기</p>
-              </E.AddWrapper>
             </E.ConsultingImageContainer>
             <E.ConsultingContent>{dummy.content}</E.ConsultingContent>
           </E.Card>
-          <E.ChatButton onClick={handleModalOpen}>신청하기</E.ChatButton>
+
+          <div style={{ paddingTop: '110px' }}>
+            <Title>제안받은 견적</Title>
+            <Subtitle>컨설팅을 진행할 전문가를 확인하고 선택해보세요</Subtitle>
+          </div>
+          <ProfileWrapper>
+            <SuggestedExpertProfile
+              profileImg={Sangwoo}
+              name={'김상우 (해충해방)'}
+              ratings={4.8}
+              years={2}
+              introduction={'“현장에서 쌓은 경험을 바탕으로, 실전 노하우를 전해드립니다.”'}
+            />
+            <SuggestedExpertProfile
+              profileImg={Dongho}
+              name={'배추대장'}
+              ratings={4.8}
+              years={2}
+              introduction={'“전문성과 경험을 살려, 실용적인 해결책을 제공해드립니다.”'}
+            />
+          </ProfileWrapper>
         </E.Content>
       </div>
     </div>
   );
 }
 
+const ProfileWrapper = styled.div`
+  padding-top: 6px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  max-width:1200px;
+  gap: 20px;
+  margin-bottom:300px;
 
+  @media (max-width: 768px) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-left: 10px;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 20px;
+    margin-left: 40px;
+  }
+`;
+
+const Title = styled.div`
+  color: #000;
+  font-family: 'PretendardRegular';
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%; /* 45px */
+
+  @media (min-width: 768px) {
+    margin-left: 40px;
+  }
+
+  @media (min-width: 480px) {
+    font-size: 24px;
+    margin-left: 20px;
+  }
+`;
+
+const Subtitle = styled.div`
+  color: #5f5f5f;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%; /* 24px */
+
+  @media (min-width: 768px) {
+    margin-left: 40px;
+  }
+
+  @media (min-width: 480px) {
+    font-size: 14px;
+    margin-left: 20px;
+  }
+`;
