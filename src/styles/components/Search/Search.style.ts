@@ -2,14 +2,12 @@ import styled from '@emotion/styled';
 
 export const BannerContainer = styled.div`
   width: 100%;
-  margin-top: 80px;
 `;
 
 export const CategoryContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-bottom: 40px;
 `;
 
 export const Container = styled.div`
@@ -60,14 +58,70 @@ export const Title = styled.h1`
   margin-bottom: 86px;
 `;
 
+export const SearchBarWrapper = styled.div`
+  position: relative;
+  width: 684px;
+  height: 66px;
+`;
+
 export const SearchBar = styled.div`
   display: flex;
   align-items: center;
-  width: 684px;
-  height: 66px;
+  width: 100%;
+  height: 100%;
   background-color: #f5f5f5;
   border-radius: 16px;
   margin-bottom: 50px;
+`;
+
+export const TitleWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const DropDown = styled.div`
+  position: absolute;
+  top: 70px;
+  left: 0;
+  width: 684px;
+  height: 310px;
+  background-color: white;
+  border-radius: 20px;
+  z-index: 1;
+  margin-top: 13px;
+  box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.1);
+`;
+
+export const BarTitle = styled.p`
+  color: 'black';
+  fontsize: 14px;
+  font-family: 'Pretendard';
+  font-weight: '500';
+  margin: 0;
+`;
+export const DeleteAll = styled.div`
+  color: #00a05e;
+  font-size: 14px;
+  font-family: 'Pretendard';
+  font-weight: 500;
+  line-height: 21px;
+  word-wrap: break-word;
+  cursor: pointer;
+`;
+
+export const RecentContainer = styled.div`
+  width: 620px;
+  height: 160px;
+  margin-top: 24px;
+  margin-left: 32px;
+  margin-right: 32px;
+`;
+
+export const RecommendContainer = styled.div`
+  width: 550px;
+  height: 100px;
+  margin-left: 32px;
+  margin-bottom: 28px;
 `;
 
 export const StyledImage = styled.img`
@@ -90,5 +144,82 @@ export const Input = styled.input`
 
   &::placeholder {
     color: #8e8e8e;
+  }
+`;
+export const TagListWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+`;
+
+export const TagContainer = styled.div`
+  padding: 6px 10px;
+  border-radius: 50px;
+  border: 0.7px solid #8e8e8e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const TagInner = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const TagLabel = styled.div`
+  color: #5d5d5d;
+  font-size: 14px;
+  font-family: 'Pretendard';
+  font-weight: 500;
+  line-height: 21px;
+  word-wrap: break-word;
+`;
+export const HistoryWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 22px;
+`;
+
+export const HistoryContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+  align-items: center;
+  display: inline-flex;
+  margin-bottom: 6px;
+`;
+
+export const HistoryInner = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+`;
+
+export const HistoryLabel = styled.div`
+  color: black;
+  font-size: 16px;
+  font-family: 'Pretendard';
+  font-weight: 600;
+  line-height: 24px;
+  word-wrap: break-word;
+`;
+
+export const HistoryIcon = styled.div`
+  width: 24px;
+  height: 24px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  div {
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    border: 2px solid #8e8e8e;
   }
 `;

@@ -5,10 +5,10 @@ export const BannerContainer = styled.div`
   width: 1650px;
   height: 290px;
   left: calc(50% - 1650px / 2);
-  margin-top: 40px;
   background: linear-gradient(180deg, #00a05e 0%, #00b168 100%);
   border-radius: 30px;
   overflow: hidden;
+  margin-top: 110px;
 `;
 
 export const TitleContainer = styled.div`
