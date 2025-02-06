@@ -23,7 +23,7 @@ const dummy = {
 };
 
 export default function EstimateSheet() {
-  // 견적서 상세페이지
+  // 견적서 특정 상세페이지
 
   //const { id } = useParams();
 
