@@ -44,7 +44,7 @@ export const Navbar = () => {
               <N.NotificationIcon>
                 <Bell />
               </N.NotificationIcon>
-              <N.MenuLink to="/my-estimate">내 견적</N.MenuLink>
+              <N.MenuLink to="/MyEstimate">내 견적</N.MenuLink>
               <N.UserDropdown>
                 <N.UserName>{userInfo?.name ?? '사용자'} ▼</N.UserName>
                 <N.DropdownContent>
