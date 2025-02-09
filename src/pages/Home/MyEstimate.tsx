@@ -26,7 +26,7 @@ export default function MyEstimatePage() {
           </E.Title1>
 
           <E.MyCards>
-            <EstimateCard
+            <EstimateCard 
               productName="콩"
               product="곡물"
               date="2024.11.11"
