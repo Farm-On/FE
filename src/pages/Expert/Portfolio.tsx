@@ -99,7 +99,7 @@ export default function Portfolio() {
           <M.Card>
             <M.EditText
               onClick={() => {
-                navigate('/expert/edit');
+                navigate('/expert/portfolio/edit');
                 // TODO scroll to top
               }}
             >
