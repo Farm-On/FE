@@ -1,8 +1,8 @@
 import Markdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 
-import * as M from '@/styles/pages/Expert/My.style';
-import { EditMyProfileModal } from '@/components/modals/Expert/My.modal';
+import * as M from '@/styles/pages/Expert/Portfolio.style';
+import { EditMyProfileModal } from '@/components/modals/Expert/Portfolio.modal';
 import { useEditMyProfileModalStore } from '@/store/modals/useExpertModalStore';
 import { useNavigate } from 'react-router-dom';
 
@@ -52,7 +52,7 @@ const dummy = {
     `,
 };
 
-export default function My() {
+export default function Portfolio() {
   // 내 프로필, 활동 지역 모달
   const { openModal } = useEditMyProfileModalStore();
 
@@ -99,7 +99,7 @@ export default function My() {
           <M.Card>
             <M.EditText
               onClick={() => {
-                navigate('/expert/my/edit');
+                navigate('/expert/edit');
                 // TODO scroll to top
               }}
             >
