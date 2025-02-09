@@ -3,19 +3,48 @@ import * as S from '@/styles/components/Search/Search.style';
 import SearchImg from '@/assets/images/search.png';
 import { Category } from './Category';
 import { Banner } from './Banner';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import XIcon from '@/assets/icons/greyX.svg?react';
-import { useSearch } from '@/hooks/useSearch';
+import { useSearch, useRecentSearch } from '@/hooks/useSearch';
 import useAuthStore from '@/store/useAuthStore';
 
 export const Search = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [searchInput, setSearchInput] = useState('');
-  const [recentSearch, setRecentSearch] = useState(['무 농약 병충해 관리', '고추 수확 시기']);
-  const { mutate: saveSearch } = useSearch();
-  const { userInfo, isLoggedIn } = useAuthStore(); // 로그인한 사용자 정보 가져오기
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const searchWrapperRef = useRef<HTMLDivElement>(null); //검색창 + 드롭다운을 감싸는 ref
 
-  // 추천 검색어 카테고리 리스트
+  const { mutate: saveSearch } = useSearch();
+  const { userInfo, isLoggedIn } = useAuthStore();
+  const { data: recentSearchData, refetch } = useRecentSearch(userInfo?.id ?? 0);
+
+  //최신 검색어 리스트 (중복 제거 & 최대 4개까지만 표시)
+  const recentSearch: string[] = Array.from(
+    new Set(recentSearchData?.result?.recentSearchList || [])
+  ).slice(0, 4);
+
+  console.log('현재 recentSearchData:', recentSearchData);
+
+  useEffect(() => {
+    if (userInfo?.id) {
+      refetch();
+    }
+  }, [userInfo?.id]);
+
+  //DropDown 바깥 클릭 시 닫기
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchWrapperRef.current && !searchWrapperRef.current.contains(event.target as Node)) {
+        setIsFocused(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   const recommendSearch = [
     '벼',
     '사과',
@@ -29,30 +58,47 @@ export const Search = () => {
     '인삼',
   ];
 
-  const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchInput(e.target.value);
-  };
+  const handleSearchSubmit = (query?: string) => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
 
-  const handleSearchSubmit = () => {
-    if (!searchInput.trim()) return;
+    const searchQuery = query || searchInput;
+    if (!searchQuery.trim()) {
+      setIsSubmitting(false);
+      return;
+    }
 
     if (!isLoggedIn || !userInfo) {
       alert('로그인이 필요합니다.');
+      setIsSubmitting(false);
       return;
     }
 
     if (!userInfo.id) {
-      console.error('사용자 ID가 없습니다. userInfo:', userInfo);
+      console.error('사용자 ID 없음:', userInfo);
       alert('사용자 정보를 불러올 수 없습니다.');
+      setIsSubmitting(false);
       return;
     }
 
-    const requestData = { userId: userInfo.id, name: searchInput };
+    const requestData = { userId: userInfo.id, name: searchQuery };
+
+    console.log('POST 요청 전송 (검색어 저장):', requestData);
 
     saveSearch(requestData, {
       onSuccess: () => {
-        setRecentSearch((prev) => [searchInput, ...prev.filter((s) => s !== searchInput)]); // 중복 제거 후 추가
+        console.log('검색어 저장 성공!');
         setSearchInput('');
+        setIsSubmitting(false);
+
+        setTimeout(() => {
+          console.log('GET 요청 실행 (검색어 업데이트)');
+          refetch();
+        }, 500);
+      },
+      onError: (error) => {
+        console.error('검색어 저장 실패:', error);
+        setIsSubmitting(false);
       },
     });
   };
@@ -65,31 +111,41 @@ export const Search = () => {
           지금 당신에게 <br />
           필요한 컨설팅을 찾아보세요.
         </S.Title>
-        <S.SearchBarWrapper>
-          <S.SearchBar onFocus={() => setIsFocused(true)} onBlur={() => setIsFocused(false)}>
+        <S.SearchBarWrapper ref={searchWrapperRef}>
+          {' '}
+          <S.SearchBar
+            onFocus={() => setIsFocused(true)}
+            onClick={(e) => e.stopPropagation()} // 내부 클릭 시 닫히지 않도록 방지
+          >
             <S.StyledImage src={SearchImg} alt="Search" />
             <S.Input
               placeholder="어떤 서비스가 필요하세요?"
               value={searchInput}
-              onChange={handleSearchInput}
-              onKeyDown={(e) => e.key === 'Enter' && handleSearchSubmit()}
+              onChange={(e) => setSearchInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  handleSearchSubmit();
+                }
+              }}
             />
           </S.SearchBar>
           {isFocused && (
-            <S.DropDown>
+            <S.DropDown onClick={(e) => e.stopPropagation()}>
+              {' '}
               <S.RecentContainer>
                 <S.TitleWrapper>
                   <S.BarTitle>최근 검색어</S.BarTitle>
-                  <S.DeleteAll onClick={() => setRecentSearch([])}>전체 삭제</S.DeleteAll>
+                  <S.DeleteAll>전체 삭제</S.DeleteAll>
                 </S.TitleWrapper>
                 <S.HistoryWrapper>
-                  {recentSearch.map((item) => (
-                    <S.HistoryContainer key={item}>
+                  {recentSearch.map((item, index) => (
+                    <S.HistoryContainer key={`${item}-${index}`}>
                       <S.HistoryInner>
-                        <S.HistoryLabel>{item}</S.HistoryLabel>
-                        <XIcon
-                          onClick={() => setRecentSearch(recentSearch.filter((s) => s !== item))}
-                        />
+                        <S.HistoryLabel onClick={() => handleSearchSubmit(item)}>
+                          {item}
+                        </S.HistoryLabel>
+                        <XIcon />
                       </S.HistoryInner>
                     </S.HistoryContainer>
                   ))}
@@ -98,8 +154,14 @@ export const Search = () => {
               <S.RecommendContainer>
                 <S.BarTitle>추천 검색어</S.BarTitle>
                 <S.TagListWrapper>
-                  {recommendSearch.map((item) => (
-                    <S.TagContainer key={item} onClick={() => setSearchInput(item)}>
+                  {recommendSearch.map((item, index) => (
+                    <S.TagContainer
+                      key={`${item}-${index}`}
+                      onClick={(e) => {
+                        e.stopPropagation(); // 태그 클릭 시 닫히는 것 방지
+                        handleSearchSubmit(item);
+                      }}
+                    >
                       <S.TagInner>
                         <S.TagLabel>{item}</S.TagLabel>
                       </S.TagInner>

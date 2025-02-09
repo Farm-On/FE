@@ -84,7 +84,7 @@ export const DropDown = styled.div`
   top: 70px;
   left: 0;
   width: 684px;
-  height: 310px;
+  height: 330px;
   background-color: white;
   border-radius: 20px;
   z-index: 1;
@@ -115,6 +115,7 @@ export const RecentContainer = styled.div`
   margin-top: 24px;
   margin-left: 32px;
   margin-right: 32px;
+  margin-bottom: 20px;
 `;
 
 export const RecommendContainer = styled.div`

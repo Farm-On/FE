@@ -11,6 +11,16 @@ export interface SearchResponse {
   message: string;
   result: {
     isSearchSave: boolean;
+    searchList?: string[];
+  };
+}
+
+export interface RecentSearchResponse {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  result: {
+    recentSearchList: string[]; // 최신 API에서 반환하는 recentSearchList
   };
 }
 

@@ -1,6 +1,7 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { searchKeyword } from '@/api/search';
-import type { SearchRequest, SearchResponse } from '@/api/search';
+import type { SearchRequest, SearchResponse, RecentSearchResponse } from '@/api/search';
+import axiosInstance from '@/api/axios';
 
 export const useSearch = () => {
   const queryClient = useQueryClient();
@@ -9,10 +10,34 @@ export const useSearch = () => {
     mutationFn: (data) => searchKeyword(data),
     onSuccess: (response) => {
       console.log('검색어 저장 성공:', response.result);
-      queryClient.invalidateQueries({ queryKey: ['searchHistory'] }); // 검색 기록 갱신
+      queryClient.invalidateQueries({ queryKey: ['recentSearch'] }); // 검색 기록 갱신
     },
     onError: (error) => {
       console.error('검색 요청 오류:', error);
     },
+  });
+};
+
+export const useRecentSearch = (userId: number) => {
+  return useQuery<RecentSearchResponse>({
+    queryKey: ['recentSearch', userId],
+    queryFn: async () => {
+      if (!userId)
+        return {
+          isSuccess: false,
+          code: 'ERROR',
+          message: 'Invalid request',
+          result: { recentSearchList: [] },
+        };
+
+      console.log(`GET 요청 전송: userId=${userId}`);
+      const response = await axiosInstance.get<RecentSearchResponse>(
+        `/home/search/recent?userId=${userId}`
+      );
+
+      console.log('GET 응답 데이터:', response.data);
+      return response.data;
+    },
+    enabled: !!userId, // userId가 있을 때만 실행
   });
 };
