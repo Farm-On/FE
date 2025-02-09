@@ -41,7 +41,7 @@ export const Bubble = styled.div`
   background-color: rgba(198, 242, 228, 1);
   min-width: 174px;
   width: fit-content;
-  height: 30px;
+  height: 62px;
   padding: 16px 30px 16px 30px;
   gap: 10px;
   border-radius: 0px 16px 16px 16px;
@@ -55,7 +55,7 @@ export const Bubble = styled.div`
 export const Chip = styled.div<{ isSelected: boolean }>`
   min-width: 60px;
   width: fit-content;
-  height: 22px;
+  height: 44px;
   padding: 10px 20px 10px 20px;
   gap: 4px;
   border-radius: 60px;
@@ -123,7 +123,7 @@ export const DividingLine = styled.div`
 
 export const Button = styled.div`
   width: 98px;
-  height: 30px;
+  //height: 30px;
   padding-top: 2445px;
   padding: 18px 160px 18px 160px;
   gap: 10px;

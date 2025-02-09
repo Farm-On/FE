@@ -12,7 +12,7 @@ export const PageWrapper = styled.div`
 
 
 export const Container = styled.div`
-  padding-left: 160px;
+  padding-left: 80px;
   max-width: 1920px;
   width: 90%;
   margin:0 auto;
@@ -109,7 +109,7 @@ export const MyCards = styled.div`
   grid-template-columns: repeat(3, 1fr);
   column-gap: 15px;
   row-gap: 18px;
-  margin-top: 30px;
+  margin-top: 50px;
   max-width: 1200px;
 
   @media (max-width: 768px) {
