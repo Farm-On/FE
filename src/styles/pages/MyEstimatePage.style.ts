@@ -8,6 +8,7 @@ export const PageWrapper = styled.div`
   justify-content: center;
   padding-bottom: 487px;
   box-sizing: border-box;
+  background-color: #F9F9F9;
 `
 
 
