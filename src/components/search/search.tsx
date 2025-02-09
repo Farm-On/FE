@@ -5,7 +5,7 @@ import { Category } from './Category';
 import { Banner } from './Banner';
 import { useEffect, useRef, useState } from 'react';
 import XIcon from '@/assets/icons/greyX.svg?react';
-import { useSearch, useRecentSearch } from '@/hooks/useSearch';
+import { useSearch, useRecentSearch, useDeleteSearch } from '@/hooks/useSearch';
 import useAuthStore from '@/store/useAuthStore';
 
 export const Search = () => {
@@ -15,6 +15,7 @@ export const Search = () => {
   const searchWrapperRef = useRef<HTMLDivElement>(null); //검색창 + 드롭다운을 감싸는 ref
 
   const { mutate: saveSearch } = useSearch();
+  const { mutate: deleteSearch } = useDeleteSearch();
   const { userInfo, isLoggedIn } = useAuthStore();
   const { data: recentSearchData, refetch } = useRecentSearch(userInfo?.id ?? 0);
 
@@ -44,6 +45,21 @@ export const Search = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  const handleDeleteSearch = (name: string) => {
+    if (!userInfo?.id) return;
+    console.log(`🗑️ 검색어 삭제 요청: ${name}`);
+
+    deleteSearch(
+      { userId: userInfo.id, name },
+      {
+        onSuccess: () => {
+          console.log(`검색어 삭제 완료: ${name}`);
+          refetch(); //삭제 후 검색어 리스트 갱신
+        },
+      }
+    );
+  };
 
   const recommendSearch = [
     '벼',
@@ -145,7 +161,7 @@ export const Search = () => {
                         <S.HistoryLabel onClick={() => handleSearchSubmit(item)}>
                           {item}
                         </S.HistoryLabel>
-                        <XIcon />
+                        <XIcon onClick={() => handleDeleteSearch(item)} />
                       </S.HistoryInner>
                     </S.HistoryContainer>
                   ))}

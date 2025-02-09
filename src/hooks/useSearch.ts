@@ -1,6 +1,12 @@
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { searchKeyword } from '@/api/search';
-import type { SearchRequest, SearchResponse, RecentSearchResponse } from '@/api/search';
+import type {
+  SearchRequest,
+  SearchResponse,
+  RecentSearchResponse,
+  DeleteSearchRequest,
+  DeleteSearchResponse,
+} from '@/api/search';
 import axiosInstance from '@/api/axios';
 
 export const useSearch = () => {
@@ -39,5 +45,26 @@ export const useRecentSearch = (userId: number) => {
       return response.data;
     },
     enabled: !!userId, // userId가 있을 때만 실행
+  });
+};
+
+export const useDeleteSearch = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<DeleteSearchResponse, Error, DeleteSearchRequest>({
+    mutationFn: async ({ userId, name }) => {
+      console.log(`🗑️ DELETE 요청: userId=${userId}, name=${name}`);
+      const response = await axiosInstance.delete<DeleteSearchResponse>(
+        `/home/search/recent?userId=${userId}&name=${encodeURIComponent(name)}`
+      );
+      return response.data;
+    },
+    onSuccess: (response) => {
+      console.log('검색어 삭제 성공:', response.result);
+      queryClient.invalidateQueries({ queryKey: ['recentSearch'] }); // 검색 기록 갱신
+    },
+    onError: (error) => {
+      console.error('검색어 삭제 오류:', error);
+    },
   });
 };
