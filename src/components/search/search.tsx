@@ -5,7 +5,7 @@ import { Category } from './Category';
 import { Banner } from './Banner';
 import { useEffect, useRef, useState } from 'react';
 import XIcon from '@/assets/icons/greyX.svg?react';
-import { useSearch, useRecentSearch, useDeleteSearch } from '@/hooks/useSearch';
+import { useSearch, useRecentSearch, useDeleteSearch, useDeleteAllSearch } from '@/hooks/useSearch';
 import useAuthStore from '@/store/useAuthStore';
 
 export const Search = () => {
@@ -16,6 +16,7 @@ export const Search = () => {
 
   const { mutate: saveSearch } = useSearch();
   const { mutate: deleteSearch } = useDeleteSearch();
+  const { mutate: deleteAllSearch } = useDeleteAllSearch();
   const { userInfo, isLoggedIn } = useAuthStore();
   const { data: recentSearchData, refetch } = useRecentSearch(userInfo?.id ?? 0);
 
@@ -46,6 +47,7 @@ export const Search = () => {
     };
   }, []);
 
+  //검색어 개별 삭제 함수
   const handleDeleteSearch = (name: string) => {
     if (!userInfo?.id) return;
     console.log(`🗑️ 검색어 삭제 요청: ${name}`);
@@ -56,6 +58,22 @@ export const Search = () => {
         onSuccess: () => {
           console.log(`검색어 삭제 완료: ${name}`);
           refetch(); //삭제 후 검색어 리스트 갱신
+        },
+      }
+    );
+  };
+
+  //전체 검색어 삭제 함수
+  const handleDeleteAllSearch = () => {
+    if (!userInfo?.id) return;
+    console.log('🗑️ 전체 검색어 삭제 요청');
+
+    deleteAllSearch(
+      { userId: userInfo.id },
+      {
+        onSuccess: () => {
+          console.log('전체 검색어 삭제 완료');
+          refetch(); // 삭제 후 검색어 리스트 갱신
         },
       }
     );
@@ -152,7 +170,7 @@ export const Search = () => {
               <S.RecentContainer>
                 <S.TitleWrapper>
                   <S.BarTitle>최근 검색어</S.BarTitle>
-                  <S.DeleteAll>전체 삭제</S.DeleteAll>
+                  <S.DeleteAll onClick={handleDeleteAllSearch}>전체 삭제</S.DeleteAll>
                 </S.TitleWrapper>
                 <S.HistoryWrapper>
                   {recentSearch.map((item, index) => (
