@@ -35,6 +35,7 @@ interface SignupForm {
 }
 
 interface UserInfo {
+  id: number;
   name: string;
 }
 
@@ -92,7 +93,12 @@ const useAuthStore = create<AuthStore>((set) => ({
   openLoginModal: () => set({ isLoginModalOpen: true, loginModalType: 'default' }),
   openExpertLoginModal: () => set({ isLoginModalOpen: true, loginModalType: 'expert' }),
   closeLoginModal: () => set({ isLoginModalOpen: false }),
-  login: (userInfo) => set({ isLoggedIn: true, userInfo, isLoginModalOpen: false }),
+  login: (userInfo) =>
+    set({
+      isLoggedIn: true,
+      userInfo: { id: userInfo.id, name: userInfo.name },
+      isLoginModalOpen: false,
+    }),
   logout: () => set({ isLoggedIn: false, userInfo: null }),
 
   // 회원가입 폼 관련 상태와 액션

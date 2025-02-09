@@ -10,9 +10,12 @@ export const useLogin = () => {
   return useMutation({
     mutationFn: (data: LoginRequest) => login(data),
     onSuccess: (response: LoginResponse) => {
-      const { token, userName } = response.result;
+      const { token, userId, userName } = response.result;
       localStorage.setItem('token', token);
-      setLogin({ name: userName });
+      setLogin({
+        name: userName,
+        id: userId,
+      });
       queryClient.invalidateQueries({ queryKey: ['user'] });
     },
   });
