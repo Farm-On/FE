@@ -9,6 +9,7 @@ import type {
   DeleteAllSearchRequest,
   DeleteAllSearchResponse,
   SearchResultResponse,
+  RecommendSearchResponse,
 } from '@/api/search';
 import axiosInstance from '@/api/axios';
 
@@ -93,7 +94,7 @@ export const useDeleteAllSearch = () => {
   });
 };
 
-// 🔥 검색어 자동완성 API 요청
+// 검색어 자동완성 API 요청
 export const useSearchResults = (userId: number, name: string) => {
   return useQuery<SearchResultResponse>({
     queryKey: ['searchResults', userId, name],
@@ -104,17 +105,43 @@ export const useSearchResults = (userId: number, name: string) => {
           code: 'ERROR',
           message: 'Invalid request',
           result: { searchList: [] },
-        } as SearchResultResponse; // 🔥 TypeScript가 명확히 인식하도록 추가
+        } as SearchResultResponse;
 
-      console.log(`🔍 검색어 자동완성 요청: userId=${userId}, name=${name}`);
+      console.log(`검색어 자동완성 요청: userId=${userId}, name=${name}`);
       const response = await axiosInstance.get<SearchResultResponse>(
         `/home/search?userId=${userId}&name=${encodeURIComponent(name)}`
       );
 
-      console.log('✅ 검색어 자동완성 응답:', response.data);
+      console.log('검색어 자동완성 응답:', response.data);
       return response.data;
     },
     enabled: !!userId && !!name, // 검색어가 있을 때만 실행
     staleTime: 1000 * 60 * 5, // 5분 동안 데이터 유지 (중복 요청 방지)
+  });
+};
+
+// 추천 검색어 API 요청
+export const useRecommendSearch = (userId: number) => {
+  return useQuery<RecommendSearchResponse>({
+    queryKey: ['recommendSearch', userId],
+    queryFn: async (): Promise<RecommendSearchResponse> => {
+      if (!userId)
+        return {
+          isSuccess: false,
+          code: 'ERROR',
+          message: 'Invalid request',
+          result: { recommendSearchList: [] },
+        };
+
+      console.log(`추천 검색어 요청: userId=${userId}`);
+      const response = await axiosInstance.get<RecommendSearchResponse>(
+        `/home/search/recommend?userId=${userId}`
+      );
+
+      console.log('추천 검색어 응답:', response.data);
+      return response.data;
+    },
+    enabled: !!userId, // userId가 있을 때만 실행
+    staleTime: 1000 * 60 * 10, // 10분 동안 데이터 유지
   });
 };

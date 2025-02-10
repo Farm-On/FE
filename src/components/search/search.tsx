@@ -11,6 +11,7 @@ import {
   useDeleteSearch,
   useDeleteAllSearch,
   useSearchResults,
+  useRecommendSearch,
 } from '@/hooks/useSearch';
 import useAuthStore from '@/store/useAuthStore';
 
@@ -57,7 +58,7 @@ export const Search = () => {
   //검색어 개별 삭제 함수
   const handleDeleteSearch = (name: string) => {
     if (!userInfo?.id) return;
-    console.log(`🗑️ 검색어 삭제 요청: ${name}`);
+    console.log(`검색어 삭제 요청: ${name}`);
 
     deleteSearch(
       { userId: userInfo.id, name },
@@ -73,7 +74,7 @@ export const Search = () => {
   //전체 검색어 삭제 함수
   const handleDeleteAllSearch = () => {
     if (!userInfo?.id) return;
-    console.log('🗑️ 전체 검색어 삭제 요청');
+    console.log('전체 검색어 삭제 요청');
 
     deleteAllSearch(
       { userId: userInfo.id },
@@ -86,18 +87,10 @@ export const Search = () => {
     );
   };
 
-  const recommendSearch = [
-    '벼',
-    '사과',
-    '쌀',
-    '감귤',
-    '딸기',
-    '고구마',
-    '엽채류',
-    '향신료',
-    '종지, 묘목',
-    '인삼',
-  ];
+  const { data: recommendSearchData } = useRecommendSearch(userInfo?.id ?? 0);
+
+  //추천 검색어 리스트
+  const recommendSearch: string[] = recommendSearchData?.result?.recommendSearchList || [];
 
   const handleSearchSubmit = (query?: string) => {
     if (isSubmitting) return;

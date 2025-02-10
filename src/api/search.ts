@@ -60,6 +60,15 @@ export interface DeleteAllSearchResponse {
   };
 }
 
+export interface RecommendSearchResponse {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  result: {
+    recommendSearchList: string[];
+  };
+}
+
 export const searchKeyword = async ({ userId, name }: SearchRequest): Promise<SearchResponse> => {
   const response = await axiosInstance.post<SearchResponse>(
     `/home/search?userId=${userId}&name=${encodeURIComponent(name)}`, // 쿼리 스트링으로 요청
