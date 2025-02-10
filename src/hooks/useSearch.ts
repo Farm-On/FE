@@ -8,6 +8,7 @@ import type {
   DeleteSearchResponse,
   DeleteAllSearchRequest,
   DeleteAllSearchResponse,
+  SearchResultResponse,
 } from '@/api/search';
 import axiosInstance from '@/api/axios';
 
@@ -89,5 +90,31 @@ export const useDeleteAllSearch = () => {
     onError: (error) => {
       console.error('전체 검색어 삭제 오류:', error);
     },
+  });
+};
+
+// 🔥 검색어 자동완성 API 요청
+export const useSearchResults = (userId: number, name: string) => {
+  return useQuery<SearchResultResponse>({
+    queryKey: ['searchResults', userId, name],
+    queryFn: async (): Promise<SearchResultResponse> => {
+      if (!userId || !name)
+        return {
+          isSuccess: false,
+          code: 'ERROR',
+          message: 'Invalid request',
+          result: { searchList: [] },
+        } as SearchResultResponse; // 🔥 TypeScript가 명확히 인식하도록 추가
+
+      console.log(`🔍 검색어 자동완성 요청: userId=${userId}, name=${name}`);
+      const response = await axiosInstance.get<SearchResultResponse>(
+        `/home/search?userId=${userId}&name=${encodeURIComponent(name)}`
+      );
+
+      console.log('✅ 검색어 자동완성 응답:', response.data);
+      return response.data;
+    },
+    enabled: !!userId && !!name, // 검색어가 있을 때만 실행
+    staleTime: 1000 * 60 * 5, // 5분 동안 데이터 유지 (중복 요청 방지)
   });
 };

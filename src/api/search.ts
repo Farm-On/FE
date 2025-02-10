@@ -5,6 +5,15 @@ export interface SearchRequest {
   name: string;
 }
 
+export interface SearchResultResponse {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  result: {
+    searchList: string[];
+  };
+}
+
 export interface SearchResponse {
   isSuccess: boolean;
   code: string;

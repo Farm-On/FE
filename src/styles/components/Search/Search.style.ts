@@ -139,7 +139,7 @@ export const Input = styled.input`
   outline: none;
   font-family: 'PretendardMedium';
   font-size: 18px;
-  color: #8e8e8e;
+  color: #000000;
   background: none;
   margin: 0 24px;
 
@@ -222,5 +222,26 @@ export const HistoryIcon = styled.div`
     height: 12px;
     position: absolute;
     border: 2px solid #8e8e8e;
+  }
+`;
+export const AutoCompleteWrapper = styled.div`
+  width: 90%;
+  padding: 12px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+`;
+
+export const AutoCompleteItem = styled.div`
+  font-size: 16px;
+  font-family: 'Pretendard';
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+
+  &:hover {
+    background-color: #f5f5f5;
   }
 `;

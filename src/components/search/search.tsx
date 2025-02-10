@@ -1,11 +1,17 @@
 import * as S from '@/styles/components/Search/Search.style';
-
 import SearchImg from '@/assets/images/search.png';
 import { Category } from './Category';
 import { Banner } from './Banner';
 import { useEffect, useRef, useState } from 'react';
 import XIcon from '@/assets/icons/greyX.svg?react';
-import { useSearch, useRecentSearch, useDeleteSearch, useDeleteAllSearch } from '@/hooks/useSearch';
+import HighlightedText from './HighlightedText';
+import {
+  useSearch,
+  useRecentSearch,
+  useDeleteSearch,
+  useDeleteAllSearch,
+  useSearchResults,
+} from '@/hooks/useSearch';
 import useAuthStore from '@/store/useAuthStore';
 
 export const Search = () => {
@@ -19,6 +25,7 @@ export const Search = () => {
   const { mutate: deleteAllSearch } = useDeleteAllSearch();
   const { userInfo, isLoggedIn } = useAuthStore();
   const { data: recentSearchData, refetch } = useRecentSearch(userInfo?.id ?? 0);
+  const { data: searchResults } = useSearchResults(userInfo?.id ?? 0, searchInput);
 
   //최신 검색어 리스트 (중복 제거 & 최대 4개까지만 표시)
   const recentSearch: string[] = Array.from(
@@ -166,43 +173,55 @@ export const Search = () => {
           </S.SearchBar>
           {isFocused && (
             <S.DropDown onClick={(e) => e.stopPropagation()}>
-              {' '}
-              <S.RecentContainer>
-                <S.TitleWrapper>
-                  <S.BarTitle>최근 검색어</S.BarTitle>
-                  <S.DeleteAll onClick={handleDeleteAllSearch}>전체 삭제</S.DeleteAll>
-                </S.TitleWrapper>
-                <S.HistoryWrapper>
-                  {recentSearch.map((item, index) => (
-                    <S.HistoryContainer key={`${item}-${index}`}>
-                      <S.HistoryInner>
-                        <S.HistoryLabel onClick={() => handleSearchSubmit(item)}>
-                          {item}
-                        </S.HistoryLabel>
-                        <XIcon onClick={() => handleDeleteSearch(item)} />
-                      </S.HistoryInner>
-                    </S.HistoryContainer>
-                  ))}
-                </S.HistoryWrapper>
-              </S.RecentContainer>
-              <S.RecommendContainer>
-                <S.BarTitle>추천 검색어</S.BarTitle>
-                <S.TagListWrapper>
-                  {recommendSearch.map((item, index) => (
-                    <S.TagContainer
+              {/*검색 자동완성 목록 */}
+              {searchInput && (searchResults?.result?.searchList ?? []).length > 0 ? (
+                <S.AutoCompleteWrapper>
+                  {searchResults?.result.searchList.map((item, index) => (
+                    <S.AutoCompleteItem
                       key={`${item}-${index}`}
-                      onClick={(e) => {
-                        e.stopPropagation(); // 태그 클릭 시 닫히는 것 방지
-                        handleSearchSubmit(item);
-                      }}
+                      onClick={() => handleSearchSubmit(item)}
                     >
-                      <S.TagInner>
-                        <S.TagLabel>{item}</S.TagLabel>
-                      </S.TagInner>
-                    </S.TagContainer>
+                      <HighlightedText inputValue={searchInput} text={item} />
+                    </S.AutoCompleteItem>
                   ))}
-                </S.TagListWrapper>
-              </S.RecommendContainer>
+                </S.AutoCompleteWrapper>
+              ) : (
+                <>
+                  <S.RecentContainer>
+                    <S.TitleWrapper>
+                      <S.BarTitle>최근 검색어</S.BarTitle>
+                      <S.DeleteAll onClick={handleDeleteAllSearch}>전체 삭제</S.DeleteAll>
+                    </S.TitleWrapper>
+                    <S.HistoryWrapper>
+                      {recentSearch.map((item, index) => (
+                        <S.HistoryContainer key={`${item}-${index}`}>
+                          <S.HistoryInner>
+                            <S.HistoryLabel onClick={() => handleSearchSubmit(item)}>
+                              {item}
+                            </S.HistoryLabel>
+                            <XIcon onClick={() => handleDeleteSearch(item)} />
+                          </S.HistoryInner>
+                        </S.HistoryContainer>
+                      ))}
+                    </S.HistoryWrapper>
+                  </S.RecentContainer>
+                  <S.RecommendContainer>
+                    <S.BarTitle>추천 검색어</S.BarTitle>
+                    <S.TagListWrapper>
+                      {recommendSearch.map((item, index) => (
+                        <S.TagContainer
+                          key={`${item}-${index}`}
+                          onClick={() => handleSearchSubmit(item)}
+                        >
+                          <S.TagInner>
+                            <S.TagLabel>{item}</S.TagLabel>
+                          </S.TagInner>
+                        </S.TagContainer>
+                      ))}
+                    </S.TagListWrapper>
+                  </S.RecommendContainer>
+                </>
+              )}
             </S.DropDown>
           )}
         </S.SearchBarWrapper>
