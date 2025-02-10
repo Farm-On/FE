@@ -3,7 +3,7 @@ import AddBtn from '../../assets/icons/dashedAddGray.svg?react';
 import * as E from '../../styles/pages/EstimateCheck.style';
 import { RequestModal } from '@/components/modals/Expert/RequestModal';
 import { useState } from 'react';
-//import styled from '@emotion/styled';
+import { useNavigate } from 'react-router-dom';
 
 // 더미 데이터
 const dummy = {
@@ -23,20 +23,32 @@ const dummy = {
 
 export default function EstimateCheckPage() {
   // 견적서 상세페이지
-
+  const navigate = useNavigate();
   const { id } = useParams();
-  const [isModalOpen,setIsModalOpen] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const handleModalOpen = ()=>{
+  const handleModalOpen = () => {
     setIsModalOpen(!isModalOpen);
   };
 
+  const handleModify = (section:string) => {
+    navigate('/MyEstimate/RequestEstimate', {
+      state: {
+        editSection: section,
+        editData: {
+          title: dummy.title,
+          category: dummy.category,
+          location: dummy.location,
+          budget: dummy.estimatedCost,
+          content: dummy.content,
+          images: dummy.images,
+        },
+      },
+    });
+  };
   return (
-    <div style={{ backgroundColor:"#F9F9F9", paddingTop:84}}>
-
-      {
-        isModalOpen === true ? <RequestModal onClick={handleModalOpen}/> : null
-      }
+    <div style={{ backgroundColor: '#F9F9F9', paddingTop: 84 }}>
+      {isModalOpen === true ? <RequestModal onClick={handleModalOpen} /> : null}
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <E.Title>쌀(곡물) 컨설팅 요청 내역</E.Title>
         <E.Subtitle>컨설팅 신청 정보가 올바른지 확인해주세요</E.Subtitle>
@@ -44,7 +56,7 @@ export default function EstimateCheckPage() {
           {/* 제목 */}
           <E.Card style={{ padding: '21px 48px 21px 48px' }}>
             <E.Modify>
-                <p>수정</p>
+              <p onClick={()=>handleModify('detail')}>수정</p>
             </E.Modify>
             <E.Inline>
               <E.Name>제목</E.Name>
@@ -55,7 +67,7 @@ export default function EstimateCheckPage() {
           {/* 상세정보 */}
           <E.Card style={{ padding: '41px 48px 41px 48px' }}>
             <E.Modify>
-                <p>수정</p>
+              <p onClick={()=>handleModify('info')}>수정</p>
             </E.Modify>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
               <E.Inline>
@@ -76,7 +88,7 @@ export default function EstimateCheckPage() {
           {/* 컨설팅 설명 */}
           <E.Card style={{ padding: '41px 48px 41px 48px' }}>
             <E.Modify>
-                <p>수정</p>
+              <p onClick={()=>handleModify('detail')}>수정</p>
             </E.Modify>
             <E.Inline>
               <E.Name>컨설팅 설명</E.Name>
@@ -86,8 +98,8 @@ export default function EstimateCheckPage() {
                 <E.ConsultingImage key={image} src={image} alt="" />
               ))}
               <E.AddWrapper>
-                <AddBtn/>
-                <p style={{whiteSpace:'nowrap'}}>사진 추가하기</p>
+                <AddBtn />
+                <p style={{ whiteSpace: 'nowrap' }}>사진 추가하기</p>
               </E.AddWrapper>
             </E.ConsultingImageContainer>
             <E.ConsultingContent>{dummy.content}</E.ConsultingContent>
@@ -98,5 +110,3 @@ export default function EstimateCheckPage() {
     </div>
   );
 }
-
-

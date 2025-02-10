@@ -280,11 +280,12 @@ export const ContentLength = styled.div`
 
 export const PostContent = styled.textarea`
   width: 1194px;
-  height: 172px;
+  min-height: 172px;
   border-radius: 8px;
   border: 1px solid rgba(142, 142, 142, 1);
   padding-left: 16px;
   padding-top: 24px;
+  padding-bottom:160px;
   font-size: 16px;
   font-family: 'PretendardRegular';
   resize: none;
@@ -338,7 +339,7 @@ export const CenteredContainer = styled.div`
   width: 100%;
   max-width: 1200px; // 또는 원하는 최대 너비
   //margin: 0 auto;
-  padding: 0 20px; // 좌우 여백
+  padding: 0 20px; 
   box-sizing: border-box;
   position: relative;
 `;

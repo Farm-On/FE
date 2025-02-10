@@ -1,14 +1,14 @@
 import * as RE from '../../styles/pages/RequestEstimate';
 import HomeIcon from '../../assets/icons/Home.svg?react';
 import GreyRightIcon from '../../assets/icons/GreyRight.svg?react';
-import CameraIcon from '../../assets/icons/RQcamera.svg?react';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { EstimateBudget } from '@/components/EstimateBudget';
 import { ChoiceCity } from '@/components/ChoiceCity/ChoiceCity';
 import { StateScroll } from '@/components/StateScroll';
 import styled from '@emotion/styled';
-import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import ImgUpload from '../../components/RequestImageUpload';
 
 interface Category {
   id: string;
@@ -24,7 +24,11 @@ const initialCategories: Category[] = [
   { id: '6', title: '기타' },
 ];
 
+
 export default function RequestEstimatePage(): JSX.Element {
+  const location = useLocation();
+  const editData = location.state?.editData;
+  const editSection = location.state?.editSection;
   const [selected, setSelected] = useState<string>('2');
   const [titleValue, setTitleValue] = useState<string>('');
   const [contentValue, setContentValue] = useState<string>('');
@@ -39,6 +43,24 @@ export default function RequestEstimatePage(): JSX.Element {
   const locationRef = useRef<HTMLDivElement>(null);
   const budgetRef = useRef<HTMLDivElement>(null);
   const detailRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const adjustTextareaHeight = () => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    //높이 초기화
+    textarea.style.height = 'auto';
+    
+    const newHeight = Math.max(172, textarea.scrollHeight);
+    textarea.style.height = `${newHeight}px`;
+  };
+
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
+
+  const handleImagesChange = (files: File[]) => {
+    setSelectedImages(files);
+  };
 
   const scrollToSection = (
     ref: React.RefObject<HTMLDivElement>,
@@ -61,12 +83,12 @@ export default function RequestEstimatePage(): JSX.Element {
   const handleContentValue = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newText = e.target.value;
     if (newText.length <= 3000) setContentValue(newText);
+    requestAnimationFrame(adjustTextareaHeight);
   };
-
 
   const handleMoney = (value: string) => {
     setIsChecked(value);
-    scrollToSection(detailRef,'detail')
+    scrollToSection(detailRef, 'detail');
   };
 
   const handleSucceed = () => {
@@ -75,10 +97,37 @@ export default function RequestEstimatePage(): JSX.Element {
     }
   };
 
-  const handleCityClick = ()=>{
-    scrollToSection(budgetRef, 'budget')
+  const handleCityClick = () => {
+    scrollToSection(budgetRef, 'budget');
   };
   const navigate = useNavigate();
+
+  // 수정 모드로 진입했을 때 기존 데이터 설정
+  useEffect(() => {
+    if (editSection && editData) {
+      switch (editSection) {
+        case 'detail': {
+          setTitleValue(editData.title);
+          setContentValue(editData.content);
+          scrollToSection(detailRef, 'detail');
+          break;
+        }
+        case 'info': {
+          const categoryId = initialCategories.find((item) => item.title === editData.category)?.id;
+          if (categoryId) setSelected(categoryId);
+          setIsChecked(editData.budget);
+          scrollToSection(categoryRef, 'category');
+          break;
+        }
+      }
+      setProcessing(100);
+    }
+  }, [editSection, editData]);
+
+  useEffect(() => {
+    adjustTextareaHeight();
+  }, [contentValue]);
+
   return (
     <>
       <TopContainer>
@@ -132,7 +181,7 @@ export default function RequestEstimatePage(): JSX.Element {
               <div ref={locationRef}>
                 <RE.Bubble>컨설팅 위치는 어디인가요?</RE.Bubble>
                 <div style={{ paddingBottom: '18px', paddingLeft: '6px' }}>
-                  <ChoiceCity onClick={handleCityClick}/>
+                  <ChoiceCity onClick={handleCityClick} />
                 </div>
                 <RE.DividingLine />
               </div>
@@ -147,8 +196,7 @@ export default function RequestEstimatePage(): JSX.Element {
                     '100~200만원',
                     '200~500만원',
                     '500~1000만원',
-                    '1000만원 이상'
-                    
+                    '1000만원 이상',
                   ].map((value) => (
                     <EstimateBudget
                       key={value}
@@ -190,17 +238,21 @@ export default function RequestEstimatePage(): JSX.Element {
                       placeholder="내용을 입력해주세요."
                       value={contentValue}
                       onChange={handleContentValue}
+                      ref={textareaRef}
                     />
-                    <div style={{ position: 'absolute', bottom: '20px', left: '26px' }}>
-                      <CameraIcon />
+                   
+                    <div style={{ position: 'absolute', bottom: '20px', left: '26px' ,marginTop:'10px'}}>
+                      <ImgUpload onImagesChange={handleImagesChange} maxImages={5} />
                     </div>
-                    <RE.ContentLength>
-                      {contentValue.length}/3000
-                    </RE.ContentLength>
+                    <RE.ContentLength>{contentValue.length}/3000</RE.ContentLength>
                   </InputContainer>
                 </div>
                 <ApplyBtn>
-                  <RE.Button onClick={()=>navigate('/MyEstimate/RequestEstimate/CheckMyEstimate')}>견적 조회하기</RE.Button>
+                  <RE.Button
+                    onClick={() => navigate('/MyEstimate/RequestEstimate/CheckMyEstimate')}
+                  >
+                    {editSection ? '수정완료' : '견적 조회하기'}
+                  </RE.Button>
                 </ApplyBtn>
               </div>
             </div>
@@ -223,23 +275,23 @@ const ApplyBtn = styled.div`
   margin: 172px 0 350px;
 `;
 const TopContainer = styled.div`
-display: flex;
-flex-direction: column;
-gap: 11px;
-padding-left: 180px;
-max-width: 1200px;
-padding-bottom: 25px;
-padding-top: 70px;
-
-@media (max-width: 768px) {
-  padding-left: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  padding-left: 180px;
+  max-width: 1200px;
   padding-bottom: 25px;
   padding-top: 70px;
-}
 
-@media (max-width: 480px) {
-  padding-left: 20px;
-  padding-bottom: 25px;
-  padding-top: 70px;
-}
+  @media (max-width: 768px) {
+    padding-left: 30px;
+    padding-bottom: 25px;
+    padding-top: 70px;
+  }
+
+  @media (max-width: 480px) {
+    padding-left: 20px;
+    padding-bottom: 25px;
+    padding-top: 70px;
+  }
 `;
