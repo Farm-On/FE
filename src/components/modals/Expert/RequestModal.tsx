@@ -17,7 +17,7 @@ export const RequestModal = ({onClick}:ModalProps) => {
         <CheckP>신청하시겠습니까?</CheckP>
         <ButtonWrapper>
           <BackBtn onClick={onClick}>돌아가기</BackBtn>
-          <ApplyBtn onClick={() => navigate('/')}>신청하기</ApplyBtn>
+          <ApplyBtn onClick={() => navigate('/MyEstimate/allEstimates')}>신청하기</ApplyBtn>
         </ButtonWrapper>
       </Container>
     </ModalOverlay>
