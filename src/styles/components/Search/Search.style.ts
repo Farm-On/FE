@@ -16,6 +16,7 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   position: relative;
+  justify-content: center;
 `;
 
 export const SearchSection = styled.div`
@@ -25,6 +26,7 @@ export const SearchSection = styled.div`
   align-items: center;
   position: relative;
   z-index: 1;
+  justify-content: center;
 `;
 
 export const BackgroundBlur = styled.div`
@@ -45,6 +47,14 @@ export const BackgroundBlur = styled.div`
   left: 50%;
   transform: translateX(-50%);
   mix-blend-mode: difference;
+
+  @media (max-width: 768px) {
+    width: 300px;
+    height: 300px;
+  }
+
+  @media (max-width: 480px) {
+  }
 `;
 
 export const Title = styled.h1`
@@ -56,12 +66,30 @@ export const Title = styled.h1`
   color: #002415;
   line-height: 1.4;
   margin-bottom: 86px;
+
+  @media (max-width: 768px) {
+    font-size: 38px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 30px;
+  }
 `;
 
 export const SearchBarWrapper = styled.div`
   position: relative;
   width: 684px;
   height: 66px;
+
+  @media (max-width: 768px) {
+    width: 600px;
+    height: 66px;
+  }
+
+  @media (max-width: 480px) {
+    width: 350px;
+    height: 50px;
+  }
 `;
 
 export const SearchBar = styled.div`
@@ -130,6 +158,16 @@ export const StyledImage = styled.img`
   height: 32px;
   object-fit: contain;
   margin-left: 24px;
+
+  @media (max-width: 768px) {
+    width: 30px;
+    height: 30px;
+  }
+
+  @media (max-width: 480px) {
+    width: 24px;
+    height: 24px;
+  }
 `;
 
 export const Input = styled.input`
