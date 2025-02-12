@@ -8,7 +8,6 @@ export const BannerContainer = styled.div`
   background: linear-gradient(180deg, #00a05e 0%, #00b168 100%);
   border-radius: 30px;
   overflow: hidden;
-  margin-top: 110px;
 
   @media (max-width: 1024px) {
     width: 800px;

@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 
 export const BannerContainer = styled.div`
   width: 100%;
+  margin-top: 110px;
 `;
 
 export const CategoryContainer = styled.div`
@@ -27,6 +28,9 @@ export const SearchSection = styled.div`
   position: relative;
   z-index: 1;
   justify-content: center;
+  padding-top: 80px;
+  margin-top: -160px;
+  overflow: visible;
 `;
 
 export const BackgroundBlur = styled.div`
@@ -61,7 +65,7 @@ export const Title = styled.h1`
   font-family: 'Pretendard';
   font-size: 44px;
   font-weight: bold;
-  margin-top: 135px;
+  margin-top: 137px;
   text-align: center;
   color: #002415;
   line-height: 1.4;
@@ -115,7 +119,7 @@ export const DropDown = styled.div`
   height: 330px;
   background-color: white;
   border-radius: 20px;
-  z-index: 1;
+  z-index: 10;
   margin-top: 13px;
   box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.1);
 `;
