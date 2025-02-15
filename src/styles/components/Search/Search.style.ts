@@ -11,12 +11,16 @@ export const CategoryContainer = styled.div`
   justify-content: center;
 `;
 
-export const Container = styled.div`
+export const Container = styled.div<{ backgroundImage: string }>`
   width: 100%;
+  height: 100vh;
+  background-image: url(${(props) => props.backgroundImage});
+  background-size: auto;
+  background-position: top;
+  background-repeat: no-repeat;
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
   justify-content: center;
 `;
 
@@ -31,34 +35,6 @@ export const SearchSection = styled.div`
   padding-top: 80px;
   margin-top: -160px;
   overflow: visible;
-`;
-
-export const BackgroundBlur = styled.div`
-  position: absolute;
-  width: 400px;
-  height: 400px;
-  opacity: 0.6;
-  background: radial-gradient(
-    100% 100% at 50% 50%,
-    rgba(111, 216, 146, 0.5) 0%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  box-shadow: 66px 66px 66px rgba(0, 0, 0, 0.1);
-  border-radius: 9999px;
-  filter: blur(66px);
-  z-index: 0;
-  top: -158px;
-  left: 50%;
-  transform: translateX(-50%);
-  mix-blend-mode: difference;
-
-  @media (max-width: 768px) {
-    width: 300px;
-    height: 300px;
-  }
-
-  @media (max-width: 480px) {
-  }
 `;
 
 export const Title = styled.h1`

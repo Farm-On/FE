@@ -4,6 +4,7 @@ import { Category } from './Category';
 import { Banner } from './Banner';
 import { useEffect, useRef, useState } from 'react';
 import XIcon from '@/assets/icons/greyX.svg?react';
+import Background from '@/assets/images/blur.png';
 import HighlightedText from './HighlightedText';
 import {
   useSearch,
@@ -138,9 +139,8 @@ export const Search = () => {
   };
 
   return (
-    <S.Container>
+    <S.Container backgroundImage={Background}>
       <S.SearchSection>
-        <S.BackgroundBlur />
         <S.Title>
           지금 당신에게 <br />
           필요한 컨설팅을 찾아보세요.
