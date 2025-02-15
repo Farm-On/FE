@@ -9,6 +9,8 @@ import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import ImgUpload from '../../components/RequestImageUpload';
+import { useCreateEstimateMutation } from '@/hooks/useMyEstimate';
+import { CreateEstimate } from '@/api/types';
 
 interface Category {
   id: string;
@@ -24,7 +26,6 @@ const initialCategories: Category[] = [
   { id: '6', title: '기타' },
 ];
 
-
 export default function RequestEstimatePage(): JSX.Element {
   const location = useLocation();
   const editData = location.state?.editData;
@@ -32,18 +33,70 @@ export default function RequestEstimatePage(): JSX.Element {
   const [selected, setSelected] = useState<string>('2');
   const [titleValue, setTitleValue] = useState<string>('');
   const [contentValue, setContentValue] = useState<string>('');
-  //const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [isChecked, setIsChecked] = useState<string>('');
-  //const [isApplied, setIsApplied] = useState<boolean>(false);
   const [processing, setProcessing] = useState<number>(0);
   const [currentSection, setCurrentSection] = useState<
     'category' | 'location' | 'budget' | 'detail'
   >('category');
+
+  const [areaName, setAreaName] = useState<string>('');
+  const [areaNameDetail, setNameDetail] = useState<string>('');
+
   const categoryRef = useRef<HTMLDivElement>(null);
   const locationRef = useRef<HTMLDivElement>(null);
   const budgetRef = useRef<HTMLDivElement>(null);
   const detailRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleLocationSelect = (city: string, district: string) => {
+    setAreaName(city);
+    setNameDetail(district);
+  };
+  const createEstimateMutation = useCreateEstimateMutation(); //훅 호출
+
+  const handleSubmitEstimate = async () => {
+    const categoryTitle = initialCategories.find((category) => category.id === selected)?.title;
+  
+    if (!categoryTitle || !titleValue || !contentValue || !isChecked || !areaName || !areaNameDetail) {
+      alert('모든 필수 항목을 입력해주세요.');
+      return;
+    }
+  
+    try {
+      const inputData = {
+        userId: 1,
+        cropName: "쌀",
+        category: categoryTitle,
+        areaName: areaName,          
+        areaNameDetail: areaNameDetail,
+        budget: isChecked,
+        title: titleValue,
+        body: contentValue
+      };
+  
+    
+      const response = await createEstimateMutation.mutateAsync({
+        data: inputData,
+        files: selectedImages
+      });
+      
+      if (response.isSuccess) {
+        // 서버 응답과 입력 데이터를 결합합니다
+        navigate('/MyEstimate/RequestEstimate/CheckMyEstimate', {
+          state: {
+            estimateData: {
+              ...inputData,           // 원본 입력 데이터
+              ...response.result,     // 서버에서 받은 데이터(estimateId 등)
+              images: selectedImages  // 선택된 이미지
+            }
+          }
+        });
+      }
+    } catch (error) {
+      console.error('견적서 생성 중 오류 발생:', error);
+      alert('견적서 생성에 실패했습니다. 다시 시도해주세요.');
+    }
+  };
 
   const adjustTextareaHeight = () => {
     const textarea = textareaRef.current;
@@ -51,7 +104,7 @@ export default function RequestEstimatePage(): JSX.Element {
 
     //높이 초기화
     textarea.style.height = 'auto';
-    
+
     const newHeight = Math.max(172, textarea.scrollHeight);
     textarea.style.height = `${newHeight}px`;
   };
@@ -181,7 +234,7 @@ export default function RequestEstimatePage(): JSX.Element {
               <div ref={locationRef}>
                 <RE.Bubble>컨설팅 위치는 어디인가요?</RE.Bubble>
                 <div style={{ paddingBottom: '18px', paddingLeft: '6px' }}>
-                  <ChoiceCity onClick={handleCityClick} />
+                  <ChoiceCity onClick={handleCityClick} onLocationSelect={handleLocationSelect} />
                 </div>
                 <RE.DividingLine />
               </div>
@@ -240,17 +293,22 @@ export default function RequestEstimatePage(): JSX.Element {
                       onChange={handleContentValue}
                       ref={textareaRef}
                     />
-                   
-                    <div style={{ position: 'absolute', bottom: '20px', left: '26px' ,marginTop:'10px'}}>
+
+                    <div
+                      style={{
+                        position: 'absolute',
+                        bottom: '20px',
+                        left: '26px',
+                        marginTop: '10px',
+                      }}
+                    >
                       <ImgUpload onImagesChange={handleImagesChange} maxImages={5} />
                     </div>
                     <RE.ContentLength>{contentValue.length}/3000</RE.ContentLength>
                   </InputContainer>
                 </div>
                 <ApplyBtn>
-                  <RE.Button
-                    onClick={() => navigate('/MyEstimate/RequestEstimate/CheckMyEstimate')}
-                  >
+                  <RE.Button onClick={handleSubmitEstimate}>
                     {editSection ? '수정완료' : '견적 조회하기'}
                   </RE.Button>
                 </ApplyBtn>

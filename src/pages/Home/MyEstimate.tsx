@@ -9,10 +9,24 @@ import SuhwanPhoto from '../../assets/images/suhwan.png';
 import JiminPhoto from '../../assets/images/jimin.png';
 import DonghoPhoto from '../../assets/images/dongho.png';
 import GreenRight from '../../assets/icons/chevron-right-green.svg?react';
+import { useRecentEstimates } from '@/hooks/useMyEstimate';
 
 export default function MyEstimatePage() {
   const navigate = useNavigate();
+  const userID = 1; //임시
 
+  const {data:estimates, isLoading,isError} = useRecentEstimates(userID);
+
+  const handleEstimateClick = (estimateId: number) => {
+    navigate(`/MyEstimate/detail/${estimateId}`);
+  };
+  
+  if(isLoading){
+    console.log('내 견적 로딩중')
+  }
+  if(isError){
+    console.log('errrrrr')
+  }
   return (
     <E.PageWrapper>
       <E.Container>
@@ -26,51 +40,19 @@ export default function MyEstimatePage() {
           </E.Title1>
 
           <E.MyCards>
-            <EstimateCard 
-              productName="콩"
-              product="곡물"
-              date="2024.11.11"
-              title="토양 관리 및 물 관리 방법"
-              category="토양 및 환경관리"
-              region="경기 이천시"
-              money="500만원~1,000만원"
-            />
-            <EstimateCard
-              productName="쌀"
-              product="곡물"
-              date="2024.11.11"
-              title="논 배수와 비료 사용법"
-              category="토양 및 환경관리"
-              region="경기 이천시"
-              money="500만원~1,000만원"
-            />
-            <EstimateCard
-              productName="콩"
-              product="곡물"
-              date="2024.11.11"
-              title="논 배수와 비료 사용법"
-              category="토양 및 환경관리"
-              region="경기 이천시"
-              money="500만원~1,000만원"
-            />
-            <EstimateCard
-              productName="콩"
-              product="곡물"
-              date="2024.11.11"
-              title="쌀농사 토양, 물 관리 관련 컨설팅..."
-              category="토양 및 환경관리"
-              region="경기 이천시"
-              money="500만원~1,000만원"
-            />
-            <EstimateCard
-              productName="옥수수"
-              product="곡물"
-              date="2024.11.11"
-              title="옥수수 재배 초보 입니다. 비료 사.."
-              category="토양 및 환경관리"
-              region="경기 이천시"
-              money="500만원~1,000만원"
-            />
+            {estimates?.map((estimate) => (
+              <EstimateCard
+                key={estimate.estimateId}
+                productName={estimate?.cropName}
+                product={estimate?.cropCategory}
+                date={estimate?.createdAt}
+                title={estimate?.title}
+                category={estimate?.estimateCategory}
+                region={`${estimate?.areaName} ${estimate?.areaNameDetail}`}
+                money={estimate?.budget}
+                onClick={() => handleEstimateClick(estimate?.estimateId)}
+              />
+            ))}
 
             <E.AddCard onClick={() => navigate('/MyEstimate/RequestEstimate')}>
               <div style={{display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center',gap:'10px'}}>
