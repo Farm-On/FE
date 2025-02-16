@@ -1,5 +1,5 @@
-import { axiosInstance } from './axios';
-import type { MyPageResponse, UpdateMyPageRequest } from './types';
+import { axiosInstance } from '../axios';
+import type { MyPageResponse, UpdateMyPageRequest } from '../types';
 
 interface ExchangeRoleResponse {
   isSuccess: boolean;

@@ -1,4 +1,4 @@
-import { axiosInstance } from './axios';
+import { axiosInstance } from '../axios';
 import type {
   LoginRequest,
   LoginResponse,
@@ -7,7 +7,7 @@ import type {
   ExpertSignupRequest,
   ExpertSignupResponse,
   CommonResponse,
-} from './types';
+} from '../types';
 
 export const login = async (data: LoginRequest): Promise<LoginResponse> => {
   const response = await axiosInstance.post<LoginResponse>('/login', data);

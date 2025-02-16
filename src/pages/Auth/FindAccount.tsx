@@ -7,7 +7,7 @@ import { validateEmail, validatePhone } from '@/utils/validations/findAccountVal
 import type { AxiosError } from 'axios';
 import type { ErrorResponse } from '@/api/types';
 import { useFindEmail } from '@/hooks/useAuth';
-import { generateVerificationCode, verifyCode } from '@/api/auth';
+import { generateVerificationCode, verifyCode } from '@/api/services/authService';
 
 export default function FindAccount() {
   const navigate = useNavigate();

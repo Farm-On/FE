@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import * as S from '@/styles/pages/User/EditProfile.style';
 import useAuthStore from '@/store/useAuthStore';
-import { getMyPage, updateMyPage } from '@/api/user';
+import { getMyPage, updateMyPage } from '@/api/services/userService';
 import type { AxiosError } from 'axios';
 import type { ErrorResponse, UpdateMyPageRequest } from '@/api/types';
 

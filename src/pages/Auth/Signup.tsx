@@ -19,7 +19,7 @@ import {
   validateForm,
   isFormValid,
 } from '@/utils/validations/signupValidation';
-import { generateVerificationCode, verifyCode } from '@/api/auth';
+import { generateVerificationCode, verifyCode } from '@/api/services/authService';
 
 const Signup = () => {
   const navigate = useNavigate();

@@ -4,7 +4,7 @@ import useAuthStore from '@/store/useAuthStore';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Bell, ChevronDown } from 'lucide-react';
-import { exchangeRole } from '@/api/user';
+import { exchangeRole } from '@/api/services/userService';
 
 // 알림 아이콘 컴포넌트
 const NotificationIcon = () => {
