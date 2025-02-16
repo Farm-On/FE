@@ -6,7 +6,6 @@ export const HomeContainer = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  padding-top: 80px; // Height of Navbar
   padding-bottom: 180px; // Height of Footer
 `;
 

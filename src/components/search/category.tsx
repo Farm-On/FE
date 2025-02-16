@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import * as C from '@/styles/components/Search/Category.style';
 
 import GrainImage from '@/assets/images/grain.png';
@@ -8,57 +9,33 @@ import FlowerImage from '@/assets/images/flower.png';
 import FeedImage from '@/assets/images/feed.png';
 import EtcImage from '@/assets/images/etc.png';
 
+const categories = [
+  { id: 'grain', title: '곡물', img: GrainImage },
+  { id: 'vegetable', title: '채소작물', img: VegImage },
+  { id: 'fruit', title: '과일', img: FruitImage },
+  { id: 'insam', title: '특용', img: InsamImage },
+  { id: 'flower', title: '화훼', img: FlowerImage },
+  { id: 'feed', title: '사료', img: FeedImage },
+  { id: 'etc', title: '기타', img: EtcImage },
+];
+
 export const Category = () => {
+  const navigate = useNavigate();
+
+  const handleClick = (categoryId: string) => {
+    navigate(`/menu?category=${categoryId}`); // 클릭 시 이동
+  };
+
   return (
     <C.Container>
-      <C.CategoryContainer>
-        <C.ImgContainer>
-          <C.StyledImage src={GrainImage} alt="Grain" />
-        </C.ImgContainer>
-        <C.StyledTitle>곡물</C.StyledTitle>
-      </C.CategoryContainer>
-
-      <C.CategoryContainer>
-        <C.ImgContainer>
-          <C.StyledImage src={VegImage} alt="Grain" />
-        </C.ImgContainer>
-        <C.StyledTitle>채소작물</C.StyledTitle>
-      </C.CategoryContainer>
-
-      <C.CategoryContainer>
-        <C.ImgContainer>
-          <C.StyledImage src={FruitImage} alt="Grain" />
-        </C.ImgContainer>
-        <C.StyledTitle>과일</C.StyledTitle>
-      </C.CategoryContainer>
-
-      <C.CategoryContainer>
-        <C.ImgContainer>
-          <C.StyledImage src={InsamImage} alt="Grain" />
-        </C.ImgContainer>
-        <C.StyledTitle>특용</C.StyledTitle>
-      </C.CategoryContainer>
-
-      <C.CategoryContainer>
-        <C.ImgContainer>
-          <C.StyledImage src={FlowerImage} alt="Grain" />
-        </C.ImgContainer>
-        <C.StyledTitle>화훼</C.StyledTitle>
-      </C.CategoryContainer>
-
-      <C.CategoryContainer>
-        <C.ImgContainer>
-          <C.StyledImage src={FeedImage} alt="Grain" />
-        </C.ImgContainer>
-        <C.StyledTitle>사료</C.StyledTitle>
-      </C.CategoryContainer>
-
-      <C.CategoryContainer>
-        <C.ImgContainer>
-          <C.StyledImage src={EtcImage} alt="Grain" />
-        </C.ImgContainer>
-        <C.StyledTitle>기타</C.StyledTitle>
-      </C.CategoryContainer>
+      {categories.map((category) => (
+        <C.CategoryContainer key={category.id} onClick={() => handleClick(category.id)}>
+          <C.ImgContainer>
+            <C.StyledImage src={category.img} alt={category.title} />
+          </C.ImgContainer>
+          <C.StyledTitle>{category.title}</C.StyledTitle>
+        </C.CategoryContainer>
+      ))}
     </C.Container>
   );
 };
