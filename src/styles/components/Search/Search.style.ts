@@ -32,8 +32,7 @@ export const SearchSection = styled.div`
   position: relative;
   z-index: 1;
   justify-content: center;
-  padding-top: 80px;
-  margin-top: -160px;
+  margin-top: 80px;
   overflow: visible;
 `;
 
@@ -179,6 +178,7 @@ export const TagContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 `;
 
 export const TagInner = styled.div`
@@ -225,6 +225,7 @@ export const HistoryLabel = styled.div`
   font-weight: 600;
   line-height: 24px;
   word-wrap: break-word;
+  cursor: pointer;
 `;
 
 export const HistoryIcon = styled.div`
