@@ -31,16 +31,36 @@ export const withdraw = async (userId: number): Promise<void> => {
   await axiosInstance.patch(`/withdraw/${userId}`);
 };
 
-export const generateVerificationCode = async (phoneNum: string): Promise<CommonResponse> => {
-  const response = await axiosInstance.post<CommonResponse>('/generate', null, {
-    params: { phoneNum },
-  });
+export const generateVerificationCode = async (
+  phoneNum: string,
+  isSignup: boolean = false
+): Promise<CommonResponse> => {
+  const response = await axiosInstance.post<CommonResponse>(
+    `/generate?phoneNum=${phoneNum}&isSignup=${isSignup}`
+  );
   return response.data;
 };
 
 export const verifyCode = async (phoneNum: string, inputCode: string): Promise<CommonResponse> => {
-  const response = await axiosInstance.post<CommonResponse>('/verify', null, {
-    params: { phoneNum, inputCode },
-  });
+  const response = await axiosInstance.post<CommonResponse>(
+    `/verify?phoneNum=${phoneNum}&inputCode=${inputCode}`
+  );
+  return response.data;
+};
+
+export const findEmail = async (phoneNum: string): Promise<CommonResponse> => {
+  const response = await axiosInstance.post<CommonResponse>(
+    `/user/find-email?phoneNum=${phoneNum}`
+  );
+  return response.data;
+};
+
+export const resetPassword = async (
+  email: string,
+  newPassword: string
+): Promise<CommonResponse> => {
+  const response = await axiosInstance.patch<CommonResponse>(
+    `/user/reset-password?email=${email}&newPassword=${newPassword}`
+  );
   return response.data;
 };

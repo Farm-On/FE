@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
+import { Menu } from 'lucide-react';
 
 export const NavContainer = styled.nav`
   height: 60px;
@@ -97,6 +98,11 @@ export const MenuLink = styled(Link)`
   }
 `;
 
+export const EstimateLink = styled(MenuLink)`
+  font-size: 16px;
+  font-weight: 400;
+`;
+
 export const RightSection = styled.div`
   display: flex;
   align-items: center;
@@ -160,6 +166,90 @@ export const SignupText = styled.span`
   font-weight: 600;
   font-size: 16px;
   color: #ffffff;
+`;
+
+export const UserSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 24px;
+`;
+
+export const NotificationIcon = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: #666666;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+`;
+
+export const UserDropdown = styled.div`
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+`;
+
+export const UserName = styled.div`
+  font-family: 'Pretendard';
+  font-size: 16px;
+  color: #2c2c2c;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  svg {
+    color: #2c2c2c;
+  }
+`;
+
+export const ExpertBadge = styled.span`
+  padding: 4px 8px;
+  margin-right: 8px;
+  background: #21d38a;
+  border-radius: 4px;
+  color: #ffffff;
+  font-family: 'PretendardSemiBold';
+  font-size: 12px;
+`;
+
+export const DropdownContent = styled.div`
+  display: none;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 120px;
+  background-color: #222222;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  padding: 4px 0;
+  z-index: 1000;
+  margin-top: 4px;
+
+  ${UserDropdown}:hover & {
+    display: block;
+  }
+`;
+
+export const DropdownItem = styled.div`
+  padding: 8px 16px;
+  font-family: 'Pretendard';
+  font-size: 14px;
+  color: #ffffff;
+  cursor: pointer;
+  text-align: center;
+
+  &:hover {
+    background-color: #333333;
+  }
+`;
+
+export const MenuIcon = styled(Menu)`
+  width: 24px;
+  height: 24px;
 `;
 
 export const MobileMenuButton = styled.button`
@@ -234,72 +324,4 @@ export const MobileSignupButton = styled(Link)`
   font-size: 16px;
   color: #ffffff;
   margin-top: 8px;
-`;
-
-export const UserSection = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 24px;
-`;
-
-export const NotificationIcon = styled.div`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  color: #666666;
-
-  svg {
-    width: 24px;
-    height: 24px;
-  }
-`;
-
-export const UserName = styled.div`
-  font-family: 'Pretendard';
-  font-weight: 600;
-  font-size: 16px;
-  color: #2c2c2c;
-  padding: 8px;
-`;
-
-export const DropdownContent = styled.div`
-  display: none;
-  position: absolute;
-  right: 0;
-  min-width: 120px;
-  background-color: #fff;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  padding: 8px;
-  z-index: 1;
-`;
-
-export const UserDropdown = styled.div`
-  position: relative;
-  display: inline-block;
-
-  &:hover {
-    cursor: pointer;
-
-    ${DropdownContent} {
-      display: block;
-    }
-  }
-`;
-
-export const DropdownButton = styled.button`
-  width: 100%;
-  padding: 8px 16px;
-  text-align: left;
-  background: none;
-  border: none;
-  font-family: 'Pretendard';
-  font-size: 14px;
-  color: #2c2c2c;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #f5f5f5;
-    border-radius: 4px;
-  }
 `;

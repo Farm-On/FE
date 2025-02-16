@@ -121,8 +121,6 @@ const Signup = () => {
   };
 
   const handlePhoneVerification = async () => {
-    const phoneNumber = `${signupForm.phone1}${signupForm.phone2}${signupForm.phone3}`;
-
     const phoneResult = validatePhone(signupForm.phone1, signupForm.phone2, signupForm.phone3);
     if (!phoneResult.isValid) {
       setFormError('phone', phoneResult.message);
@@ -130,40 +128,76 @@ const Signup = () => {
     }
 
     try {
-      await generateVerificationCode(phoneNumber);
-      setSignupForm('isPhoneVerifying', true);
-      setTimeLeft(180);
-      setTimerActive(true);
+      const phoneNumber = `${signupForm.phone1}${signupForm.phone2}${signupForm.phone3}`;
+      console.log('Attempting to send verification code to:', phoneNumber);
+
+      const response = await generateVerificationCode(phoneNumber, true);
+      console.log('Server response:', response);
+
+      if (response.isSuccess) {
+        setSignupForm('isPhoneVerifying', true);
+        setTimeLeft(180);
+        setTimerActive(true);
+        setFormError('phone', undefined);
+      } else {
+        setFormError('phone', response.message || '인증번호 발송에 실패했습니다.');
+        console.error('Failed to send verification code:', response);
+      }
     } catch (error) {
+      console.error('Verification error:', error);
       const axiosError = error as AxiosError<ErrorResponse>;
       setFormError('phone', axiosError.response?.data?.message || '인증번호 발송에 실패했습니다.');
     }
   };
 
   const handleVerificationConfirm = async () => {
-    const phoneNumber = `${signupForm.phone1}${signupForm.phone2}${signupForm.phone3}`;
+    if (!signupForm.verificationCode) {
+      setFormError('phone', '인증번호를 입력해주세요.');
+      return;
+    }
 
     try {
+      const phoneNumber = `${signupForm.phone1}${signupForm.phone2}${signupForm.phone3}`;
+      console.log('Verifying code for:', phoneNumber, 'Code:', signupForm.verificationCode);
+
       const response = await verifyCode(phoneNumber, signupForm.verificationCode);
-      const isValid = response.isSuccess;
-      setSignupForm('isVerificationNumberValid', isValid);
-      setSignupForm('isVerificationNumberChecked', true);
-      if (isValid) {
-        setTimerActive(false);
+      console.log('Verification response:', response);
+
+      if (response.isSuccess) {
+        setSignupForm('isVerificationNumberValid', true);
+        setSignupForm('isVerificationNumberChecked', true);
+        setFormError('phone', undefined);
+      } else {
+        setSignupForm('isVerificationNumberValid', false);
+        setSignupForm('isVerificationNumberChecked', true);
+        setFormError('phone', response.message || '인증번호가 일치하지 않습니다.');
       }
     } catch (error) {
+      console.error('Verification confirmation error:', error);
       const axiosError = error as AxiosError<ErrorResponse>;
+      setSignupForm('isVerificationNumberValid', false);
+      setSignupForm('isVerificationNumberChecked', true);
       setFormError('phone', axiosError.response?.data?.message || '인증번호 확인에 실패했습니다.');
     }
   };
 
   const handleResendVerification = async () => {
-    const phoneNumber = `${signupForm.phone1}${signupForm.phone2}${signupForm.phone3}`;
     try {
-      await generateVerificationCode(phoneNumber);
-      setTimeLeft(180);
-      setTimerActive(true);
+      const phoneNumber = `${signupForm.phone1}${signupForm.phone2}${signupForm.phone3}`;
+      console.log('Resending verification code to:', phoneNumber);
+
+      const response = await generateVerificationCode(phoneNumber, true);
+      console.log('Resend response:', response);
+
+      if (response.isSuccess) {
+        setTimeLeft(180);
+        setTimerActive(true);
+        setFormError('phone', undefined);
+      } else {
+        setFormError('phone', response.message || '인증번호 재발송에 실패했습니다.');
+      }
     } catch (error) {
+      console.error('Resend verification error:', error);
       const axiosError = error as AxiosError<ErrorResponse>;
       setFormError(
         'phone',
@@ -206,9 +240,10 @@ const Signup = () => {
 
     if (isFormValid(validationResults)) {
       try {
-        const birthDate = `${signupForm.birthYear}-${String(signupForm.birthMonth).padStart(2, '0')}-${String(
-          signupForm.birthDay
-        ).padStart(2, '0')}`;
+        const birthDate = `${signupForm.birthYear}-${String(signupForm.birthMonth).padStart(
+          2,
+          '0'
+        )}-${String(signupForm.birthDay).padStart(2, '0')}`;
         const phone = `${signupForm.phone1}${signupForm.phone2}${signupForm.phone3}`;
 
         const signupData: SignupRequest = {

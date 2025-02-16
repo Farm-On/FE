@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { login, signup, expertSignup } from '@/api/auth';
+import { login, signup, expertSignup, findEmail } from '@/api/auth';
 import type { LoginRequest, LoginResponse, SignupRequest, ExpertSignupRequest } from '@/api/types';
 import useAuthStore from '@/store/useAuthStore';
 
@@ -10,9 +10,15 @@ export const useLogin = () => {
   return useMutation({
     mutationFn: (data: LoginRequest) => login(data),
     onSuccess: (response: LoginResponse) => {
-      const { token, userName } = response.result;
+      const { token, userName, role, email, userId } = response.result;
       localStorage.setItem('token', token);
-      setLogin({ name: userName });
+      setLogin({
+        userName,
+        userId,
+        role,
+        email,
+        token,
+      });
       queryClient.invalidateQueries({ queryKey: ['user'] });
     },
   });
@@ -28,5 +34,11 @@ export const useExpertSignup = () => {
   return useMutation({
     mutationFn: ({ userId, data }: { userId: number; data: ExpertSignupRequest }) =>
       expertSignup(userId, data),
+  });
+};
+
+export const useFindEmail = () => {
+  return useMutation({
+    mutationFn: (phoneNum: string) => findEmail(phoneNum),
   });
 };

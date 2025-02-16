@@ -1,3 +1,10 @@
+export interface CommonResponse {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  result: string;
+}
+
 export interface LoginRequest {
   email: string;
   password: string;
@@ -51,11 +58,24 @@ export interface ExpertSignupResponse {
   };
 }
 
-export interface CommonResponse {
+export interface MyPageResponse {
   isSuccess: boolean;
   code: string;
   message: string;
-  result: string;
+  result: {
+    name: string;
+    birth: string;
+    gender: 'MALE' | 'FEMALE';
+    phone: string;
+    email: string;
+  };
+}
+
+export interface UpdateMyPageRequest {
+  name: string;
+  birth: string;
+  email: string;
+  password: string;
 }
 
 export interface ErrorResponse {

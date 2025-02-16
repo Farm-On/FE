@@ -27,6 +27,9 @@ export const SearchSection = styled.div`
   align-items: center;
   position: relative;
   z-index: 1;
+  margin-top: -160px;
+  padding-top: 80px;
+  clip-path: polygon(0 80px, 100% 80px, 100% 100%, 0 100%);
 `;
 
 export const BackgroundBlur = styled.div`
@@ -93,7 +96,6 @@ export const Input = styled.input`
   color: #8e8e8e;
   background: none;
   margin: 0 24px;
-
   &::placeholder {
     color: #8e8e8e;
   }
