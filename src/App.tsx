@@ -97,7 +97,7 @@ const AppRoutes = () => {
 
         <Route path="/MyEstimate/allEstimates" element={<AllEstimates/>} />
         <Route path="/MyEstimate/RequestEstimate/CheckMyEstimate" element={<CheckMyEstimatePage/>} />
-        <Route path="/MyEstimate/EstimateId" element={<EstimateSheet/>} />
+        <Route path="/MyEstimate/detail/:estimateId" element={<EstimateSheet/>} />
       </Routes>
       {shouldShowNavbarAndFooter && <Footer />}
     </>

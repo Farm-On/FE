@@ -64,20 +64,8 @@ export interface ErrorResponse {
   message: string;
   data?: unknown;
 }
-
-
-
-
-
-
-
-
+//---------------------------------------------------
 // 공통적으로 사용되는 API 응답 기본 구조
-export interface ApiResponse {
-  isSuccess: boolean;
-  code: string;
-  message: string;
-}
 
 export interface CreateEstimate {
   userId: number;
@@ -88,6 +76,11 @@ export interface CreateEstimate {
   budget: string;
   title: string;
   body: string;
+}
+export interface ApiResponse {
+  isSuccess: boolean;
+  code: string;
+  message: string;
 }
 
 export interface CreateEstimateResponse extends ApiResponse {
@@ -111,7 +104,6 @@ export interface EstimateItem extends EstimateBasic {
   status: number;
   createdAt: string;
 }
-
 
 // 페이지네이션 정보
 export interface PaginationInfo {
@@ -142,7 +134,6 @@ export interface GetEstimate extends ApiResponse {
   };
 }
 
-
 export interface EstimateListItem {
   estimateId: number;
   title: string;
@@ -169,4 +160,58 @@ export interface AllEstimatesResponse {
     isLast: boolean;
     estimateList: EstimateListItem[];
   };
+}
+
+
+export interface OfferList {
+  estimateId: number;
+  chatRoomId: number;
+  expertId: number;
+  name: string;
+  nickname: string;
+  isNicknameOnly: true;
+  rating: number;
+  profileImageUrl: string;
+  description: string;
+  consultingCount: number;
+}
+
+export interface OfferedEstimateResponse {
+  isSuccess: true;
+  code: string;
+  message: string;
+  result: {
+    listSize: 0;
+    totalPage: 0;
+    totalElements: 0;
+    currentPage: 0;
+    isFirst: true;
+    isLast: true;
+    offerList: OfferList[];
+  };
+}
+
+//특정견적서 상세값(제안견적 x)
+export interface EstimateDetail {
+  estimateId: number;
+  userId: number;
+  cropName: string;
+  cropCategory: string;
+  userName: string;
+  category: string;
+  areaName: string;
+  areaNameDetail: string;
+  budget: string;
+  title: string;
+  body: string;
+  createdDate: string;
+  imageUrls: string[];
+}
+
+
+export interface EachEstimateListResponse {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  result: EstimateDetail;
 }

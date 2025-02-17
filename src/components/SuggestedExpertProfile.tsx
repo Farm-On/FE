@@ -5,6 +5,7 @@ import Star from '@/assets/icons/Star.svg?react';
 interface ExpertProfileCardProps {
   profileImg: string;
   name: string;
+  nickName?:string;
   ratings: number;
   years: number;
   introduction: string;
@@ -13,6 +14,7 @@ interface ExpertProfileCardProps {
 export const SuggestedExpertProfile = ({
   profileImg,
   name,
+  nickName,
   ratings,
   years,
   introduction,
@@ -21,7 +23,9 @@ export const SuggestedExpertProfile = ({
     <P.Card>
       <P.Avatar src={profileImg} />
       <P.Profile>
-        <P.Name>{name}</P.Name>
+        <P.Name>
+          {nickName ? `${name} (${nickName})`: name}
+        </P.Name>
         <P.Info>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Star style={{ width: '26px', height: '26px' }} />

@@ -10,7 +10,6 @@ import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import ImgUpload from '../../components/RequestImageUpload';
 import { useCreateEstimateMutation } from '@/hooks/useMyEstimate';
-import { CreateEstimate } from '@/api/types';
 
 interface Category {
   id: string;
@@ -30,7 +29,7 @@ export default function RequestEstimatePage(): JSX.Element {
   const location = useLocation();
   const editData = location.state?.editData;
   const editSection = location.state?.editSection;
-  const [selected, setSelected] = useState<string>('2');
+  const [selected, setSelected] = useState<string>('');
   const [titleValue, setTitleValue] = useState<string>('');
   const [contentValue, setContentValue] = useState<string>('');
   const [isChecked, setIsChecked] = useState<string>('');
@@ -48,55 +47,14 @@ export default function RequestEstimatePage(): JSX.Element {
   const detailRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  //이미지 관련 상태
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  
   const handleLocationSelect = (city: string, district: string) => {
     setAreaName(city);
     setNameDetail(district);
   };
   const createEstimateMutation = useCreateEstimateMutation(); //훅 호출
-
-  const handleSubmitEstimate = async () => {
-    const categoryTitle = initialCategories.find((category) => category.id === selected)?.title;
-  
-    if (!categoryTitle || !titleValue || !contentValue || !isChecked || !areaName || !areaNameDetail) {
-      alert('모든 필수 항목을 입력해주세요.');
-      return;
-    }
-  
-    try {
-      const inputData = {
-        userId: 1,
-        cropName: "쌀",
-        category: categoryTitle,
-        areaName: areaName,          
-        areaNameDetail: areaNameDetail,
-        budget: isChecked,
-        title: titleValue,
-        body: contentValue
-      };
-  
-    
-      const response = await createEstimateMutation.mutateAsync({
-        data: inputData,
-        files: selectedImages
-      });
-      
-      if (response.isSuccess) {
-        // 서버 응답과 입력 데이터를 결합합니다
-        navigate('/MyEstimate/RequestEstimate/CheckMyEstimate', {
-          state: {
-            estimateData: {
-              ...inputData,           // 원본 입력 데이터
-              ...response.result,     // 서버에서 받은 데이터(estimateId 등)
-              images: selectedImages  // 선택된 이미지
-            }
-          }
-        });
-      }
-    } catch (error) {
-      console.error('견적서 생성 중 오류 발생:', error);
-      alert('견적서 생성에 실패했습니다. 다시 시도해주세요.');
-    }
-  };
 
   const adjustTextareaHeight = () => {
     const textarea = textareaRef.current;
@@ -108,8 +66,6 @@ export default function RequestEstimatePage(): JSX.Element {
     const newHeight = Math.max(172, textarea.scrollHeight);
     textarea.style.height = `${newHeight}px`;
   };
-
-  const [selectedImages, setSelectedImages] = useState<File[]>([]);
 
   const handleImagesChange = (files: File[]) => {
     setSelectedImages(files);
@@ -158,17 +114,25 @@ export default function RequestEstimatePage(): JSX.Element {
   // 수정 모드로 진입했을 때 기존 데이터 설정
   useEffect(() => {
     if (editSection && editData) {
+      setTitleValue(editData.title);
+      setContentValue(editData.content);
+      const categoryId = initialCategories.find((item) => item.title === editData.category)?.id;
+      if (categoryId) setSelected(categoryId);
+      setIsChecked(editData.budget);
+
+      setAreaName(editData.areaName);
+      setNameDetail(editData.areaNameDetail);
+
+      if (editData.images && editData.images.length > 0) {
+        setSelectedImages(editData.images);
+      }
+
       switch (editSection) {
         case 'detail': {
-          setTitleValue(editData.title);
-          setContentValue(editData.content);
           scrollToSection(detailRef, 'detail');
           break;
         }
         case 'info': {
-          const categoryId = initialCategories.find((item) => item.title === editData.category)?.id;
-          if (categoryId) setSelected(categoryId);
-          setIsChecked(editData.budget);
           scrollToSection(categoryRef, 'category');
           break;
         }
@@ -180,6 +144,88 @@ export default function RequestEstimatePage(): JSX.Element {
   useEffect(() => {
     adjustTextareaHeight();
   }, [contentValue]);
+
+  //견적서 제출 함수
+  const handleSubmitEstimate = async () => {
+    const categoryTitle = initialCategories.find((category) => category.id === selected)?.title;
+
+    if (
+      !categoryTitle ||
+      !titleValue ||
+      !contentValue ||
+      !isChecked ||
+      !areaName ||
+      !areaNameDetail
+    ) {
+      alert('모든 필수 항목을 입력해주세요.');
+      return;
+    }
+
+    const inputData = {
+      userId: 1,
+      cropName: '쌀',
+      category: categoryTitle,
+      areaName: areaName,
+      areaNameDetail: areaNameDetail,
+      budget: isChecked,
+      title: titleValue,
+      body: contentValue,
+    };
+
+    console.log('서버로 보낼 데이터:', inputData); 
+
+    try {
+      if (location.state?.editSection) {
+        const imageUrls = selectedImages
+        .filter(file => file instanceof File)  // 실제 File 객체만 필터링
+        .map(file => {
+          try {
+            return URL.createObjectURL(file); //url로 변환
+          } catch (error) {
+            console.error('URL 생성 실패:', error);
+            return null;
+          }
+        })
+        .filter(url => url !== null);
+        // 수정된 데이터 가지고 이동
+        navigate('/MyEstimate/RequestEstimate/CheckMyEstimate', {
+          state: {
+            estimateData: {
+              ...inputData,
+              imageUrls,    
+              originalFiles: selectedImages,
+              editMode: true,
+              areaName: areaName, 
+              areaNameDetail: areaNameDetail,
+            },
+          },
+        });
+      } else {
+        // 새로운 견적서 생성일 때 (기존 코드)
+        const response = await createEstimateMutation.mutateAsync({
+          data: inputData,
+          files: selectedImages.filter(file => file instanceof File)
+        });
+        console.log('✅ 요청한 데이터:', inputData);
+        console.log('✅ 서버 응답 데이터:', response);
+
+        if (response.isSuccess) {
+          navigate('/MyEstimate/RequestEstimate/CheckMyEstimate', {
+            state: {
+              estimateData: {
+                ...inputData,
+                ...response.result,
+              },
+            },
+          });
+          console.log('전달된 데이터들:', response);
+        }
+      }
+    } catch (error) {
+      console.error('견적서 생성 중 오류 발생:', error);
+      alert('견적서 생성에 실패했습니다. 다시 시도해주세요.');
+    }
+  };
 
   return (
     <>
@@ -234,7 +280,12 @@ export default function RequestEstimatePage(): JSX.Element {
               <div ref={locationRef}>
                 <RE.Bubble>컨설팅 위치는 어디인가요?</RE.Bubble>
                 <div style={{ paddingBottom: '18px', paddingLeft: '6px' }}>
-                  <ChoiceCity onClick={handleCityClick} onLocationSelect={handleLocationSelect} />
+                  <ChoiceCity
+                    onClick={handleCityClick}
+                    onLocationSelect={handleLocationSelect}
+                    selectedAreaName={areaName}
+                    selectedAreaDetail={areaNameDetail}
+                  />
                 </div>
                 <RE.DividingLine />
               </div>

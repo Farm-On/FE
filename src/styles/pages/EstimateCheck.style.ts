@@ -94,10 +94,11 @@ export const ConsultingImageContainer = styled.div`
 `;
 
 export const ConsultingImage = styled.img`
-  width: 147px;
-  height: 142px;
+  width: 127px;
+  height: 122px;
   border-radius: 20px;
   background: url(${(props) => props.src}) lightgray 50% / cover no-repeat;
+  object-fit:cover;
 `;
 
 export const ConsultingContent = styled.pre`

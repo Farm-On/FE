@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useAllEstimates, useCompletedEstimates } from '../../hooks/useMyEstimate';
 import { format } from 'date-fns';
 import { EstimateListItem } from '../../api/types';
+import { useNavigate } from 'react-router-dom';
 
 // const dummy = [
 //   {
@@ -82,10 +83,15 @@ import { EstimateListItem } from '../../api/types';
 // ];
 
 export default function AllEstimates() {
+  const navigate = useNavigate();
+  //const {id} = useParams<{id:string}>();
   const [currentTab, setCurrentTab] = useState<'all' | 'done'>('all');
   const [currentPage, setCurrentPage] = useState(1);
   const perPage = 9; // 한 페이지당 보여줄 카드 개수
 
+  const handleEstimateClick = (estimateId: number) => {
+    navigate(`/MyEstimate/detail/${estimateId}`);
+  };
   const {
     data: allEstimatesData,
     isLoading: isLoadingAll,
@@ -98,15 +104,24 @@ export default function AllEstimates() {
     isError: isErrorCompleted,
   } = useCompletedEstimates(1);
 
-  if (isLoadingAll || (currentTab === 'done' && isLoadingCompleted))
-    return console.log('견적서 전체 조회 로딩중');
-  if (isErrorAll || (currentTab === 'done' && isErrorCompleted))
-    return console.log('견적서 전체 조회 실패~!');
+  if (isLoadingAll || (currentTab === 'done' && isLoadingCompleted)){
+     console.log('견적서 전체 조회 로딩중');
+    return null;
+  }
+  if (isErrorAll || (currentTab === 'done' && isErrorCompleted)){
+      console.log('견적서 전체 조회 실패~!');
+    return null;
+  }
+  if(isErrorCompleted){
+    console.log("완료견적 에러:",)
+    return null;
+  }
 
   const allEstimates = allEstimatesData?.result?.estimateList || [];
   const completedEstimates = completedEstimatesData?.result?.estimateList || [];
   const currentData = currentTab === 'all' ? allEstimates : completedEstimates;
 
+  console.log('완료된 데이터:', completedEstimates);
   console.log('완료된 데이터:', completedEstimatesData?.result?.estimateList);
 
   const totalPages = Math.ceil(currentData.length / perPage);
@@ -156,6 +171,7 @@ export default function AllEstimates() {
           <ME.Grid>
             {currentPageEstimates.map((estimate: EstimateListItem) => (
               <ExpertEstimateCard
+                onClick={()=>handleEstimateClick(estimate.estimateId)}
                 key={estimate.estimateId}
                 id={estimate.estimateId}
                 title={estimate.title}

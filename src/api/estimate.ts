@@ -1,6 +1,6 @@
 //견적서 관련 api
 import axiosInstance from "./axios";
-import { CreateEstimate, CreateEstimateResponse} from "./types";
+import { CreateEstimate, CreateEstimateResponse,OfferedEstimateResponse,EachEstimateListResponse} from "./types";
 
 //견적서 작성
 export const createEstimate = async (data: CreateEstimate, files?: File[]): Promise<CreateEstimateResponse> => {
@@ -35,17 +35,35 @@ export const createEstimate = async (data: CreateEstimate, files?: File[]): Prom
     return response.data;
   };
 
-//견적서 수정
-export const modifyEstimate = async(data:CreateEstimate,estimateId:number)=>{
-    const response = await axiosInstance.put(`/estimate/${estimateId}`,data);
-    return response.data;
-};
+
 
 //특정견적서 조회
-export const readEstimate = async(estimateId:number) =>{
-    const response = await axiosInstance.get(`/estimate/${estimateId}`);
-    return response.data;
+export const readEstimate = async(estimateId: number): Promise<EachEstimateListResponse> => {
+  const response = await axiosInstance.get(`/estimate/${estimateId}`);
+  return response.data;
 };
+
+
+//제안받은 견적 불러오기(전문가 프로필,채팅)
+export const offeredEstimate = async (estimateId: number): Promise<OfferedEstimateResponse> => {
+  try {
+    const response = await axiosInstance.get(`/estimate/${estimateId}/offers`);
+    
+    // 응답 데이터 로깅
+    console.log('API 응답 데이터:', response.data);
+    
+    // 응답 데이터 구조 확인
+    if (!response.data || !response.data.result) {
+      console.warn('API 응답에 result가 없습니다:', response.data);
+      throw new Error('Invalid API response structure');
+    }
+    return response.data;
+  } catch (error) {
+    console.error('API 요청 실패:', error);
+    throw error;
+  }
+};
+
 
 //농업인 견적서 최신순 5개 조회
 export const getEstimate = async(userId:number)=>{

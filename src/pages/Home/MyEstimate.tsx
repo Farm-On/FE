@@ -13,7 +13,7 @@ import { useRecentEstimates } from '@/hooks/useMyEstimate';
 
 export default function MyEstimatePage() {
   const navigate = useNavigate();
-  const userID = 1; //임시
+  const userID = 1; 
 
   const {data:estimates, isLoading,isError} = useRecentEstimates(userID);
 

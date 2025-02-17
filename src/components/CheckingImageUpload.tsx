@@ -7,8 +7,7 @@ interface ImageUploadProps {
   maxImages?: number;
 }
 
-export default function ImageUpload({ onImagesChange, maxImages = 5 }: ImageUploadProps) {
-  const [previewImages, setPreviewImages] = useState<string[]>([]);
+export default function CheckingImageUpload({ onImagesChange, maxImages = 5 }: ImageUploadProps) {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -34,10 +33,9 @@ export default function ImageUpload({ onImagesChange, maxImages = 5 }: ImageUplo
       return;
     }
 
-    // 미리보기 URL 생성
-    const newPreviewUrls = validFiles.map((file) => URL.createObjectURL(file));
 
-    setPreviewImages((prev) => [...prev, ...newPreviewUrls]);
+
+
     setSelectedFiles((prev) => [...prev, ...validFiles]);
     onImagesChange([...selectedFiles, ...validFiles]);
 
@@ -47,14 +45,7 @@ export default function ImageUpload({ onImagesChange, maxImages = 5 }: ImageUplo
     }
   };
 
-  const handleRemoveImage = (index: number) => {
-    // 미리보기 URL 해제
-    URL.revokeObjectURL(previewImages[index]);
 
-    setPreviewImages((prev) => prev.filter((_, i) => i !== index));
-    setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
-    onImagesChange(selectedFiles.filter((_, i) => i !== index));
-  };
 
   const handleAddButtonClick = () => {
     fileInputRef.current?.click();
@@ -72,15 +63,19 @@ export default function ImageUpload({ onImagesChange, maxImages = 5 }: ImageUplo
       />
 
       {/* 이미지 미리보기 영역 */}
-      <ImagePreviewContainer>
+
+      {/* <ImagePreviewContainer>
         {previewImages.map((preview, index) => (
           <ImagePreviewWrapper key={preview}>
             <PreviewImage src={preview} alt={`Preview ${index + 1}`} />
             <RemoveButton onClick={() => handleRemoveImage(index)}>×</RemoveButton>
           </ImagePreviewWrapper>
         ))}
-      </ImagePreviewContainer>
+      </ImagePreviewContainer> */}
 
+
+
+      {/* 이미지 추가 버튼 */}
       {selectedFiles.length < maxImages && <CameraIcon onClick={handleAddButtonClick} />}
     </Container>
   );
@@ -90,45 +85,3 @@ const Container = styled.div`
   margin:  0;
 `;
 
-const ImagePreviewContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-top: 16px;
-  margin-bottom:10px;
-`;
-
-const ImagePreviewWrapper = styled.div`
-  position: relative;
-  width: 68px;
-  height: 68px;
-  border-radius: 8px;
-  overflow: hidden;
-`;
-
-const PreviewImage = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-`;
-
-const RemoveButton = styled.button`
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.7);
-  }
-`;

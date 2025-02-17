@@ -2,18 +2,30 @@ import * as CC from '../../styles/components/ChoiceCity.style';
 import * as RE from '../../styles/pages/RequestEstimate';
 import styled from '@emotion/styled';
 import { regions } from './CityData';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import XIcon2 from '../../assets/icons/greenX.svg?react';
 
 
 interface CCProps{
   onClick:()=>void;
   onLocationSelect:(areaName:string,areaNameDetail:string)=>void;
+  selectedAreaName?:string;
+  selectedAreaDetail?:string;
 }
 
-export const ChoiceCity = ({onClick,onLocationSelect}:CCProps) => {
+export const ChoiceCity = ({onClick,onLocationSelect,selectedAreaName,selectedAreaDetail}:CCProps) => {
   const [selectCity, setSelectCity] = useState<string | null>(null); //선택된 도시 이름 개별 관리
   const [selectDistrict, setSelectDistrict] = useState<string | null>(null); //선택된 군/구 개별 관리
+
+  useEffect(() => {
+    // 각각 독립적으로 처리
+    if (selectedAreaName) {
+      setSelectCity(selectedAreaName);
+    }
+    if (selectedAreaDetail) {
+      setSelectDistrict(selectedAreaDetail);
+    }
+  }, [selectedAreaName, selectedAreaDetail]);
 
   const handleCityPick = (city: string) => {
     setSelectCity(city);
