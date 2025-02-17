@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as L from '@/styles/pages/ExpertRegistration/Location.style';
 import XIcon from '@/assets/icons/greenX.svg?react';
+import { useExpertSignup } from '@/hooks/useAuth';
+import useAuthStore from '@/store/useAuthStore';
 
 type LocationData = {
   [key: string]: string[];
@@ -251,6 +253,13 @@ const locationData: LocationData = {
 
 export default function Location() {
   const navigate = useNavigate();
+  const { userInfo } = useAuthStore();
+  console.log('로그인된 사용자 정보:', userInfo);
+  const userId = userInfo?.userId;
+  console.log('사용자 ID:', userId);
+  const expertCrop = localStorage.getItem('selectedCategoryDetail') || '기타';
+  console.log('전문가 카테고리:', expertCrop);
+  const { mutate: expertSignup } = useExpertSignup();
 
   // 현재 선택된 시/도
   const [selectedSido, setSelectedSido] = useState<string>('서울');
@@ -286,7 +295,31 @@ export default function Location() {
       alert('최소 1개 이상의 지역을 선택해주세요.');
       return;
     }
-    navigate('/register-complete');
+
+    if (!userId) {
+      alert('로그인이 필요합니다.');
+      return;
+    }
+
+    const requestData = {
+      expertCrop,
+      expertLocation: selectedSubLocations.join(','),
+    };
+    console.log('전송할 데이터:', requestData);
+
+    expertSignup(
+      { userId, data: requestData },
+      {
+        onSuccess: () => {
+          alert('전문가 등록이 완료되었습니다!');
+          navigate('/register-complete');
+        },
+        onError: (error) => {
+          console.error('전문가 등록 실패:', error);
+          alert('전문가 등록에 실패했습니다.');
+        },
+      }
+    );
   };
 
   return (

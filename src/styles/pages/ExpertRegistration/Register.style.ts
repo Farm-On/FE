@@ -61,10 +61,23 @@ export const Title = styled.h1`
 
 export const CategoryContainer = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  gap: 46px;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  gap: 30px;
+
+  @media (max-width: 768px) {
+    gap: 20px;
+  }
+
+  @media (max-width: 480px) {
+    gap: 14px;
+  }
+`;
+
+export const CategoryRow = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 46px;
 
   @media (max-width: 768px) {
     gap: 20px;

@@ -26,7 +26,10 @@ export default function DetailCategory() {
   };
 
   const handleNextClick = () => {
-    navigate('/location');
+    if (selectedOption) {
+      localStorage.setItem('selectedCategoryDetail', selectedOption); // 서브 카테고리 저장
+      navigate('/location');
+    }
   };
 
   return (
