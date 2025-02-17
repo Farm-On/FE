@@ -279,8 +279,8 @@ export default function Location() {
       setSelectedSubLocations((prev) => prev.filter((item) => item !== sub));
     } else {
       // 추가 (최대 5개)
-      if (selectedSubLocations.length >= 5) {
-        alert('최대 5개까지 선택할 수 있습니다.');
+      if (selectedSubLocations.length >= 1) {
+        alert('1개만 선택 가능합니다.');
         return;
       }
       setSelectedSubLocations((prev) => [...prev, sub]);
@@ -325,12 +325,12 @@ export default function Location() {
   return (
     <L.Container>
       <L.Main>
-        <L.Title>주로 활동하는 컨설팅 위치는 어디인가요? (최대 5개 선택 가능)</L.Title>
+        <L.Title>주로 활동하는 컨설팅 위치는 어디인가요?</L.Title>
         <L.TagListWrapper>
           {selectedSubLocations.map((item) => (
             <L.TagContainer key={item}>
               <L.TagInner>
-                <L.TagLabel>{item}</L.TagLabel>
+                <L.TagLabel>{`${selectedSido} ${item}`}</L.TagLabel>
                 <L.TagCloseIconContainer onClick={() => handleSubLocationClick(item)}>
                   <XIcon />
                 </L.TagCloseIconContainer>
