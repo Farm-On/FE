@@ -148,7 +148,7 @@ export const SelectedRadioBtn = styled(SelectedGreenCircle)`
 
 export const Footer = styled.div`
   display: flex;
-  padding: 14px 28px 14px 334px;
+  padding: 14px 28px 14px 0px;
   justify-content: flex-end;
   align-items: center;
   border-radius: 0px 0px 10px 10px;

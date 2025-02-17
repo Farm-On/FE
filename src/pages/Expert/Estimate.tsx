@@ -24,7 +24,7 @@ export default function Estimate() {
   const { id } = useParams();
 
   return (
-    <div style={{ marginTop: 84 }}>
+    <div style={{ backgroundColor:"#F9F9F9", paddingTop:84 }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <E.Title>쌀(곡물) 컨설팅 요청 내역</E.Title>
         <E.Subtitle>컨설팅 요청 내역을 확인하세요</E.Subtitle>

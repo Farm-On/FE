@@ -25,27 +25,46 @@ export const useFilterModalStore = create<FilterModal>((set) => ({
   setFilter: (filters) => set(() => ({ ...filters })),
 }));
 
-// 전문가, 내 프로필 > 내프로필 편집 모달
+// 전문가, 내 프로필
 interface EditMyProfile {
-  isEditMyProfileModalOpen: boolean;
-  openEditMyProfileModal: () => void;
-  closeEditMyProfileModal: () => void;
+  openedModalName: '내 프로필' | '활동 지역' | null;
+  openModal: (name: '내 프로필' | '활동 지역') => void;
+  closeModal: () => void;
+  // 내 프로필
   nickname: string | null;
   showNicknameOnly: boolean;
   introduction: string | null;
+  // 활동 지역
+  availableLocation: {
+    location: string | null;
+    detailedLocation: string | null;
+    availableRange: number | null;
+    availableAnywhere: boolean;
+    excludeLimitedArea: boolean; // 도서 지방 제외
+  };
   setProfile: (
     profile: Partial<Pick<EditMyProfile, 'nickname' | 'showNicknameOnly' | 'introduction'>>
   ) => void;
+  setAvailableLocation: (availableLocation: Partial<EditMyProfile['availableLocation']>) => void;
 }
 
 export const useEditMyProfileModalStore = create<EditMyProfile>((set) => ({
-  isEditMyProfileModalOpen: false,
-  openEditMyProfileModal: () => set(() => ({ isEditMyProfileModalOpen: true })),
-  closeEditMyProfileModal: () => set(() => ({ isEditMyProfileModalOpen: false })),
+  openedModalName: null,
+  openModal: (name) => set(() => ({ openedModalName: name })),
+  closeModal: () => set(() => ({ openedModalName: null })),
   nickname: null,
   showNicknameOnly: false,
   introduction: null,
+  availableLocation: {
+    location: null,
+    detailedLocation: null,
+    availableRange: null,
+    availableAnywhere: false,
+    excludeLimitedArea: false,
+  },
   setProfile: (profile) => set(() => ({ ...profile })),
+  setAvailableLocation: (availableLocation) =>
+    set((state) => ({ availableLocation: { ...state.availableLocation, ...availableLocation } })),
 }));
 
 // 전문가, 내 프로필 > 내 포트폴리오 편집
@@ -77,18 +96,9 @@ interface EditMyPortfolio {
     detail3: string | null;
     detail4: string | null;
   };
-  // 활동 지역
-  availableLocation: {
-    location: string | null;
-    detailedLocation: string | null;
-    availableRange: number | null;
-    availableAnywhere: boolean;
-    excludeLimitedArea: boolean; // 도서 지방 제외
-  };
   setCareer: (career: Partial<EditMyPortfolio['career']>) => void;
   setAdditionalInfo: (additionalInfo: string | null) => void;
   setMainService: (mainService: Partial<EditMyPortfolio['mainService']>) => void;
-  setAvailableLocation: (availableLocation: Partial<EditMyPortfolio['availableLocation']>) => void;
 }
 
 export const useEditMyPortfolioModalStore = create<EditMyPortfolio>((set) => ({
@@ -116,17 +126,9 @@ export const useEditMyPortfolioModalStore = create<EditMyPortfolio>((set) => ({
     detail3: null,
     detail4: null,
   },
-  availableLocation: {
-    location: null,
-    detailedLocation: null,
-    availableRange: null,
-    availableAnywhere: false,
-    excludeLimitedArea: false,
-  },
+
   setCareer: (career) => set((state) => ({ career: { ...state.career, ...career } })),
   setAdditionalInfo: (additionalInfo) => set(() => ({ additionalInfo })),
   setMainService: (mainService) =>
     set((state) => ({ mainService: { ...state.mainService, ...mainService } })),
-  setAvailableLocation: (availableLocation) =>
-    set((state) => ({ availableLocation: { ...state.availableLocation, ...availableLocation } })),
 }));

@@ -11,8 +11,8 @@ export const Card = styled.div`
   }
 
   @media (max-width: 480px) {
-    width: 200px;
-    height: 247px;
+    width: 180px;
+    height: 254px;
   }
 `;
 
@@ -38,13 +38,13 @@ export const Gradient = styled.div`
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 50%; /* 그라디언트가 아래쪽 절반을 차지하도록 */
+  height: 50%; 
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.5));
 `;
 
 export const Information = styled.div`
   position: absolute;
-  top: 70%;
+  top: 68%;
   left: 7.5%;
 
   h1 {

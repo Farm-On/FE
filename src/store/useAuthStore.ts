@@ -70,7 +70,7 @@ interface AuthStore {
   logout: () => void;
   setSignupForm: (field: SignupFormField, value: string | boolean) => void;
   setFormError: (field: keyof SignupForm['errors'], message: string | undefined) => void;
-  updateUserInfo: (updatedInfo: UserInfo) => void; // 새로 추가
+  updateUserInfo: (updatedInfo: UserInfo) => void;
 }
 
 const initialSignupForm: SignupForm = {

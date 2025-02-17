@@ -12,11 +12,14 @@ import PretendardMedium from '@/assets/fonts/Pretendard-Medium.woff';
 // 페이지
 import Home from './pages/Home';
 import MyEstimatePage from './pages/Home/MyEstimate';
+import AllEstimates from './pages/Home/AllEstimates';
 import My from './pages/Expert/My';
 import Estimates from './pages/Expert/Estimates';
 import Estimate from './pages/Expert/Estimate';
 import ExpertMyEstimate from './pages/Expert/MyEstimate';
 import MyEdit from './pages/Expert/MyEdit';
+import PortfolioEdit from './pages/Expert/PortfolioEdit';
+import PortfolioEditor from './pages/Expert/PortfolioEditor';
 import Agreement from './pages/Auth/Agreement';
 import Signup from './pages/Auth/Signup';
 import SignupComplete from './pages/Auth/SignupComplete';
@@ -34,13 +37,16 @@ import FindAccountComplete from './pages/Auth/FindAccountComplete';
 import PasswordReset from './pages/Auth/PasswordReset';
 import PasswordComplete from './pages/Auth/PasswordComplete';
 import EditProfile from './pages/User/EditProfile';
+import CheckMyEstimatePage from './pages/Home/EstimateCheckPage';
+import ExpertProfile from './pages/Expert/Profile';
+import Portfolio from './pages/Expert/Portfolio';
+import EstimateSheet from './pages/Home/EstimateSheet';
 
 // 컴포넌트
 import LoginModal from './components/LoginModal';
 import useAuthStore from './store/useAuthStore';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
-import ExpertProfile from './pages/Expert/Profile';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -91,11 +97,14 @@ const AppRoutes = () => {
         <Route path="/MyEstimate" element={<MyEstimatePage />} />
         <Route path="/update-info" element={<EditProfile />} />
         <Route path="/expert/profile" element={<ExpertProfile />} />
+        <Route path="/expert/portfolio/edit" element={<PortfolioEdit />} />
+        <Route path="/expert/portfolio/editor" element={<PortfolioEditor />} />
+        <Route path="/expert/portfolio/:userID" element={<Portfolio />} />
         <Route path="/expert/my" element={<My />} />
         <Route path="/expert/my/edit" element={<MyEdit />} />
         <Route path="/expert/estimates" element={<Estimates />} />
         <Route path="/expert/estimate" element={<Estimate />} />
-        <Route path="/expert/myestimate" element={<ExpertMyEstimate />} />
+        <Route path="/expert/my/estimate" element={<ExpertMyEstimate />} />
         <Route path="/expert-register" element={<Register />} />
         <Route path="/detail-category/:categoryId" element={<DetailCategory />} />
         <Route path="/location" element={<Location />} />
@@ -112,6 +121,9 @@ const AppRoutes = () => {
         <Route path="/find-account/id-complete" element={<FindAccountComplete />} />
         <Route path="/find-account/password-reset" element={<PasswordReset />} />
         <Route path="/find-account/password-complete" element={<PasswordComplete />} />
+        <Route path="/MyEstimate/allEstimates" element={<AllEstimates />} />
+        <Route path="/MyEstimate/RequestEstimate/CheckMyEstimate" element={<CheckMyEstimatePage />} />
+        <Route path="/MyEstimate/EstimateId" element={<EstimateSheet />} />
       </Routes>
       {shouldShowNavbarAndFooter && <Footer />}
     </>
@@ -127,6 +139,17 @@ function App() {
         <AppContainer>
           <Global
             styles={css`
+              *,
+              *::before,
+              *::after {
+                box-sizing: border-box;
+              }
+
+              :root {
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+              }
+
               @font-face {
                 font-family: 'PretendardRegular';
                 src: url(${PretendardRegular}) format('woff');

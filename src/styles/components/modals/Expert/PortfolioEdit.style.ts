@@ -172,3 +172,165 @@ export const SaveBtn = styled.button`
   line-height: 166%; /* 29.88px */
   cursor: pointer;
 `;
+
+export const TextArea = styled.textarea`
+  margin-top: 8px;
+  padding: 11px 18px 11px 18px;
+  width: 579px;
+  height: 320px;
+  resize: none;
+  border-radius: 6px;
+  border: 1px solid #d9d9d9;
+  color: #000;
+  font-family: PretendardRegular;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 166%; /* 29.88px */
+  &::placeholder {
+    color: #d9d9d9;
+  }
+`;
+
+export const Chip = styled.div`
+  display: inline-flex;
+  padding: 8px 16px;
+  flex-direction: row;
+  align-items: center;
+  align-self: flex-start;
+  gap: 3.57px;
+  border-radius: 26.802px;
+  border: 0.893px solid #00a05e;
+  background: #fff;
+`;
+
+export const ChipLabel = styled.span`
+  color: #00a05e;
+  text-align: center;
+  font-family: PretendardRegular;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%; /* 21px */
+`;
+
+export const ChipXBtn = styled(X)`
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  & path {
+    stroke: #00a05e;
+    stroke-width: 1.48899;
+  }
+`;
+
+export const FieldContainer = styled.div`
+  margin-top: 8px;
+  height: 270px;
+  display: flex;
+  flex-direction: row;
+  border-radius: 6px;
+  border: 0.71px solid #aeaeae;
+`;
+
+export const Fields = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const FieldsHeader = styled.div`
+  width: 178px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 0.71px solid #aeaeae;
+  color: #2f2f2f;
+  text-align: center;
+  font-family: PretendardRegular;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%; /* 21px */
+`;
+
+export const Field = styled.div<{ selected?: boolean }>`
+  padding-top: 16px;
+  padding-bottom: 16px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background-color: ${(props) => (props.selected ? '#fff' : '#E8ECEA')};
+  color: ${(props) => (props.selected ? '#000' : '#8E8E8E')};
+  text-align: center;
+  font-family: PretendardRegular;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%; /* 24px */
+  cursor: pointer;
+`;
+
+export const Divider = styled.div`
+  height: 270px;
+  width: 0.71px;
+  background-color: #aeaeae;
+`;
+
+export const DetailedFields = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const DetailedFieldsHeader = styled.div`
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 0.71px solid #aeaeae;
+  color: #2f2f2f;
+  text-align: center;
+  font-family: PretendardRegular;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%; /* 21px */
+`;
+
+export const DetailedField = styled.div<{ selected?: boolean }>`
+  display: flex;
+  margin-right: 15px;
+  padding: 12px 0px 12px 26px;
+  align-items: center;
+  border-bottom: 0.7px solid #d1d1d1;
+  color: ${(props) => (props.selected ? '#000' : '#8E8E8E')};
+  font-family: PretendardRegular;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%; /* 21px */
+  cursor: pointer;
+`;
+
+export const FieldScroller = styled.div`
+  height: 270px;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 4.262px;
+  }
+  &::-webkit-scrollbar-track {
+    width: 4.262px;
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #7e7e7e;
+  }
+`;
+
+export const Inputs = styled.div`
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+`;

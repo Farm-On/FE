@@ -1,6 +1,6 @@
-import { EditMyPortfolioModal } from '@/components/modals/Expert/MyEdit.modal';
+import { EditMyPortfolioModal } from '@/components/modals/Expert/PortfolioEdit.modal';
 import { useEditMyPortfolioModalStore } from '@/store/modals/useExpertModalStore';
-import * as ME from '@/styles/pages/Expert/MyEdit.style';
+import * as ME from '@/styles/pages/Expert/PortfolioEdit.style';
 
 const careers = [
   {
@@ -48,7 +48,7 @@ const portfolios = [
   },
 ];
 
-export default function MyEdit() {
+export default function PortfolioEdit() {
   // 내 포폴 편집 모달
   const { openModal } = useEditMyPortfolioModalStore();
 
