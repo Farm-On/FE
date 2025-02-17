@@ -56,7 +56,8 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, type = 'defaul
     }
 
     try {
-      await loginMutation.mutateAsync({ email, password });
+      const response = await loginMutation.mutateAsync({ email, password });
+      console.log('Login response:', response); // 로그인 응답 확인
       handleModalClose();
     } catch (error) {
       const axiosError = error as AxiosError<ErrorResponse>;
@@ -76,6 +77,11 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, type = 'defaul
   const handleSignupClick = () => {
     handleModalClose();
     navigate('/agreement');
+  };
+
+  const handleFindAccountClick = () => {
+    handleModalClose();
+    navigate('/find-account');
   };
 
   return (
@@ -129,7 +135,9 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, type = 'defaul
                 />
                 <S.RememberText htmlFor="rememberMe">로그인 상태 유지</S.RememberText>
               </S.RememberContainer>
-              <S.FindAccountLink>아이디 / 비밀번호 찾기</S.FindAccountLink>
+              <S.FindAccountLink onClick={handleFindAccountClick}>
+                아이디 / 비밀번호 찾기
+              </S.FindAccountLink>
             </S.OptionsContainer>
 
             <S.SignupButton type="button" onClick={handleSignupClick}>

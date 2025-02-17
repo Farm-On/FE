@@ -8,16 +8,18 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import PretendardRegular from '@/assets/fonts/Pretendard-Regular.woff';
 import PretendardSemiBold from '@/assets/fonts/Pretendard-SemiBold.woff';
 import PretendardMedium from '@/assets/fonts/Pretendard-Medium.woff';
+
 // 페이지
 import Home from './pages/Home';
 import MyEstimatePage from './pages/Home/MyEstimate';
 import AllEstimates from './pages/Home/AllEstimates';
+import My from './pages/Expert/My';
 import Estimates from './pages/Expert/Estimates';
 import Estimate from './pages/Expert/Estimate';
 import ExpertMyEstimate from './pages/Expert/MyEstimate';
+import MyEdit from './pages/Expert/MyEdit';
 import PortfolioEdit from './pages/Expert/PortfolioEdit';
 import PortfolioEditor from './pages/Expert/PortfolioEditor';
-
 import Agreement from './pages/Auth/Agreement';
 import Signup from './pages/Auth/Signup';
 import SignupComplete from './pages/Auth/SignupComplete';
@@ -30,26 +32,29 @@ import ChatList from './pages/chat/ChatList';
 import ChatRoom from './pages/chat/ChatRoom';
 import MenuBar from './pages/MenuBar';
 import CommunityPage from './pages/Home/Community';
+import FindAccount from './pages/Auth/FindAccount';
+import FindAccountComplete from './pages/Auth/FindAccountComplete';
+import PasswordReset from './pages/Auth/PasswordReset';
+import PasswordComplete from './pages/Auth/PasswordComplete';
+import EditProfile from './pages/User/EditProfile';
 import CheckMyEstimatePage from './pages/Home/EstimateCheckPage';
 import ExpertProfile from './pages/Expert/Profile';
 import Portfolio from './pages/Expert/Portfolio';
 import EstimateSheet from './pages/Home/EstimateSheet';
-import QnA from './pages/Community/QnA';
 
 // 컴포넌트
 import LoginModal from './components/LoginModal';
 import useAuthStore from './store/useAuthStore';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
-import { CommunityWrite } from './pages/Community/CommunityWrite';
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: 1,
       refetchOnWindowFocus: false,
-      staleTime: 5 * 60 * 1000, // 5분
-      gcTime: 10 * 60 * 1000, // 10분 (이전의 cacheTime)
+      staleTime: 5 * 60 * 1000,
+      gcTime: 10 * 60 * 1000,
     },
   },
 });
@@ -64,11 +69,25 @@ ReactModal.setAppElement('#root');
 // 레이아웃 컴포넌트
 const AppRoutes = () => {
   const location = useLocation();
+
+  // 홈페이지 체크
   const isHomePage = location.pathname === '/';
 
-  const isAuthPage = ['/agreement', '/signup', '/signup-complete'].includes(location.pathname);
+  // 인증 페이지 체크
+  const authPages = [
+    '/agreement',
+    '/signup',
+    '/signup-complete',
+    '/find-account',
+    '/find-account/id-complete',
+    '/find-account/password-reset',
+    '/find-account/password-complete',
+  ];
+  const isAuthPage = authPages.includes(location.pathname);
 
-  const shouldShowNavbarAndFooter = !isHomePage && !isAuthPage;
+  // Navbar와 Footer 표시 여부
+  const shouldShowNavbarAndFooter =
+    !isHomePage && (!isAuthPage || location.pathname === '/update-info');
 
   return (
     <>
@@ -76,10 +95,13 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/MyEstimate" element={<MyEstimatePage />} />
+        <Route path="/update-info" element={<EditProfile />} />
         <Route path="/expert/profile" element={<ExpertProfile />} />
         <Route path="/expert/portfolio/edit" element={<PortfolioEdit />} />
         <Route path="/expert/portfolio/editor" element={<PortfolioEditor />} />
         <Route path="/expert/portfolio/:userID" element={<Portfolio />} />
+        <Route path="/expert/my" element={<My />} />
+        <Route path="/expert/my/edit" element={<MyEdit />} />
         <Route path="/expert/estimates" element={<Estimates />} />
         <Route path="/expert/estimate" element={<Estimate />} />
         <Route path="/expert/my/estimate" element={<ExpertMyEstimate />} />
@@ -95,13 +117,12 @@ const AppRoutes = () => {
         <Route path="/agreement" element={<Agreement />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signup-complete" element={<SignupComplete />} />
-        <Route path="/community/write" element={<CommunityWrite />} />
-        <Route path="/community/qna" element={<QnA />} />
+        <Route path="/find-account" element={<FindAccount />} />
+        <Route path="/find-account/id-complete" element={<FindAccountComplete />} />
+        <Route path="/find-account/password-reset" element={<PasswordReset />} />
+        <Route path="/find-account/password-complete" element={<PasswordComplete />} />
         <Route path="/MyEstimate/allEstimates" element={<AllEstimates />} />
-        <Route
-          path="/MyEstimate/RequestEstimate/CheckMyEstimate"
-          element={<CheckMyEstimatePage />}
-        />
+        <Route path="/MyEstimate/RequestEstimate/CheckMyEstimate" element={<CheckMyEstimatePage />} />
         <Route path="/MyEstimate/EstimateId" element={<EstimateSheet />} />
       </Routes>
       {shouldShowNavbarAndFooter && <Footer />}

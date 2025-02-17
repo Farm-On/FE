@@ -1,12 +1,11 @@
+import { BaseResponse } from './base';
+
 export interface LoginRequest {
   email: string;
   password: string;
 }
 
-export interface LoginResponse {
-  isSuccess: boolean;
-  code: string;
-  message: string;
+export interface LoginResponse extends BaseResponse {
   result: {
     userId: number;
     role: 'ADMIN' | 'FARMER' | 'EXPERT';
@@ -25,10 +24,7 @@ export interface SignupRequest {
   phone: string; // -없이 숫자만
 }
 
-export interface SignupResponse {
-  isSuccess: boolean;
-  code: string;
-  message: string;
+export interface SignupResponse extends BaseResponse {
   result: {
     userId: number;
     createdAt: string;
@@ -40,27 +36,10 @@ export interface ExpertSignupRequest {
   expertLocation: string;
 }
 
-export interface ExpertSignupResponse {
-  isSuccess: boolean;
-  code: string;
-  message: string;
+export interface ExpertSignupResponse extends BaseResponse {
   result: {
     userId: number;
     expertId: number;
     createdAt: string;
   };
-}
-
-export interface CommonResponse {
-  isSuccess: boolean;
-  code: string;
-  message: string;
-  result: string;
-}
-
-export interface ErrorResponse {
-  isSuccess: boolean;
-  code: string;
-  message: string;
-  data?: unknown;
 }
