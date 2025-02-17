@@ -13,11 +13,9 @@ import PretendardMedium from '@/assets/fonts/Pretendard-Medium.woff';
 import Home from './pages/Home';
 import MyEstimatePage from './pages/Home/MyEstimate';
 import AllEstimates from './pages/Home/AllEstimates';
-import My from './pages/Expert/My';
 import Estimates from './pages/Expert/Estimates';
 import Estimate from './pages/Expert/Estimate';
 import ExpertMyEstimate from './pages/Expert/MyEstimate';
-import MyEdit from './pages/Expert/MyEdit';
 import PortfolioEdit from './pages/Expert/PortfolioEdit';
 import PortfolioEditor from './pages/Expert/PortfolioEditor';
 import Agreement from './pages/Auth/Agreement';
@@ -100,8 +98,6 @@ const AppRoutes = () => {
         <Route path="/expert/portfolio/edit" element={<PortfolioEdit />} />
         <Route path="/expert/portfolio/editor" element={<PortfolioEditor />} />
         <Route path="/expert/portfolio/:userID" element={<Portfolio />} />
-        <Route path="/expert/my" element={<My />} />
-        <Route path="/expert/my/edit" element={<MyEdit />} />
         <Route path="/expert/estimates" element={<Estimates />} />
         <Route path="/expert/estimate" element={<Estimate />} />
         <Route path="/expert/my/estimate" element={<ExpertMyEstimate />} />
@@ -122,7 +118,10 @@ const AppRoutes = () => {
         <Route path="/find-account/password-reset" element={<PasswordReset />} />
         <Route path="/find-account/password-complete" element={<PasswordComplete />} />
         <Route path="/MyEstimate/allEstimates" element={<AllEstimates />} />
-        <Route path="/MyEstimate/RequestEstimate/CheckMyEstimate" element={<CheckMyEstimatePage />} />
+        <Route
+          path="/MyEstimate/RequestEstimate/CheckMyEstimate"
+          element={<CheckMyEstimatePage />}
+        />
         <Route path="/MyEstimate/EstimateId" element={<EstimateSheet />} />
       </Routes>
       {shouldShowNavbarAndFooter && <Footer />}

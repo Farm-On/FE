@@ -26,8 +26,8 @@ export const Search = () => {
   const { mutate: deleteSearch } = useDeleteSearch();
   const { mutate: deleteAllSearch } = useDeleteAllSearch();
   const { userInfo, isLoggedIn } = useAuthStore();
-  const { data: recentSearchData, refetch } = useRecentSearch(userInfo?.id ?? 0);
-  const { data: searchResults } = useSearchResults(userInfo?.id ?? 0, searchInput);
+  const { data: recentSearchData, refetch } = useRecentSearch(userInfo?.userId ?? 0);
+  const { data: searchResults } = useSearchResults(userInfo?.userId ?? 0, searchInput);
 
   //최신 검색어 리스트 (중복 제거 & 최대 4개까지만 표시)
   const recentSearch: string[] = Array.from(
@@ -37,10 +37,10 @@ export const Search = () => {
   console.log('현재 recentSearchData:', recentSearchData);
 
   useEffect(() => {
-    if (userInfo?.id) {
+    if (userInfo?.userId) {
       refetch();
     }
-  }, [userInfo?.id]);
+  }, [userInfo?.userId]);
 
   //DropDown 바깥 클릭 시 닫기
   useEffect(() => {
@@ -58,11 +58,11 @@ export const Search = () => {
 
   //검색어 개별 삭제 함수
   const handleDeleteSearch = (name: string) => {
-    if (!userInfo?.id) return;
+    if (!userInfo?.userId) return;
     console.log(`검색어 삭제 요청: ${name}`);
 
     deleteSearch(
-      { userId: userInfo.id, name },
+      { userId: userInfo.userId, name },
       {
         onSuccess: () => {
           console.log(`검색어 삭제 완료: ${name}`);
@@ -74,11 +74,11 @@ export const Search = () => {
 
   //전체 검색어 삭제 함수
   const handleDeleteAllSearch = () => {
-    if (!userInfo?.id) return;
+    if (!userInfo?.userId) return;
     console.log('전체 검색어 삭제 요청');
 
     deleteAllSearch(
-      { userId: userInfo.id },
+      { userId: userInfo.userId },
       {
         onSuccess: () => {
           console.log('전체 검색어 삭제 완료');
@@ -88,7 +88,7 @@ export const Search = () => {
     );
   };
 
-  const { data: recommendSearchData } = useRecommendSearch(userInfo?.id ?? 0);
+  const { data: recommendSearchData } = useRecommendSearch(userInfo?.userId ?? 0);
 
   //추천 검색어 리스트
   const recommendSearch: string[] = recommendSearchData?.result?.recommendSearchList || [];
@@ -109,14 +109,14 @@ export const Search = () => {
       return;
     }
 
-    if (!userInfo.id) {
+    if (!userInfo.userId) {
       console.error('사용자 ID 없음:', userInfo);
       alert('사용자 정보를 불러올 수 없습니다.');
       setIsSubmitting(false);
       return;
     }
 
-    const requestData = { userId: userInfo.id, name: searchQuery };
+    const requestData = { userId: userInfo.userId, name: searchQuery };
 
     console.log('POST 요청 전송 (검색어 저장):', requestData);
 
