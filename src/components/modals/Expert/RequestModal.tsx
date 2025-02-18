@@ -3,10 +3,20 @@ import { useNavigate } from 'react-router-dom';
 
 interface ModalProps{
     onClick:()=>void;
+    onSubmit: () => Promise<void>;
 }
 
-export const RequestModal = ({onClick}:ModalProps) => {
+export const RequestModal = ({onClick,onSubmit }:ModalProps) => {
   const navigate = useNavigate();
+
+  const handleSubmit = async()=>{
+    try{
+      await onSubmit();
+    }catch{
+      console.log('견적서 제출 실패')
+    }
+  };
+
   return (
     <ModalOverlay>
       <Container>
@@ -17,7 +27,7 @@ export const RequestModal = ({onClick}:ModalProps) => {
         <CheckP>신청하시겠습니까?</CheckP>
         <ButtonWrapper>
           <BackBtn onClick={onClick}>돌아가기</BackBtn>
-          <ApplyBtn onClick={() => navigate('/MyEstimate/allEstimates')}>신청하기</ApplyBtn>
+          <ApplyBtn onClick={() => navigate('/MyEstimate/allEstimates')} onSubmit={handleSubmit}>신청하기</ApplyBtn>
         </ButtonWrapper>
       </Container>
     </ModalOverlay>

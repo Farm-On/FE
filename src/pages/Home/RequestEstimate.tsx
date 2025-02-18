@@ -68,6 +68,7 @@ export default function RequestEstimatePage(): JSX.Element {
   };
 
   const handleImagesChange = (files: File[]) => {
+    alert('선택된 사진을 수정할 시 전부 초기화 되므로 신중히 선택해주세요');
     setSelectedImages(files);
   };
 
@@ -119,14 +120,29 @@ export default function RequestEstimatePage(): JSX.Element {
       const categoryId = initialCategories.find((item) => item.title === editData.category)?.id;
       if (categoryId) setSelected(categoryId);
       setIsChecked(editData.budget);
-
+  
       setAreaName(editData.areaName);
       setNameDetail(editData.areaNameDetail);
-
+  
+      // 이미지 설정 - 전달받은 모든 이미지 URL 사용
       if (editData.images && editData.images.length > 0) {
-        setSelectedImages(editData.images);
+        // 문자열 배열 또는 File 객체 배열일 수 있으므로 타입 확인
+        type ImageType = string | File | (string | File)[];
+        const imageList = editData.images.map((img:ImageType) => {
+          // 이미 URL 문자열이면 그대로 사용
+          if (typeof img === 'string') {
+            return img;
+          }
+          // File 객체면 임시 URL 생성
+          else if (img instanceof File) {
+            return URL.createObjectURL(img);
+          }
+          return null;
+        }).filter(url => url !== null);
+        
+        setSelectedImages(imageList);
       }
-
+  
       switch (editSection) {
         case 'detail': {
           scrollToSection(detailRef, 'detail');
@@ -219,6 +235,7 @@ export default function RequestEstimatePage(): JSX.Element {
             },
           });
           console.log('전달된 데이터들!!:', response);
+
         }
       }
     } catch (error) {
@@ -353,7 +370,7 @@ export default function RequestEstimatePage(): JSX.Element {
                         marginTop: '10px',
                       }}
                     >
-                      <ImgUpload onImagesChange={handleImagesChange} maxImages={5} />
+                      <ImgUpload onImagesChange={handleImagesChange} maxImages={15} />
                     </div>
                     <RE.ContentLength>{contentValue.length}/3000</RE.ContentLength>
                   </InputContainer>
