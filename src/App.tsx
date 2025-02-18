@@ -113,16 +113,19 @@ const AppRoutes = () => {
         <Route path="/agreement" element={<Agreement />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signup-complete" element={<SignupComplete />} />
+
+
+        <Route path="/MyEstimate/allEstimates" element={<AllEstimates/>} />
+        <Route path="/MyEstimate/RequestEstimate/CheckMyEstimate" element={<CheckMyEstimatePage/>} />
+        <Route path="/MyEstimate/detail/:estimateId" element={<EstimateSheet/>} />
+
         <Route path="/find-account" element={<FindAccount />} />
         <Route path="/find-account/id-complete" element={<FindAccountComplete />} />
         <Route path="/find-account/password-reset" element={<PasswordReset />} />
         <Route path="/find-account/password-complete" element={<PasswordComplete />} />
-        <Route path="/MyEstimate/allEstimates" element={<AllEstimates />} />
-        <Route
-          path="/MyEstimate/RequestEstimate/CheckMyEstimate"
-          element={<CheckMyEstimatePage />}
-        />
-        <Route path="/MyEstimate/EstimateId" element={<EstimateSheet />} />
+        
+        
+
       </Routes>
       {shouldShowNavbarAndFooter && <Footer />}
     </>

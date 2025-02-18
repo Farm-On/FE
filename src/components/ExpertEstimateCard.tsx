@@ -9,6 +9,7 @@ interface ExpertEstimateCardProps {
   date: string;
   isDone?: boolean;
   cardStyle?: CSSProperties;
+  onClick:()=>void;
 }
 
 export const ExpertEstimateCard = ({
@@ -19,8 +20,9 @@ export const ExpertEstimateCard = ({
   date,
   isDone,
   cardStyle,
+  onClick
 }: ExpertEstimateCardProps) => (
-  <E.Card key={id} style={cardStyle}>
+  <E.Card key={id} style={cardStyle} onClick={onClick}>
     <E.CardHeader>
       <E.CardTitle>{title}</E.CardTitle>
       {isDone && <E.DoneChip>완료</E.DoneChip>}

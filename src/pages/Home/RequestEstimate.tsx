@@ -1,14 +1,15 @@
 import * as RE from '../../styles/pages/RequestEstimate';
 import HomeIcon from '../../assets/icons/Home.svg?react';
 import GreyRightIcon from '../../assets/icons/GreyRight.svg?react';
-import CameraIcon from '../../assets/icons/RQcamera.svg?react';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { EstimateBudget } from '@/components/EstimateBudget';
 import { ChoiceCity } from '@/components/ChoiceCity/ChoiceCity';
 import { StateScroll } from '@/components/StateScroll';
 import styled from '@emotion/styled';
-import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import ImgUpload from '../../components/RequestImageUpload';
+import { useCreateEstimateMutation } from '@/hooks/useMyEstimate';
 
 interface Category {
   id: string;
@@ -25,20 +26,50 @@ const initialCategories: Category[] = [
 ];
 
 export default function RequestEstimatePage(): JSX.Element {
-  const [selected, setSelected] = useState<string>('2');
+  const location = useLocation();
+  const editData = location.state?.editData;
+  const editSection = location.state?.editSection;
+  const [selected, setSelected] = useState<string>('');
   const [titleValue, setTitleValue] = useState<string>('');
   const [contentValue, setContentValue] = useState<string>('');
-  //const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [isChecked, setIsChecked] = useState<string>('');
-  //const [isApplied, setIsApplied] = useState<boolean>(false);
   const [processing, setProcessing] = useState<number>(0);
   const [currentSection, setCurrentSection] = useState<
     'category' | 'location' | 'budget' | 'detail'
   >('category');
+
+  const [areaName, setAreaName] = useState<string>('');
+  const [areaNameDetail, setNameDetail] = useState<string>('');
+
   const categoryRef = useRef<HTMLDivElement>(null);
   const locationRef = useRef<HTMLDivElement>(null);
   const budgetRef = useRef<HTMLDivElement>(null);
   const detailRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  //이미지 관련 상태
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  
+  const handleLocationSelect = (city: string, district: string) => {
+    setAreaName(city);
+    setNameDetail(district);
+  };
+  const createEstimateMutation = useCreateEstimateMutation(); //훅 호출
+
+  const adjustTextareaHeight = () => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    //높이 초기화
+    textarea.style.height = 'auto';
+
+    const newHeight = Math.max(172, textarea.scrollHeight);
+    textarea.style.height = `${newHeight}px`;
+  };
+
+  const handleImagesChange = (files: File[]) => {
+    setSelectedImages(files);
+  };
 
   const scrollToSection = (
     ref: React.RefObject<HTMLDivElement>,
@@ -61,12 +92,12 @@ export default function RequestEstimatePage(): JSX.Element {
   const handleContentValue = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newText = e.target.value;
     if (newText.length <= 3000) setContentValue(newText);
+    requestAnimationFrame(adjustTextareaHeight);
   };
-
 
   const handleMoney = (value: string) => {
     setIsChecked(value);
-    scrollToSection(detailRef,'detail')
+    scrollToSection(detailRef, 'detail');
   };
 
   const handleSucceed = () => {
@@ -75,10 +106,127 @@ export default function RequestEstimatePage(): JSX.Element {
     }
   };
 
-  const handleCityClick = ()=>{
-    scrollToSection(budgetRef, 'budget')
+  const handleCityClick = () => {
+    scrollToSection(budgetRef, 'budget');
   };
   const navigate = useNavigate();
+
+  // 수정 모드로 진입했을 때 기존 데이터 설정
+  useEffect(() => {
+    if (editSection && editData) {
+      setTitleValue(editData.title);
+      setContentValue(editData.content);
+      const categoryId = initialCategories.find((item) => item.title === editData.category)?.id;
+      if (categoryId) setSelected(categoryId);
+      setIsChecked(editData.budget);
+
+      setAreaName(editData.areaName);
+      setNameDetail(editData.areaNameDetail);
+
+      if (editData.images && editData.images.length > 0) {
+        setSelectedImages(editData.images);
+      }
+
+      switch (editSection) {
+        case 'detail': {
+          scrollToSection(detailRef, 'detail');
+          break;
+        }
+        case 'info': {
+          scrollToSection(categoryRef, 'category');
+          break;
+        }
+      }
+      setProcessing(100);
+    }
+  }, [editSection, editData]);
+
+  useEffect(() => {
+    adjustTextareaHeight();
+  }, [contentValue]);
+
+  //견적서 제출 함수
+  const handleSubmitEstimate = async () => {
+    const categoryTitle = initialCategories.find((category) => category.id === selected)?.title;
+
+    if (
+      !categoryTitle ||
+      !titleValue ||
+      !contentValue ||
+      !isChecked ||
+      !areaName ||
+      !areaNameDetail
+    ) {
+      alert('모든 필수 항목을 입력해주세요.');
+      return;
+    }
+
+    const inputData = {
+      userId: 1,
+      cropName: '쌀',
+      category: categoryTitle,
+      areaName: areaName,
+      areaNameDetail: areaNameDetail,
+      budget: isChecked,
+      title: titleValue,
+      body: contentValue,
+    };
+
+    console.log('서버로 보낼 데이터:', inputData); 
+
+    try {
+      if (location.state?.editSection) {
+        const imageUrls = selectedImages
+        .filter(file => file instanceof File)  // 실제 File 객체만 필터링
+        .map(file => {
+          try {
+            return URL.createObjectURL(file); //url로 변환
+          } catch (error) {
+            console.error('URL 생성 실패:', error);
+            return null;
+          }
+        })
+        .filter(url => url !== null);
+        // 수정된 데이터 가지고 이동
+        navigate('/MyEstimate/RequestEstimate/CheckMyEstimate', {
+          state: {
+            estimateData: {
+              ...inputData,
+              imageUrls,    
+              originalFiles: selectedImages,
+              editMode: true,
+              areaName: areaName, 
+              areaNameDetail: areaNameDetail,
+            },
+          },
+        });
+      } else {
+        // 새로운 견적서 생성일 때 (기존 코드)
+        const response = await createEstimateMutation.mutateAsync({
+          data: inputData,
+          files: selectedImages.filter(file => file instanceof File)
+        });
+        console.log('✅ 요청한 데이터:', inputData);
+        console.log('✅ 서버 응답 데이터:', response);
+
+        if (response.isSuccess) {
+          navigate('/MyEstimate/RequestEstimate/CheckMyEstimate', {
+            state: {
+              estimateData: {
+                ...inputData,
+                ...response.result,
+              },
+            },
+          });
+          console.log('전달된 데이터들:', response);
+        }
+      }
+    } catch (error) {
+      console.error('견적서 생성 중 오류 발생:', error);
+      alert('견적서 생성에 실패했습니다. 다시 시도해주세요.');
+    }
+  };
+
   return (
     <>
       <TopContainer>
@@ -132,7 +280,12 @@ export default function RequestEstimatePage(): JSX.Element {
               <div ref={locationRef}>
                 <RE.Bubble>컨설팅 위치는 어디인가요?</RE.Bubble>
                 <div style={{ paddingBottom: '18px', paddingLeft: '6px' }}>
-                  <ChoiceCity onClick={handleCityClick}/>
+                  <ChoiceCity
+                    onClick={handleCityClick}
+                    onLocationSelect={handleLocationSelect}
+                    selectedAreaName={areaName}
+                    selectedAreaDetail={areaNameDetail}
+                  />
                 </div>
                 <RE.DividingLine />
               </div>
@@ -147,8 +300,7 @@ export default function RequestEstimatePage(): JSX.Element {
                     '100~200만원',
                     '200~500만원',
                     '500~1000만원',
-                    '1000만원 이상'
-                    
+                    '1000만원 이상',
                   ].map((value) => (
                     <EstimateBudget
                       key={value}
@@ -190,17 +342,26 @@ export default function RequestEstimatePage(): JSX.Element {
                       placeholder="내용을 입력해주세요."
                       value={contentValue}
                       onChange={handleContentValue}
+                      ref={textareaRef}
                     />
-                    <div style={{ position: 'absolute', bottom: '20px', left: '26px' }}>
-                      <CameraIcon />
+
+                    <div
+                      style={{
+                        position: 'absolute',
+                        bottom: '20px',
+                        left: '26px',
+                        marginTop: '10px',
+                      }}
+                    >
+                      <ImgUpload onImagesChange={handleImagesChange} maxImages={5} />
                     </div>
-                    <RE.ContentLength>
-                      {contentValue.length}/3000
-                    </RE.ContentLength>
+                    <RE.ContentLength>{contentValue.length}/3000</RE.ContentLength>
                   </InputContainer>
                 </div>
                 <ApplyBtn>
-                  <RE.Button onClick={()=>navigate('/MyEstimate/RequestEstimate/CheckMyEstimate')}>견적 조회하기</RE.Button>
+                  <RE.Button onClick={handleSubmitEstimate}>
+                    {editSection ? '수정완료' : '견적 조회하기'}
+                  </RE.Button>
                 </ApplyBtn>
               </div>
             </div>
@@ -223,23 +384,23 @@ const ApplyBtn = styled.div`
   margin: 172px 0 350px;
 `;
 const TopContainer = styled.div`
-display: flex;
-flex-direction: column;
-gap: 11px;
-padding-left: 180px;
-max-width: 1200px;
-padding-bottom: 25px;
-padding-top: 70px;
-
-@media (max-width: 768px) {
-  padding-left: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  padding-left: 180px;
+  max-width: 1200px;
   padding-bottom: 25px;
   padding-top: 70px;
-}
 
-@media (max-width: 480px) {
-  padding-left: 20px;
-  padding-bottom: 25px;
-  padding-top: 70px;
-}
+  @media (max-width: 768px) {
+    padding-left: 30px;
+    padding-bottom: 25px;
+    padding-top: 70px;
+  }
+
+  @media (max-width: 480px) {
+    padding-left: 20px;
+    padding-bottom: 25px;
+    padding-top: 70px;
+  }
 `;

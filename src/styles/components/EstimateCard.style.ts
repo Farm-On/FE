@@ -51,7 +51,7 @@ export const Content = styled.div`
     margin: 0;
     font-family:'PretendardRegular';
     padding-bottom:6px;
-    overflow:hidden;
+    //overflow:hidden;
     white-space:nowrap;
     text-overflow:ellipsis;
     @media (max-width: 768px) {

@@ -135,7 +135,7 @@ export const CityItem = styled.div<{ isSelected: boolean }>`
 export const DistrictItem = styled.div<{ isSelected: boolean }>`
   min-width: 32px;
   width: fit-content;
-  height: 36px;
+  //height: 36px;
   display: flex;
   flex-direction: column;
   align-items: center;

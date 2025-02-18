@@ -8,6 +8,7 @@ interface CardProps {
   region: string;
   productName: string;
   money: string;
+  onClick:()=>void;
 }
 
 export const EstimateCard = ({
@@ -18,10 +19,11 @@ export const EstimateCard = ({
   date,
   productName,
   money,
+  onClick
 }: CardProps) => {
   return (
     <EC.Container>
-      <EC.Card>
+      <EC.Card onClick={onClick}>
         <EC.Content>
           <h2>{title}</h2>
           <h3>

@@ -2,17 +2,30 @@ import * as CC from '../../styles/components/ChoiceCity.style';
 import * as RE from '../../styles/pages/RequestEstimate';
 import styled from '@emotion/styled';
 import { regions } from './CityData';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import XIcon2 from '../../assets/icons/greenX.svg?react';
-//상태관리 라이브러리 설치 후 진행률 올라가게 만들어야함
+
 
 interface CCProps{
   onClick:()=>void;
+  onLocationSelect:(areaName:string,areaNameDetail:string)=>void;
+  selectedAreaName?:string;
+  selectedAreaDetail?:string;
 }
 
-export const ChoiceCity = ({onClick}:CCProps) => {
+export const ChoiceCity = ({onClick,onLocationSelect,selectedAreaName,selectedAreaDetail}:CCProps) => {
   const [selectCity, setSelectCity] = useState<string | null>(null); //선택된 도시 이름 개별 관리
   const [selectDistrict, setSelectDistrict] = useState<string | null>(null); //선택된 군/구 개별 관리
+
+  useEffect(() => {
+    // 각각 독립적으로 처리
+    if (selectedAreaName) {
+      setSelectCity(selectedAreaName);
+    }
+    if (selectedAreaDetail) {
+      setSelectDistrict(selectedAreaDetail);
+    }
+  }, [selectedAreaName, selectedAreaDetail]);
 
   const handleCityPick = (city: string) => {
     setSelectCity(city);
@@ -21,6 +34,7 @@ export const ChoiceCity = ({onClick}:CCProps) => {
   const handleDistrictPick = (dist: string) => {
     setSelectDistrict(dist);
     if(selectCity){
+      onLocationSelect(selectCity,dist)
       onClick()
     }
   };
@@ -34,6 +48,7 @@ export const ChoiceCity = ({onClick}:CCProps) => {
   const handleClear = () => {
     setSelectCity(null);
     setSelectDistrict(null);
+    onLocationSelect('','');
   };
   return (
     <div>

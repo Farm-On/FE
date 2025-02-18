@@ -5,7 +5,7 @@ export const StateScroll = styled.div`
     gap: 21px;
     position: fixed;  // absolute에서 fixed로 변경
     top: 385px;
-    left: 1677px;
+    left: 1400px;
     z-index: 100;       
 `
 export const Line = styled.div`

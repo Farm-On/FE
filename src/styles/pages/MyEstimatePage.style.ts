@@ -8,11 +8,12 @@ export const PageWrapper = styled.div`
   justify-content: center;
   padding-bottom: 487px;
   box-sizing: border-box;
+  background-color: #F9F9F9;
 `
 
 
 export const Container = styled.div`
-  padding-left: 160px;
+  padding-left: 80px;
   max-width: 1920px;
   width: 90%;
   margin:0 auto;
@@ -109,7 +110,7 @@ export const MyCards = styled.div`
   grid-template-columns: repeat(3, 1fr);
   column-gap: 15px;
   row-gap: 18px;
-  margin-top: 30px;
+  margin-top: 50px;
   max-width: 1200px;
 
   @media (max-width: 768px) {

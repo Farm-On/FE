@@ -41,7 +41,7 @@ export const Bubble = styled.div`
   background-color: rgba(198, 242, 228, 1);
   min-width: 174px;
   width: fit-content;
-  height: 30px;
+  height: 62px;
   padding: 16px 30px 16px 30px;
   gap: 10px;
   border-radius: 0px 16px 16px 16px;
@@ -55,7 +55,7 @@ export const Bubble = styled.div`
 export const Chip = styled.div<{ isSelected: boolean }>`
   min-width: 60px;
   width: fit-content;
-  height: 22px;
+  height: 44px;
   padding: 10px 20px 10px 20px;
   gap: 4px;
   border-radius: 60px;
@@ -123,7 +123,7 @@ export const DividingLine = styled.div`
 
 export const Button = styled.div`
   width: 98px;
-  height: 30px;
+  //height: 30px;
   padding-top: 2445px;
   padding: 18px 160px 18px 160px;
   gap: 10px;
@@ -280,11 +280,12 @@ export const ContentLength = styled.div`
 
 export const PostContent = styled.textarea`
   width: 1194px;
-  height: 172px;
+  min-height: 172px;
   border-radius: 8px;
   border: 1px solid rgba(142, 142, 142, 1);
   padding-left: 16px;
   padding-top: 24px;
+  padding-bottom:160px;
   font-size: 16px;
   font-family: 'PretendardRegular';
   resize: none;
@@ -338,7 +339,7 @@ export const CenteredContainer = styled.div`
   width: 100%;
   max-width: 1200px; // 또는 원하는 최대 너비
   //margin: 0 auto;
-  padding: 0 20px; // 좌우 여백
+  padding: 0 20px; 
   box-sizing: border-box;
   position: relative;
 `;

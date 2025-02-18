@@ -106,8 +106,10 @@ export const Navbar = () => {
         <N.RightSection>
           {isLoggedIn ? (
             <N.UserSection>
-              <NotificationIcon />
-              <N.EstimateLink to="/my-estimate">내 견적</N.EstimateLink>
+              <N.NotificationIcon>
+                <Bell />
+              </N.NotificationIcon>
+              <N.MenuLink to="/MyEstimate">내 견적</N.MenuLink>
               <N.UserDropdown>
                 <N.UserName>
                   {userInfo?.role === 'EXPERT' && <N.ExpertBadge>전문가</N.ExpertBadge>}

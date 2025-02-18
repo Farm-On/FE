@@ -43,3 +43,17 @@ export interface ExpertSignupResponse extends BaseResponse {
     createdAt: string;
   };
 }
+
+export interface CommonResponse {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  result: string;
+}
+
+export interface ErrorResponse {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  data?: unknown;
+}
