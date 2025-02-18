@@ -11,7 +11,6 @@ import { Search } from '@/components/search/search';
 import { Announcements } from '@/components/Announcements';
 import { Trendings } from '@/components/Trendings';
 
-
 export default function Home() {
   return (
     <>
@@ -54,9 +53,11 @@ const Header = ({ title, link }: HeaderProps) => (
   <H.HeaderContainer>
     <H.HeaderTitle>{title}</H.HeaderTitle>
     <H.HeaderViewAllContainer>
-      <H.HeaderViewAllText>전체보기</H.HeaderViewAllText>
-      <Link to={link}>
-        <ChevronRight />
+      <Link to={link} style={{ textDecoration: 'none' }}>
+        <H.LinkContainer>
+          <H.HeaderViewAllText>전체보기</H.HeaderViewAllText>
+          <ChevronRight />
+        </H.LinkContainer>
       </Link>
     </H.HeaderViewAllContainer>
   </H.HeaderContainer>
