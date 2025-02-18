@@ -252,11 +252,13 @@ export const TitleLength = styled.div`
   transform: translateX(35px);
 
   @media (max-width: 768px) {
-    right: 27px;
+    right: 50px;
+    top: 20px;
   }
 
   @media (max-width: 480px) {
-    right: 27px;
+    right: 60px;
+    top: 20px;
   }
 `;
 
@@ -270,11 +272,12 @@ export const ContentLength = styled.div`
   top: 25px;
 
   @media (max-width: 768px) {
-    left: 680px;
+    left: 660px;
+    top: 20px;
   }
 
   @media (max-width: 480px) {
-    left: 390px;
+    left: 365px;
   }
 `;
 

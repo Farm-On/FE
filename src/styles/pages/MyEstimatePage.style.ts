@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 
-
 export const PageWrapper = styled.div`
   width: 100%;
   min-height: 100vh;
@@ -8,21 +7,20 @@ export const PageWrapper = styled.div`
   justify-content: center;
   padding-bottom: 487px;
   box-sizing: border-box;
-  background-color: #F9F9F9;
-`
-
+  background-color: #f9f9f9;
+`;
 
 export const Container = styled.div`
   padding-left: 80px;
   max-width: 1920px;
   width: 90%;
-  margin:0 auto;
+  margin: 0 auto;
   @media (max-width: 768px) {
-    padding-left: 60px;
+    padding-left: 20px;
   }
 
   @media (max-width: 480px) {
-    padding-left: 60px;
+    padding-left: 30px;
   }
 `;
 export const Title1 = styled.div`
@@ -34,7 +32,7 @@ export const Title1 = styled.div`
   align-items: center;
   margin-bottom: 0px;
 
-  @media (max-width: 768px) {
+  @media (min-width: 768px) {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -42,11 +40,11 @@ export const Title1 = styled.div`
     padding-top: 70px;
   }
 
-  @media (max-width: 480px) {
+  @media (min-width: 480px) {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
     gap: 10px;
-    align-items: start;
     padding-top: 70px;
   }
 
@@ -102,8 +100,6 @@ export const ViewAll = styled.div`
     height: 20px;
     color: rgba(0, 160, 94, 1);
   }
-  
-
 `;
 export const MyCards = styled.div`
   display: grid;
@@ -114,7 +110,7 @@ export const MyCards = styled.div`
   max-width: 1200px;
 
   @media (max-width: 768px) {
-    max-width: 700px;  
+    max-width: 700px;
     grid-template-columns: repeat(3, 1fr);
     column-gap: 5px;
     row-gap: 8px;
@@ -130,7 +126,7 @@ export const MyCards = styled.div`
 export const AddCard = styled.div`
   background-color: rgba(255, 255, 255, 1);
   background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' viewBox='0 0 320 122' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='0.5' y='0.5' width='319' height='121' rx='9.5' fill='white' stroke='%23BBBBBB' stroke-dasharray='6 6'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;
+  background-repeat: no-repeat;
   background-size: contain;
   width: 390px;
   height: 149px;
@@ -139,24 +135,27 @@ export const AddCard = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  gap:10px;
+  gap: 10px;
   background-size: 100% 100%;
+
   @media (max-width: 768px) {
     width: 180px;
     height: 120px;
     background-image: none;
+    background: none;
   }
 
   @media (max-width: 480px) {
     width: 138px;
     height: 108px;
     top: 260px;
-    background-image:none;
+    background-image: none;
+    background: none;
   }
   p {
     font-size: 14px;
-    color:#5D5D5D;
-    margin:0;
+    color: #5d5d5d;
+    margin: 0;
     white-space: nowrap;
   }
 `;
@@ -183,12 +182,12 @@ export const ExpertCardWrap = styled.div`
   left: 462px;
 
   @media (max-width: 768px) {
-    left: 60px;
+    left: 90px;
     top: 800px;
   }
 
   @media (max-width: 480px) {
-    left: 60px;
+    left: 40px;
     top: 750px;
   }
 `;
