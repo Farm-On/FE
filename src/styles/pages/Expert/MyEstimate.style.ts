@@ -3,11 +3,20 @@ import styled from '@emotion/styled';
 export const Title = styled.div`
   margin-bottom: 36px;
   color: #000;
-  font-family: PretendardRegular;
+  font-family: 'PretendardRegular';
   font-size: 34px;
   font-style: normal;
   font-weight: 600;
   line-height: 150%; /* 51px */
+
+  @media (max-width: 768px) {
+    padding-left: 50px;
+  }
+
+  @media (max-width: 480px) {
+    padding-left: 50px;
+    font-size: 24px;
+  }
 `;
 
 export const Tabs = styled.div`
@@ -18,6 +27,14 @@ export const Tabs = styled.div`
   gap: 16px;
   border-bottom: 1px solid #d9d9d9;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    padding-left: 40px;
+  }
+
+  @media (max-width: 480px) {
+    padding-left: 40px;
+  }
 `;
 
 export const Tab = styled.div<{ active?: boolean }>`
@@ -44,4 +61,20 @@ export const Grid = styled.div`
   grid-template-rows: auto;
   column-gap: 15px;
   row-gap: 12px;
+
+  @media (max-width: 768px) {
+    padding-left: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(330px, 1fr)); /* TODO 반응형 */
+    column-gap: 15px;
+    row-gap: 12px;
+  }
+
+  @media (max-width: 480px) {
+    padding-left: 70px;
+    display: grid;
+    grid-template-columns: repeat(1, minmax(250px, 1fr)); /* TODO 반응형 */
+    column-gap: 15px;
+    row-gap: 12px;
+  }
 `;

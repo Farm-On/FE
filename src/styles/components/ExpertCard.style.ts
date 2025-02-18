@@ -11,8 +11,8 @@ export const Card = styled.div`
   }
 
   @media (max-width: 480px) {
-    width: 180px;
-    height: 254px;
+    width: 120px;
+    height: 204px;
   }
 `;
 
@@ -38,7 +38,7 @@ export const Gradient = styled.div`
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 50%; 
+  height: 50%;
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.5));
 `;
 
@@ -48,20 +48,46 @@ export const Information = styled.div`
   left: 7.5%;
 
   h1 {
-    font-family: Pretendard;
+    font-family: 'PretendardRegular';
     font-size: 20px;
     font-weight: 500;
     line-height: 30px;
     color: rgba(255, 255, 255, 1);
     margin: 0;
+
+    @media (max-width: 768px) {
+      font-size: 20px;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 14px;
+    }
   }
+
   h3 {
-    font-family: Pretendard;
+    font-family: 'PretendardRegular';
     font-size: 14px;
     font-weight: 500;
     line-height: 21px;
     color: rgba(255, 255, 255, 1);
     margin: 0;
+    @media (max-width: 768px) {
+      font-size: 14px;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 14px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    top: 68%;
+    left: 7.5%;
+  }
+
+  @media (max-width: 480px) {
+    top: 58%;
+    left: 7.5%;
   }
 `;
 
@@ -77,6 +103,14 @@ export const StarInfo = styled.div`
     font-weight: 400;
     line-height: 24px;
     color: rgba(237, 237, 237, 1);
+
+    @media (max-width: 768px) {
+      font-size: 14px;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 12px;
+    }
   }
   h2 {
     font-family: Pretendard;
@@ -84,6 +118,13 @@ export const StarInfo = styled.div`
     font-weight: 500;
     line-height: 24px;
     color: rgba(255, 255, 255, 1);
+        @media (max-width: 768px) {
+      font-size: 14px;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 12px;
+    }S
   }
 `;
 

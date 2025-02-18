@@ -57,8 +57,8 @@ export default function EstimateSheet() {
     <div>제안받은 견적서 조회 중..</div>
   }
   if (isOfferedError) {
-    console.log('제안받은 견적 조회 실패');
-    <div>제안받은 견적서가 없습니다.</div>
+    console.error('제안받은 견적 조회 실패');
+    
   }
   console.log('제안받은 견적 데이터:',offeredData);
  
@@ -139,9 +139,9 @@ export default function EstimateSheet() {
             <Subtitle>컨설팅을 진행할 전문가를 확인하고 선택해보세요</Subtitle>
           </div>
 
-          {offeredData && offeredData.result && offeredData.result.offerList.length > 0 && (
+          {offeredData && offeredData.length > 0 && (
             <ProfileWrapper>
-              {offeredData?.result.offerList.map((profile: OfferList) => {
+              {offeredData.map((profile: OfferList) => {
                 return (
                   <SuggestedExpertProfile
                     key={`${profile.expertId}-${profile.nickname}`}
@@ -157,7 +157,7 @@ export default function EstimateSheet() {
             </ProfileWrapper>
           )}
 
-          {(offeredData?.result?.offerList?.length === 0 || !offeredData) && !isOfferedLoading && !isOfferedError && (
+          {(offeredData?.length === 0 || !offeredData) && !isOfferedLoading && !isOfferedError && (
             <div style={{ textAlign: 'center', padding: '50px', color: '#666', fontSize: '20px' }}>
               제안받은 견적이 아직 없습니다
             </div>
