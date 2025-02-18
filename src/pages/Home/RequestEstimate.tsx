@@ -47,6 +47,8 @@ export default function RequestEstimatePage(): JSX.Element {
   const detailRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  const [alertShown, setAlertShown] = useState(false);
+
   //이미지 관련 상태
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   
@@ -68,7 +70,11 @@ export default function RequestEstimatePage(): JSX.Element {
   };
 
   const handleImagesChange = (files: File[]) => {
-    alert('선택된 사진을 수정할 시 전부 초기화 되므로 신중히 선택해주세요');
+    // 알림이 아직 표시되지 않았을 때만 표시
+    if (!alertShown) {
+      alert('선택된 사진을 수정할 시 전부 초기화 되므로 신중히 선택해주세요');
+      setAlertShown(true);
+    }
     setSelectedImages(files);
   };
 
