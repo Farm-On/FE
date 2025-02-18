@@ -60,7 +60,7 @@ export default function RequestEstimatePage(): JSX.Element {
   useEffect(() => {
     if (!isLoggedIn) {
       alert('로그인이 필요한 서비스입니다')
-      navigate('/login');
+      navigate('/signup');
     }
   }, [isLoggedIn, navigate]);
 
