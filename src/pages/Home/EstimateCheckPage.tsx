@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 //import { CreateEstimate } from '@/api/types';
-import CheckingImgUpload from '../../components/CheckingImageUpload';
+//import CheckingImgUpload from '../../components/CheckingImageUpload';
 import { axiosInstance } from '../../api/axios';
 
 // 더미 데이터
@@ -33,17 +33,72 @@ export default function EstimateCheckPage() {
 
   const estimateData = location.state?.estimateData; //이전 페이지에서 가져온 데이터
 
-  const [images, setImages] = useState<string[]>(estimateData?.imageUrls || []);
+  const [localImages, setLocalImages] = useState<string[]>(estimateData?.imageUrls || []);
+  //const [images, setImages] = useState<string[]>(estimateData?.imageUrls || []);
+  const [newImageFiles, setNewImageFiles] = useState<File[]>([]); // 이미지를 추가했을 때 실제 File 객체를 저장,서버에 보낼
+  
+  //const [imagesToRemove, setImagesToRemove] = useState<string[]>([]); // 삭제할 이미지 URL 목록
+
 
 
   const handleModalOpen = () => {
     setIsModalOpen(!isModalOpen);
   };
 
+  const handleSubmitEstimate = async () => {
+    try {
+      const formData = new FormData();
+  
+      const requestData = {
+        userId: estimateData.userId,
+        cropName: estimateData.cropName,
+        category: estimateData.category,
+        areaName: estimateData.areaName,
+        areaNameDetail: estimateData.areaNameDetail,
+        budget: estimateData.budget,
+        title: estimateData.title,
+        body: estimateData.body,
+        // 최종적으로 표시된 기존 이미지 URL들만 포함
+        imageUrls: localImages.filter(url => 
+          estimateData?.imageUrls?.includes(url) || 
+          !url.startsWith('blob:')
+        )
+      };
+      
+      formData.append('request', JSON.stringify(requestData));
+      
+      // 새로 추가된 이미지 파일만 포함
+      newImageFiles.forEach(file => {
+        formData.append('imageFiles', file);
+      });
+      
+      // 서버에 전송
+      const response = await axiosInstance.post('/estimate', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      
+      if (response.data.isSuccess) {
+        navigate('/MyEstimate/allEstimates');
+      } else {
+        alert('견적서 제출에 실패했습니다: ' + response.data.message);
+      }
+    } catch (error) {
+      console.error('견적서 제출 실패:', error);
+      alert('견적서 제출에 실패했습니다. 다시 시도해주세요.');
+    }
+  };
+
   const uploadImages = async (files: File[]) => {
     const formData = new FormData();
+    //formData.append('estimateId', estimateData.estimateId.toString());
+    formData.append('request', JSON.stringify({
+      estimateId: estimateData.estimateId // 필요한 경우 견적서 ID 포함
+    }));
+
     files.forEach((file) => {
-      formData.append('images', file);
+      formData.append('imageFiles', file);
     });
 
     try {
@@ -54,14 +109,18 @@ export default function EstimateCheckPage() {
       });
 
       // 서버로부터 받은 이미지 URL들을 반환
-      return response.data.imageUrls;
+      return response.data.result?.imageUrls || response.data?.imageUrls || [];
     } catch (error) {
       console.error('이미지 업로드 실패:', error);
-      throw new Error('이미지 업로드에 실패했습니다.');
+      //throw new Error('이미지 업로드에 실패했습니다.');
     }
   };
 
   const handleModify = async (section: string) => {
+    // 현재 표시된 모든 이미지(원본+추가된 것) URL 수집
+    const allImageUrls = [...localImages];
+    
+    // 새로 추가한 이미지 파일도 함께 전송
     navigate('/MyEstimate/RequestEstimate', {
       state: {
         editSection: section,
@@ -71,74 +130,56 @@ export default function EstimateCheckPage() {
           location: `${estimateData.areaName} ${estimateData.areaNameDetail}`,
           budget: estimateData?.budget,
           content: estimateData?.body,
-          images: estimateData?.imageUrls || [],
+          images: allImageUrls,
+          newImageFiles: newImageFiles, // 새로 추가한 파일 객체들
         },
       },
     });
   };
 
-  if (!estimateData) {
-    return (
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          margin: '50px 100px',
-        }}
-      >
-        견적서 정보를 찾을 수 없습니다..
-      </div>
-    );
-  }
+  // 이미지 추가 함수 -
+  // const handleAddImages = async (files: File[]) => {
+  //   try {
+  //     // 최대 15개까지만 허용
+  //     const remainingSlots = 15 - localImages.length;
+  //     if (remainingSlots <= 0) {
+  //       alert('이미지는 최대 15개까지 추가할 수 있습니다.');
+  //       return;
+  //     }
+  
+  //     const newFiles = files.slice(0, remainingSlots);
+      
+  //     // 임시 URL 생성하여 화면에 표시
+  //     const temporaryUrls = newFiles.map((file) => URL.createObjectURL(file));
+      
+  //     // 이미지 상태 업데이트
+  //     setLocalImages((prev) => [...prev, ...temporaryUrls]);
+      
+  //     // 파일 객체 저장
+  //     setNewImageFiles((prev) => [...prev, ...newFiles]);
+  //   } catch (error) {
+  //     console.error('이미지 처리 중 오류 발생:', error);
+  //     alert('이미지 처리에 실패했습니다. 다시 시도해주세요.');
+  //   }
+  // };
+  
 
-  // 이미지 추가 함수
-  const handleAddImages = async (files: File[]) => {
-    try {
-      // 최대 5개까지만 허용
-      const remainingSlots = 5 - images.length;
-      if (remainingSlots <= 0) {
-        alert('이미지는 최대 5개까지 추가할 수 있습니다.');
-        return;
-      }
-
-      const newFiles = files.slice(0, remainingSlots);
-      const temporaryUrls = newFiles.map((file) => URL.createObjectURL(file)); // 임시 URL 생성하여 즉시 화면에 표시
-      setImages((prev) => [...prev, ...temporaryUrls]);
-
-      // 서버에 이미지를 업로드하고 실제 URL 받아오기
-      const serverUrls = await uploadImages(newFiles);
-
-      // 임시 URL을 서버에서 받은 실제 URL로 교체
-      setImages((prev) => [...prev.slice(0, -newFiles.length), ...serverUrls]);
-    } catch (error) {
-      console.error('이미지 처리 중 오류 발생:', error);
-      alert('이미지 업로드에 실패했습니다. 다시 시도해주세요.');
-    }
-  };
 
   // 이미지 삭제 처리 함수
-  const handleRemoveImage = async (index: number) => {
-    try {
-        const imageToDelete = images[index];
-        
-        // 서버에 이미지 삭제 요청
-        await axiosInstance.delete(`/estimate`, {
-            data: { imageUrl: imageToDelete }
-        });
-
-        // 성공적으로 삭제되면 상태 업데이트
-        setImages((prev) => prev.filter((_, i) => i !== index));
-        
-    } catch (error) {
-        console.error('이미지 삭제 실패:', error);
-        alert('이미지 삭제에 실패했습니다. 다시 시도해주세요.');
-    }
-};
+  // const handleRemoveImage = (index: number) => {
+  //   // 로컬 상태에서 이미지 제거
+  //   setLocalImages(prev => prev.filter((_, i) => i !== index));
+    
+  //   // 새로 추가한 이미지인 경우, 해당 파일도 제거
+  //   if (index >= (estimateData?.imageUrls?.length || 0)) {
+  //     const newImageIndex = index - (estimateData?.imageUrls?.length || 0);
+  //     setNewImageFiles(prev => prev.filter((_, i) => i !== newImageIndex));
+  //   }
+  // };
 
   return (
     <div style={{ backgroundColor: '#F9F9F9', paddingTop: 84 }}>
-      {isModalOpen === true ? <RequestModal onClick={handleModalOpen} /> : null}
+      {isModalOpen === true ? <RequestModal onClick={handleModalOpen} onSubmit={handleSubmitEstimate}/> : null}
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <E.Title>쌀(곡물) 컨설팅 요청 내역</E.Title>
         <E.Subtitle>컨설팅 신청 정보가 올바른지 확인해주세요</E.Subtitle>
@@ -184,10 +225,10 @@ export default function EstimateCheckPage() {
               <E.Name>컨설팅 설명</E.Name>
             </E.Inline>
             <E.ConsultingImageContainer>
-              {images.map((image, index) => (
+              {localImages.map((image, index) => (
                 <div key={index} style={{ position: 'relative' }}>
                   <E.ConsultingImage src={image} alt="" />
-                  <button
+                  {/* <button
                     onClick={() => handleRemoveImage(index)}
                     style={{
                       position: 'absolute',
@@ -199,22 +240,22 @@ export default function EstimateCheckPage() {
                     }}
                   >
                     ✕
-                  </button>
+                  </button> */}
                 </div>
               ))}
-              {images.length < 5 && (
+              {/* {localImages.length < 5 && (
                 <E.AddWrapper>
                   <CheckingImgUpload
                     onImagesChange={handleAddImages}
-                    maxImages={5 - images.length}
+                    maxImages={5 - localImages.length}
                   />
                   <p style={{ whiteSpace: 'nowrap' }}>사진 추가하기</p>
                 </E.AddWrapper>
-              )}
+              )} */}
             </E.ConsultingImageContainer>
             <E.ConsultingContent>{estimateData?.body}</E.ConsultingContent>
           </E.Card>
-          <E.ChatButton onClick={handleModalOpen}>신청하기</E.ChatButton>
+          <E.ChatButton onClick={handleModalOpen} onSubmit={handleSubmitEstimate}>신청하기</E.ChatButton>
         </E.Content>
       </div>
     </div>

@@ -22,7 +22,7 @@ export const createEstimate = async (data: CreateEstimate, files?: File[]): Prom
 
     if (files && files.length > 0) {
       files.forEach((file) => {
-        formData.append('files', file);
+        formData.append('imageFiles', file);
       });
     }
 

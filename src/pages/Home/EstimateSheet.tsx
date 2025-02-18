@@ -41,6 +41,7 @@ export default function EstimateSheet() {
   useEffect(() => {
     if (estimateDetail && !isDetailLoading) {
       console.log('✅ 특정 견적서 데이터 받아옴:', estimateDetail);
+      console.log('✅ 이미지 URL들:', estimateDetail?.imageUrls);
     }
   });
 
@@ -67,7 +68,7 @@ export default function EstimateSheet() {
     }
     return (
       <E.ConsultingImageContainer>
-        {estimateDetail?.imageUrls.map((imageUrl, index) => (
+        {images.map((imageUrl, index) => (
           <E.ConsultingImage
             key={`${imageUrl}-${index}`}
             src={imageUrl}
