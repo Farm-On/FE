@@ -42,8 +42,10 @@ export default function EstimateCheckPage() {
 
   const uploadImages = async (files: File[]) => {
     const formData = new FormData();
+    formData.append('estimateId', estimateData.estimateId.toString());
+    
     files.forEach((file) => {
-      formData.append('images', file);
+      formData.append('imageFiles', file);
     });
 
     try {

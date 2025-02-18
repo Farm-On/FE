@@ -218,7 +218,7 @@ export default function RequestEstimatePage(): JSX.Element {
               },
             },
           });
-          console.log('전달된 데이터들:', response);
+          console.log('전달된 데이터들!!:', response);
         }
       }
     } catch (error) {
