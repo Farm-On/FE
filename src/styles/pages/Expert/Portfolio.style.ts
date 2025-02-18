@@ -24,6 +24,7 @@ export const Card = styled.div`
 `;
 
 export const EditText = styled.span`
+  position: absolute;
   display: block;
   align-self: flex-end;
   margin-top: 30px;
@@ -215,8 +216,7 @@ export const PortfolioImageAlt = styled.span`
 `;
 
 export const RegionContainer = styled.div`
-  padding-left: 36px;
-  padding-bottom: 31px;
+  padding: 38px 36px 31px 31px;
   display: flex;
   flex-direction: row;
   gap: 23px;

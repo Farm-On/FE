@@ -15,17 +15,16 @@ export default function Portfolio() {
   const navigate = useNavigate();
   const { userID } = useParams();
 
+  const { userInfo } = useAuthStore();
+
   const { data } = useQuery<PortfolioResponse>({
     queryKey: ['expertPortfolio', userID],
     queryFn: () => axiosInstance.get(`/expert/${userID}`).then((response) => response.data),
     enabled: !!userID,
   });
 
-  const { userInfo } = useAuthStore();
-
   // 내 프로필인 경우
-  const isMyPortfolio = String(userInfo?.userId) === userID;
-  console.log(userInfo);
+  const isMyPortfolio = userInfo?.role === 'EXPERT' && String(userInfo?.expertId) === userID;
 
   return (
     <>
@@ -77,6 +76,7 @@ export default function Portfolio() {
               </M.MyInfo>
             </M.MyInfoContainer>
           </M.Card>
+
           {/* 내 포트폴리오 */}
           <M.Title style={{ marginTop: '55px' }}>{isMyPortfolio && '내 '} 포트폴리오</M.Title>
           <M.Card>
@@ -102,9 +102,11 @@ export default function Portfolio() {
                   {career.detailContent4 && <M.PortfolioUl>{career.detailContent4}</M.PortfolioUl>}
                 </M.PortfolioOl>
               ))}
+
               {/* 추가정보 */}
               <M.PortfolioLi>추가정보</M.PortfolioLi>
               <M.PortfolioOl>{data?.result.additionalInformation}</M.PortfolioOl>
+
               {/* 대표 서비스 */}
               <M.PortfolioLi>대표 서비스</M.PortfolioLi>
               <M.PortfolioOl>
@@ -122,6 +124,7 @@ export default function Portfolio() {
                   <M.PortfolioUl>{data?.result.serviceDetail4}</M.PortfolioUl>
                 )}
               </M.PortfolioOl>
+
               {/* 포트폴리오 */}
               <M.PortfolioLi>포트폴리오</M.PortfolioLi>
               <M.PortfolioImages>
@@ -136,6 +139,7 @@ export default function Portfolio() {
               </M.PortfolioImages>
             </M.PortfolioContainer>
           </M.Card>
+
           {/* 활동 지역 */}
           <M.Title style={{ marginTop: '55px' }}>활동 지역</M.Title>
           <M.Card>
