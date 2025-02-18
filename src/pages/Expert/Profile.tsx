@@ -1,97 +1,177 @@
-import axiosInstance from '@/api/axios';
-import { ProfileListResponse } from '@/api/types/expert/profileList';
-import { ExpertProfileCard } from '@/components/ExpertProfileCard';
-import { Pagination } from '@/components/Pagination';
-import * as P from '@/styles/pages/Expert/Profile.style';
+import * as M from '@/styles/pages/Expert/Profile.style';
+import { EditMyProfileModal, ViewPortfolioModal } from '@/components/modals/Expert/Portfolio.modal';
+import {
+  useEditMyProfileModalStore,
+  useViewPortfolioModalStore,
+} from '@/store/modals/useExpertModalStore';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import axiosInstance from '@/api/axios';
+import { ProfileResponse } from '@/api/types/expert/profile';
+import DefaultAvatar from '@/assets/icons/DefaultAvatar.svg?react';
+import useAuthStore from '@/store/useAuthStore';
 
-export default function ExpertProfile() {
-  const [currentPage, setCurrentPage] = useState(1);
+export default function Portfolio() {
+  // 내 프로필, 활동 지역 모달
+  const { openModal: openEditMyProfileModal } = useEditMyProfileModalStore();
+  // 포트폴리오 상세보기 모달
+  const { openModal: openViewPortfolioModal } = useViewPortfolioModalStore();
 
-  const [crop, setCrop] = useState(null);
-  const [area, setArea] = useState(null);
+  const navigate = useNavigate();
+  const { userID } = useParams();
 
-  // 전문가 프로필 목록
-  const { data } = useQuery<ProfileListResponse>({
-    queryKey: ['expertProfileList', currentPage],
-    queryFn: () =>
-      axiosInstance
-        .get('/expert/list', {
-          params: {
-            crop,
-            area,
-            page: currentPage,
-          },
-        })
-        .then((response) => response.data),
+  const { userInfo } = useAuthStore();
+
+  const { data } = useQuery<ProfileResponse>({
+    queryKey: ['expertProfile', userID],
+    queryFn: () => axiosInstance.get(`/expert/${userID}`).then((response) => response.data),
+    enabled: !!userID,
   });
+
+  // 내 프로필인 경우
+  const isMyProfile = userInfo?.role === 'EXPERT' && String(userInfo?.expertId) === userID;
 
   return (
     <>
+      <ViewPortfolioModal />
+      <EditMyProfileModal />
       <div style={{ marginTop: 84 }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <P.Title>전문가 프로필</P.Title>
-          <P.FilterChips>
-            <P.FilterChip onClick={() => {}}>
-              <P.FilterChipLabel>분야</P.FilterChipLabel>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="17"
-                viewBox="0 0 16 17"
-                fill="none"
+          {/* 내 프로필 */}
+          <M.Title>{isMyProfile && '내 '}프로필</M.Title>
+          <M.Card>
+            {isMyProfile && (
+              <M.EditText onClick={() => openEditMyProfileModal('내 프로필')}>편집</M.EditText>
+            )}
+            <M.MyInfoContainer>
+              <M.AvatarContainer>
+                {data?.result.profileImg ? (
+                  <M.Avatar src={data?.result.profileImg} alt="" />
+                ) : (
+                  <DefaultAvatar width={126} height={126} />
+                )}
+                <M.CameraIcon />
+              </M.AvatarContainer>
+              <M.MyInfo>
+                <div
+                  style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 12 }}
+                >
+                  <M.MyName>
+                    {data?.result.isNickNameOnly
+                      ? data?.result.nickName
+                      : data?.result.name +
+                        (data?.result.nickName ? ` (${data?.result.nickName})` : '')}
+                  </M.MyName>
+                  <M.VerifiedBadge>본인인증 완료</M.VerifiedBadge>
+                </div>
+                <M.MyIntroduction>
+                  {data?.result.expertDescription && `“${data?.result.expertDescription}”`}
+                </M.MyIntroduction>
+                <M.MyStatsContainer>
+                  <M.MyStats>
+                    <M.MyStatsText>컨설팅 평점</M.MyStatsText>
+                    <M.StarIcon />
+                    <M.MyStatsText style={{ color: '#2C2C2C' }}>
+                      {String(data?.result.rate ?? '0.0')} (
+                      {String(data?.result.reviewCount ?? '0')}개)
+                    </M.MyStatsText>
+                  </M.MyStats>
+                  <M.MyStats>
+                    <M.MyStatsText>컨설팅 수</M.MyStatsText>
+                    <M.MyStatsText>{String(data?.result.consultingCount ?? '0')}건</M.MyStatsText>
+                  </M.MyStats>
+                </M.MyStatsContainer>
+              </M.MyInfo>
+            </M.MyInfoContainer>
+          </M.Card>
+
+          {/* 내 포트폴리오 */}
+          <M.Title style={{ marginTop: '55px' }}>{isMyProfile && '내 '} 포트폴리오</M.Title>
+          <M.Card>
+            {isMyProfile && (
+              <M.EditText
+                onClick={() => {
+                  navigate('/expert/profile/edit');
+                  // TODO scroll to top
+                }}
               >
-                <path
-                  d="M4 6.5L8 10.5L12 6.5"
-                  stroke="black"
-                  strokeWidth="0.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </P.FilterChip>
-            <P.FilterChip>
-              <P.FilterChipLabel>지역</P.FilterChipLabel>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="17"
-                viewBox="0 0 16 17"
-                fill="none"
-              >
-                <path
-                  d="M4 6.5L8 10.5L12 6.5"
-                  stroke="black"
-                  strokeWidth="0.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </P.FilterChip>
-          </P.FilterChips>
-          <P.Grid>
-            {data?.result?.expertProfileList?.map((data) => (
-              <ExpertProfileCard
-                key={data.expertId}
-                id={data.expertId}
-                profileImg={data.profileImg}
-                isNicknameOnly={data.isNickNameOnly}
-                name={data.name}
-                nickname={data.nickName}
-                ratings={data.rate}
-                years={data.career}
-                location={`${data.expertLocationCategory} ${data.expertLocationDetail}`}
-                fields={`${data.expertCropCategory} ${data.expertCropDetail ? `(${data.expertCropDetail})` : ''}`}
-                introduction={data.expertDescription}
-              />
-            ))}
-          </P.Grid>
-          <Pagination
-            totalPages={data?.result.totalPage || 1}
-            currentPage={currentPage}
-            onPageClick={(page) => setCurrentPage(page)}
-          />
+                편집
+              </M.EditText>
+            )}
+            <M.ProfileContainer>
+              {/* 경력 */}
+              <M.ProfileLi>경력</M.ProfileLi>
+              {data?.result.careers.map((career) => (
+                <M.ProfileOl key={career.careerId}>
+                  {career.title} ({career.startYear} ~ {career.isOngoing ? '현재' : career.endYear})
+                  {career.detailContent1 && <M.ProfileUl>{career.detailContent1}</M.ProfileUl>}
+                  {career.detailContent2 && <M.ProfileUl>{career.detailContent2}</M.ProfileUl>}
+                  {career.detailContent3 && <M.ProfileUl>{career.detailContent3}</M.ProfileUl>}
+                  {career.detailContent4 && <M.ProfileUl>{career.detailContent4}</M.ProfileUl>}
+                </M.ProfileOl>
+              ))}
+
+              {/* 추가정보 */}
+              <M.ProfileLi>추가정보</M.ProfileLi>
+              <M.ProfileOl>{data?.result.additionalInformation}</M.ProfileOl>
+
+              {/* 대표 서비스 */}
+              <M.ProfileLi>대표 서비스</M.ProfileLi>
+              <M.ProfileOl>
+                {data?.result.expertCropCategory} ({data?.result.expertCropDetail})
+                {data?.result.serviceDetail1 && (
+                  <M.ProfileUl>{data?.result.serviceDetail1}</M.ProfileUl>
+                )}
+                {data?.result.serviceDetail2 && (
+                  <M.ProfileUl>{data?.result.serviceDetail2}</M.ProfileUl>
+                )}
+                {data?.result.serviceDetail3 && (
+                  <M.ProfileUl>{data?.result.serviceDetail4}</M.ProfileUl>
+                )}
+                {data?.result.serviceDetail4 && (
+                  <M.ProfileUl>{data?.result.serviceDetail4}</M.ProfileUl>
+                )}
+              </M.ProfileOl>
+
+              {/* 포트폴리오 */}
+              <M.ProfileLi>포트폴리오</M.ProfileLi>
+              <M.PortfolioImages>
+                {data?.result.portfolio.map((pf) => (
+                  <M.PortfolioImageCard
+                    key={pf.portfolioId}
+                    onClick={() => openViewPortfolioModal()}
+                  >
+                    <M.PortfolioImageContainer>
+                      <M.PortfolioImage src={pf.thumbnailImg!} />
+                      <M.PortfolioImageAlt>{pf.title}</M.PortfolioImageAlt>
+                    </M.PortfolioImageContainer>
+                  </M.PortfolioImageCard>
+                ))}
+              </M.PortfolioImages>
+            </M.ProfileContainer>
+          </M.Card>
+
+          {/* 활동 지역 */}
+          <M.Title style={{ marginTop: '55px' }}>활동 지역</M.Title>
+          <M.Card>
+            {isMyProfile && (
+              <M.EditText onClick={() => openEditMyProfileModal('활동 지역')}>편집</M.EditText>
+            )}
+            <M.RegionContainer>
+              <M.GPSIcon />
+              <M.RegionDetailContainer>
+                <M.RegionPrimaryText>
+                  {data?.result.expertLocationCategory} {data?.result.expertLocationDetail}
+                </M.RegionPrimaryText>
+                <M.RegionSecondaryText>
+                  활동 가능 범위: {data?.result.availableRange ?? '0'}km 이동 가능
+                </M.RegionSecondaryText>
+                {data?.result.isExcludeIsland && (
+                  <M.RegionSecondaryText>도서지방 제외</M.RegionSecondaryText>
+                )}
+              </M.RegionDetailContainer>
+            </M.RegionContainer>
+          </M.Card>
         </div>
       </div>
     </>

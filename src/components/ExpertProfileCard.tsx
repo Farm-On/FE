@@ -49,7 +49,7 @@ export const ExpertProfileCard = ({
         </P.Info>
         <P.FieldText>{fields}</P.FieldText>
         <P.IntroductionText>{introduction}</P.IntroductionText>
-        <P.ViewPortfolioBtn onClick={() => navigate(`/expert/portfolio/${id}`)}>
+        <P.ViewPortfolioBtn onClick={() => navigate(`/expert/profile/${id}`)}>
           포트폴리오 보기
         </P.ViewPortfolioBtn>
       </P.Profile>

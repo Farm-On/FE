@@ -1,6 +1,6 @@
 import { BaseResponse } from '@/api/types';
 
-export interface PortfolioResponse extends BaseResponse {
+export interface ProfileResponse extends BaseResponse {
   result: {
     profileImg: string | null;
     name: string;
@@ -42,3 +42,5 @@ export interface PortfolioResponse extends BaseResponse {
     isExcludeIsland: boolean;
   };
 }
+
+export interface PortfolioResponse extends BaseResponse {}
