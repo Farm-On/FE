@@ -63,8 +63,7 @@ export const CameraIcon = styled(Camera)`
 `;
 
 export const MyInfoContainer = styled.div`
-  padding-left: 62px;
-  padding-bottom: 57px;
+  padding: 42px 62px 57px 62px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -140,9 +139,43 @@ export const StarIcon = styled(Star)`
   height: 24px;
 `;
 
+export const PortfolioLi = styled.li`
+  margin-top: 52px;
+  color: #000;
+  font-family: PretendardRegular;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%; /* 30px */
+`;
+
+export const PortfolioOl = styled.ul`
+  color: #222;
+  font-family: PretendardRegular;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 166%; /* 29.88px */
+`;
+
+export const PortfolioUl = styled.ul`
+  ${PortfolioOl.__emotion_styles}
+  display: list-item;
+  padding-left: 0.5rem;
+  list-style-type: circle;
+  list-style-position: inside;
+`;
+
 export const PortfolioContainer = styled.div`
-  padding-left: 51px;
-  padding-bottom: 60px;
+  padding: 0px 51px 60px 51px;
+`;
+
+export const PortfolioImages = styled.div`
+  width: 100%;
+  margin-top: 18px;
+  display: inline-flex;
+  gap: 26px;
+  overflow: auto;
 `;
 
 export const PortfolioImageCard = styled.div`

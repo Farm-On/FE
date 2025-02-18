@@ -51,6 +51,13 @@ export interface CommonResponse {
   result: string;
 }
 
+// TODO
+export interface BaseResponse {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+}
+
 export interface ErrorResponse {
   isSuccess: boolean;
   code: string;
