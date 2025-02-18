@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import ImgUpload from '../../components/RequestImageUpload';
 import { useCreateEstimateMutation } from '@/hooks/useMyEstimate';
+import useAuthStore from '../../store/useAuthStore';
 
 interface Category {
   id: string;
@@ -26,6 +27,9 @@ const initialCategories: Category[] = [
 ];
 
 export default function RequestEstimatePage(): JSX.Element {
+  const navigate = useNavigate();
+  const {userInfo,isLoggedIn} = useAuthStore();
+  const userId = userInfo?.userId;
   const location = useLocation();
   const editData = location.state?.editData;
   const editSection = location.state?.editSection;
@@ -37,7 +41,6 @@ export default function RequestEstimatePage(): JSX.Element {
   const [currentSection, setCurrentSection] = useState<
     'category' | 'location' | 'budget' | 'detail'
   >('category');
-
   const [areaName, setAreaName] = useState<string>('');
   const [areaNameDetail, setNameDetail] = useState<string>('');
 
@@ -52,6 +55,16 @@ export default function RequestEstimatePage(): JSX.Element {
   //이미지 관련 상태
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   
+
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      alert('로그인이 필요한 서비스입니다')
+      navigate('/login');
+    }
+  }, [isLoggedIn, navigate]);
+
+
   const handleLocationSelect = (city: string, district: string) => {
     setAreaName(city);
     setNameDetail(district);
@@ -116,7 +129,7 @@ export default function RequestEstimatePage(): JSX.Element {
   const handleCityClick = () => {
     scrollToSection(budgetRef, 'budget');
   };
-  const navigate = useNavigate();
+
 
   // 수정 모드로 진입했을 때 기존 데이터 설정
   useEffect(() => {
@@ -184,7 +197,7 @@ export default function RequestEstimatePage(): JSX.Element {
     }
 
     const inputData = {
-      userId: 1,
+      userId: userId,
       cropName: '쌀',
       category: categoryTitle,
       areaName: areaName,

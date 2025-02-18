@@ -6,6 +6,8 @@ import { useAllEstimates, useCompletedEstimates } from '../../hooks/useMyEstimat
 import { format } from 'date-fns';
 import { EstimateListItem } from '../../api/types/userEstimate';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import useAuthStore from '../../store/useAuthStore';
 
 // const dummy = [
 //   {
@@ -84,10 +86,18 @@ import { useNavigate } from 'react-router-dom';
 
 export default function AllEstimates() {
   const navigate = useNavigate();
-  //const {id} = useParams<{id:string}>();
+  const { userInfo,isLoggedIn } = useAuthStore();
+  const userId = userInfo?.userId;
   const [currentTab, setCurrentTab] = useState<'all' | 'done'>('all');
   const [currentPage, setCurrentPage] = useState(1);
   const perPage = 9; // 한 페이지당 보여줄 카드 개수
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      alert('로그인이 필요한 서비스입니다')
+      navigate('/login');
+    }
+  }, [isLoggedIn, navigate]);
 
   const handleEstimateClick = (estimateId: number) => {
     navigate(`/MyEstimate/detail/${estimateId}`);
@@ -96,13 +106,13 @@ export default function AllEstimates() {
     data: allEstimatesData,
     isLoading: isLoadingAll,
     isError: isErrorAll,
-  } = useAllEstimates(1);
+  } = useAllEstimates(userId);
 
   const {
     data: completedEstimatesData,
     isLoading: isLoadingCompleted,
     isError: isErrorCompleted,
-  } = useCompletedEstimates(1);
+  } = useCompletedEstimates(userId);
 
   if (isLoadingAll || (currentTab === 'done' && isLoadingCompleted)){
      console.log('견적서 전체 조회 로딩중');

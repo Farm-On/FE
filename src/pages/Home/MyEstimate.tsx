@@ -10,22 +10,32 @@ import JiminPhoto from '../../assets/images/jimin.png';
 import DonghoPhoto from '../../assets/images/dongho.png';
 import GreenRight from '../../assets/icons/chevron-right-green.svg?react';
 import { useRecentEstimates } from '@/hooks/useMyEstimate';
+import useAuthStore from '../../store/useAuthStore';
+import { useEffect } from 'react';
 
 export default function MyEstimatePage() {
   const navigate = useNavigate();
-  const userID = 1; 
+  const { userInfo,isLoggedIn } = useAuthStore();
+  const userID = userInfo?.userId;
 
-  const {data:estimates, isLoading,isError} = useRecentEstimates(userID);
+  const { data: estimates, isLoading, isError } = useRecentEstimates(userID);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      alert('로그인이 필요한 서비스입니다')
+      navigate('/login');
+    }
+  }, [isLoggedIn, navigate]);
 
   const handleEstimateClick = (estimateId: number) => {
     navigate(`/MyEstimate/detail/${estimateId}`);
   };
-  
-  if(isLoading){
-    console.log('내 견적 로딩중')
+
+  if (isLoading) {
+    console.log('내 견적 로딩중');
   }
-  if(isError){
-    console.log('errrrrr')
+  if (isError) {
+    console.log('errrrrr');
   }
   return (
     <E.PageWrapper>
@@ -33,7 +43,7 @@ export default function MyEstimatePage() {
         <div>
           <E.Title1>
             <h2>내 견적</h2>
-            <E.ViewAll onClick={()=>navigate('/MyEstimate/allEstimates')}>
+            <E.ViewAll onClick={() => navigate('/MyEstimate/allEstimates')}>
               <h4>전체보기</h4>
               <GreenRight />
             </E.ViewAll>
@@ -55,7 +65,15 @@ export default function MyEstimatePage() {
             ))}
 
             <E.AddCard onClick={() => navigate('/MyEstimate/RequestEstimate')}>
-              <div style={{display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center',gap:'10px'}}>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  gap: '10px',
+                }}
+              >
                 <StyledBtn />
                 <StyledP>새 견적 받아보기</StyledP>
               </div>
@@ -110,22 +128,20 @@ const ChevronRightB = styled(ChevronRight)`
 const StyledBtn = styled(AddBtn)`
   @media (max-width: 768px) {
     width: 40px;
-    height: 40px;  
+    height: 40px;
   }
 
   @media (max-width: 480px) {
     width: 20px;
     height: 20px;
   }
-
-`
+`;
 const StyledP = styled.p`
   @media (max-width: 768px) {
     font-size: 14px !important;
   }
 
   @media (max-width: 480px) {
-    font-size:10px !important;
+    font-size: 10px !important;
   }
-
-`
+`;
