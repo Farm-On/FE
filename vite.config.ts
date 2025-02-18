@@ -19,7 +19,6 @@ export default defineConfig({
       '/api': {
         target: 'http://43.201.137.131:8080',
         changeOrigin: true,
-        ws: true,
         secure: false,
       },
     },

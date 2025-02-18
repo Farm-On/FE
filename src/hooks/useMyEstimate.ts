@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { getEstimate, readEstimate,getAllEstimates,getAllCompleted,offeredEstimate } from '../api/estimate';
-import { GetEstimate,EstimateDetail } from '../api/types';
-import { CreateEstimate,EachEstimateListResponse,OfferList } from '../api/types';
+import { GetEstimate,EstimateDetail } from '../api/types/userEstimate';
+import { CreateEstimate,EachEstimateListResponse,OfferList } from '../api/types/userEstimate';
 import { createEstimate } from '../api/estimate';
 
 export function useRecentEstimates(userId: number) {

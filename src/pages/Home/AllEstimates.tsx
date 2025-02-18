@@ -4,7 +4,7 @@ import * as ME from '@/styles/pages/Expert/MyEstimate.style';
 import { useState } from 'react';
 import { useAllEstimates, useCompletedEstimates } from '../../hooks/useMyEstimate';
 import { format } from 'date-fns';
-import { EstimateListItem } from '../../api/types';
+import { EstimateListItem } from '../../api/types/userEstimate';
 import { useNavigate } from 'react-router-dom';
 
 // const dummy = [

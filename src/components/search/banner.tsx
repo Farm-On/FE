@@ -24,10 +24,16 @@ export const Banner = () => {
       </B.ChevronButton>
 
       <B.TitleContainer>
-        <B.StyledTitle>믿을 수 있는</B.StyledTitle>
-        <B.StyledTitle>1:1 농업 전문가 컨설팅</B.StyledTitle>
-        <B.StyledP>경험 많은 전문가에게</B.StyledP>
-        <B.StyledP>맞춤형 해결책을 받아보세요.</B.StyledP>
+        <B.StyledTitle>
+          믿을 수 있는
+          <br />
+          1:1 농업 전문가 컨설팅
+        </B.StyledTitle>
+        <B.StyledP>
+          경험 많은 전문가에게
+          <br />
+          맞춤형 해결책을 받아보세요.
+        </B.StyledP>
       </B.TitleContainer>
 
       <B.ImgContainer>

@@ -5,7 +5,7 @@ import { SuggestedExpertProfile } from '@/components/SuggestedExpertProfile';
 // import Dongho from '../../assets/images/dongho.png';
 import { useEstimateDetail, useOfferedestimate } from '../../hooks/useMyEstimate';
 import { useParams } from 'react-router-dom';
-import { OfferList } from '@/api/types';
+import { OfferList } from '@/api/types/userEstimate';
 import { useEffect } from 'react';
 
 

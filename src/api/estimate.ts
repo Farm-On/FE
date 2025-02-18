@@ -1,6 +1,6 @@
 //견적서 관련 api
 import axiosInstance from "./axios";
-import { CreateEstimate, CreateEstimateResponse,OfferedEstimateResponse,EachEstimateListResponse} from "./types";
+import { CreateEstimate, CreateEstimateResponse,OfferedEstimateResponse,EachEstimateListResponse} from "./types/userEstimate";
 
 //견적서 작성
 export const createEstimate = async (data: CreateEstimate, files?: File[]): Promise<CreateEstimateResponse> => {
