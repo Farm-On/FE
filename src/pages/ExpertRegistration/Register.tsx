@@ -38,18 +38,35 @@ export default function Register() {
       <R.Main>
         <R.Title>어떤 분야의 전문가 인가요?</R.Title>
         <R.CategoryContainer>
-          {categories.map((category) => (
-            <R.CategoryBox
-              key={category.id}
-              isSelected={selectedCategory === category.id}
-              onClick={() => handleCategoryClick(category.id)}
-            >
-              <R.CategoryImage src={category.img} alt={category.title} />
-              <R.CategoryTitle isSelected={selectedCategory === category.id}>
-                {category.title}
-              </R.CategoryTitle>
-            </R.CategoryBox>
-          ))}
+          <R.CategoryRow>
+            {categories.slice(0, 4).map((category) => (
+              <R.CategoryBox
+                key={category.id}
+                isSelected={selectedCategory === category.id}
+                onClick={() => handleCategoryClick(category.id)}
+              >
+                <R.CategoryImage src={category.img} alt={category.title} />
+                <R.CategoryTitle isSelected={selectedCategory === category.id}>
+                  {category.title}
+                </R.CategoryTitle>
+              </R.CategoryBox>
+            ))}
+          </R.CategoryRow>
+
+          <R.CategoryRow>
+            {categories.slice(4).map((category) => (
+              <R.CategoryBox
+                key={category.id}
+                isSelected={selectedCategory === category.id}
+                onClick={() => handleCategoryClick(category.id)}
+              >
+                <R.CategoryImage src={category.img} alt={category.title} />
+                <R.CategoryTitle isSelected={selectedCategory === category.id}>
+                  {category.title}
+                </R.CategoryTitle>
+              </R.CategoryBox>
+            ))}
+          </R.CategoryRow>
         </R.CategoryContainer>
       </R.Main>
       <R.NextButton disabled={!selectedCategory} onClick={handleNextClick}>
