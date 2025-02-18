@@ -115,10 +115,10 @@ export interface CreateEstimate {
     code: string;
     message: string;
     result: {
-      listSize: 0;
-      totalPage: 0;
-      totalElements: 0;
-      currentPage: 0;
+      listSize: number;
+      totalPage: number;
+      totalElements: number;
+      currentPage: number;
       isFirst: true;
       isLast: true;
       offerList: OfferList[];

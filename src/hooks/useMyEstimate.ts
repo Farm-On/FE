@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { getEstimate, readEstimate,getAllEstimates,getAllCompleted,offeredEstimate } from '../api/estimate';
 import { GetEstimate,EstimateDetail } from '../api/types/userEstimate';
-import { CreateEstimate,EachEstimateListResponse,OfferList } from '../api/types/userEstimate';
+import { CreateEstimate,EachEstimateListResponse,OfferList,OfferedEstimateResponse } from '../api/types/userEstimate';
 import { createEstimate } from '../api/estimate';
 
 export function useRecentEstimates(userId: number) {
@@ -54,41 +54,25 @@ export function useCompletedEstimates(userId: number) {
 }
 
 export function useOfferedestimate(estimateId: number) {
-  return useQuery({
+  return useQuery<OfferedEstimateResponse, Error, OfferList[]>({
     queryKey: ['estimates', 'offered', estimateId],
     queryFn: () => offeredEstimate(estimateId),
-    select: (data) => {
-      // 데이터가 null이거나 undefined인 경우 기본값 제공
-      if (!data || !data.result) {
-        return {
-          isSuccess: false,
-          result: {
-            listSize: 0,
-            totalPage: 0,
-            totalElements: 0,
-            currentPage: 0,
-            isFirst: true,
-            isLast: true,
-            offerList: [],
-          },
-        };
+    select: (data:OfferedEstimateResponse)=> {
+      console.log('제안받은 견적 데이터~',data?.result.offerList);
+
+      // 데이터가 null이거나 undefined인 경우 빈배열
+      if (!data?.result?.offerList || data.result.offerList.length === 0) {
+        return [];
       }
 
       // 실제 데이터가 있는 경우 해당 데이터 반환
-      return {
-        isSuccess: true,
-        result: {
-          ...data.result,
-          offerList: data.result.offerList.map((offer:OfferList) => ({
-            ...offer,
-            // null 값에 대한 기본값 처리
-            rating: offer.rating ?? 0,
-            consultingCount: offer.consultingCount ?? 0,
-            description: offer.description ?? '',
-            profileImageUrl: offer.profileImageUrl ?? '/default-profile.png'
-          }))
-        }
-      };
+      return data.result.offerList.map((offer: OfferList) => ({
+        ...offer,
+        rating: offer.rating ?? 0,
+        consultingCount: offer.consultingCount ?? 0,
+        description: offer.description ?? '',
+        profileImageUrl: offer.profileImageUrl ?? '/default-profile.png'
+      }));
     },
     // 에러 발생 시 재시도 옵션 추가
     retry: 1,
