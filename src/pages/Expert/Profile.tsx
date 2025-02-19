@@ -15,21 +15,20 @@ export default function Portfolio() {
   // 내 프로필, 활동 지역 모달
   const { openModal: openEditMyProfileModal } = useEditMyProfileModalStore();
   // 포트폴리오 상세보기 모달
-  const { openModal: openViewPortfolioModal } = useViewPortfolioModalStore();
+  const { openModal: openViewPortfolioModal, setPortfolioId } = useViewPortfolioModalStore();
 
   const navigate = useNavigate();
   const { userID } = useParams();
 
   const { userInfo } = useAuthStore();
+  // 내 프로필인 경우
+  const isMyProfile = userInfo?.role === 'EXPERT' && String(userInfo?.expertId) === userID;
 
   const { data } = useQuery<ProfileResponse>({
     queryKey: ['expertProfile', userID],
     queryFn: () => axiosInstance.get(`/expert/${userID}`).then((response) => response.data),
     enabled: !!userID,
   });
-
-  // 내 프로필인 경우
-  const isMyProfile = userInfo?.role === 'EXPERT' && String(userInfo?.expertId) === userID;
 
   return (
     <>
@@ -139,7 +138,10 @@ export default function Portfolio() {
                 {data?.result.portfolio.map((pf) => (
                   <M.PortfolioImageCard
                     key={pf.portfolioId}
-                    onClick={() => openViewPortfolioModal()}
+                    onClick={() => {
+                      setPortfolioId(pf.portfolioId);
+                      openViewPortfolioModal();
+                    }}
                   >
                     <M.PortfolioImageContainer>
                       <M.PortfolioImage src={pf.thumbnailImg!} />

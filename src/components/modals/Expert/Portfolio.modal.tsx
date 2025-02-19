@@ -1,11 +1,16 @@
+import axiosInstance from '@/api/axios';
+import { ViewPortfolioResponse } from '@/api/types/expert/portfolio';
+import { ProfileResponse } from '@/api/types/expert/profile';
 import { Modal } from '@/components/Modal';
+import ReactModal from 'react-modal';
 import {
   useEditMyProfileModalStore,
   useViewPortfolioModalStore,
 } from '@/store/modals/useExpertModalStore';
 
 import * as P from '@/styles/components/modals/Expert/Portfolio.style';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 
 const Check = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" viewBox="0 0 14 15" fill="none">
@@ -20,19 +25,88 @@ const Check = () => (
 );
 
 export const ViewPortfolioModal = () => {
-  const { isOpen, closeModal } = useViewPortfolioModalStore();
+  const { isOpen, closeModal, portfolioId, setPortfolioId } = useViewPortfolioModalStore();
 
-  const { data } = useQuery({
-    queryKey: ['expertViewPortfolio'],
+  const { userID } = useParams();
+  const queryClient = useQueryClient();
+
+  const portfolioList = queryClient.getQueryData<ProfileResponse>(['expertProfile', userID])?.result
+    .portfolio;
+
+  const currentPortfolioIndex = portfolioList?.findIndex((p) => p.portfolioId === portfolioId);
+
+  const { data } = useQuery<ViewPortfolioResponse>({
+    queryKey: ['expertViewPortfolio', portfolioId],
+    queryFn: () =>
+      axiosInstance.get(`/expert/portfolio/${portfolioId}`).then((response) => response.data),
+    enabled: !!portfolioId,
   });
 
   return (
-    <Modal open={isOpen} close={closeModal} width="700px" height="900px" borderRadius="28px">
-      <P.Header>
-        <P.CloseBtn onClick={() => closeModal()} />
-      </P.Header>
-      <P.Content></P.Content>
-    </Modal>
+    <ReactModal
+      isOpen={isOpen}
+      onRequestClose={() => closeModal()}
+      style={{
+        overlay: {
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: 'rgba(0,0,0,0.5)',
+        },
+        content: {
+          position: 'relative',
+          overflow: 'hidden',
+          margin: 0,
+          padding: 0,
+          inset: 0,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: 'none',
+          border: 'none',
+          borderRadius: 'none',
+        },
+      }}
+    >
+      <P.PreviousArrow
+        onClick={() =>
+          currentPortfolioIndex! > 0 &&
+          setPortfolioId(portfolioList?.[currentPortfolioIndex! - 1].portfolioId ?? 0)
+        }
+      />
+      <section>
+        <P.PortfolioIndicator>
+          포트폴리오 {portfolioList ? (currentPortfolioIndex ?? 0) + 1 : '?'} /{' '}
+          {portfolioList?.length ?? '?'}
+        </P.PortfolioIndicator>
+        <div
+          style={{
+            background: '#fff',
+            width: '700px',
+            height: '900px',
+            display: 'flex',
+            flexDirection: 'column',
+            borderRadius: '28px',
+          }}
+        >
+          <P.Header>
+            <P.CloseBtn onClick={() => closeModal()} />
+          </P.Header>
+          <P.Content>
+            <P.PortfolioTitle>{data?.result.title}</P.PortfolioTitle>
+            <P.PortfolioContent
+              dangerouslySetInnerHTML={{ __html: data?.result.text || '' }}
+            ></P.PortfolioContent>
+          </P.Content>
+        </div>
+      </section>
+      <P.NextArrow
+        onClick={() =>
+          currentPortfolioIndex! < portfolioList!.length - 1 &&
+          setPortfolioId(portfolioList?.[(currentPortfolioIndex ?? 1) + 1].portfolioId ?? 0)
+        }
+      />
+    </ReactModal>
   );
 };
 

@@ -42,5 +42,3 @@ export interface ProfileResponse extends BaseResponse {
     isExcludeIsland: boolean;
   };
 }
-
-export interface PortfolioResponse extends BaseResponse {}

@@ -70,11 +70,15 @@ export const useEditMyProfileModalStore = create<EditMyProfile>((set) => ({
 // 전문가 프로필 > 포트폴리오 상세보기
 interface ViewPortfolio {
   isOpen: boolean;
+  portfolioId: number | null;
+  setPortfolioId: (portfolioId: ViewPortfolio['portfolioId']) => void;
   openModal: () => void;
   closeModal: () => void;
 }
 export const useViewPortfolioModalStore = create<ViewPortfolio>((set) => ({
   isOpen: false,
+  portfolioId: null,
+  setPortfolioId: (portfolioId) => set(() => ({ portfolioId })),
   openModal: () => set(() => ({ isOpen: true })),
   closeModal: () => set(() => ({ isOpen: false })),
 }));
