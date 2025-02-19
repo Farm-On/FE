@@ -1,7 +1,11 @@
 import { Modal } from '@/components/Modal';
-import { useEditMyProfileModalStore } from '@/store/modals/useExpertModalStore';
+import {
+  useEditMyProfileModalStore,
+  useViewPortfolioModalStore,
+} from '@/store/modals/useExpertModalStore';
 
-import * as M from '@/styles/components/modals/Expert/Portfolio.style';
+import * as P from '@/styles/components/modals/Expert/Portfolio.style';
+import { useQuery } from '@tanstack/react-query';
 
 const Check = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" viewBox="0 0 14 15" fill="none">
@@ -14,6 +18,23 @@ const Check = () => (
     />
   </svg>
 );
+
+export const ViewPortfolioModal = () => {
+  const { isOpen, closeModal } = useViewPortfolioModalStore();
+
+  const { data } = useQuery({
+    queryKey: ['expertViewPortfolio'],
+  });
+
+  return (
+    <Modal open={isOpen} close={closeModal} width="700px" height="900px" borderRadius="28px">
+      <P.Header>
+        <P.CloseBtn onClick={() => closeModal()} />
+      </P.Header>
+      <P.Content></P.Content>
+    </Modal>
+  );
+};
 
 export const EditMyProfileModal = () => {
   const {
@@ -43,13 +64,13 @@ export const EditMyProfileModal = () => {
           height="458px"
           borderRadius="20px"
         >
-          <M.Header>
-            <M.CloseBtn onClick={() => closeModal()} />
-          </M.Header>
-          <M.Content>
+          <P.Header>
+            <P.CloseBtn onClick={() => closeModal()} />
+          </P.Header>
+          <P.Content>
             {/* 닉네임 */}
-            <M.Title>닉네임</M.Title>
-            <M.Input
+            <P.Title>닉네임</P.Title>
+            <P.Input
               placeholder="닉네임을 작성해주세요."
               maxLength={10}
               onChange={(e) => setProfile({ nickname: e.target.value.trim() })}
@@ -63,30 +84,30 @@ export const EditMyProfileModal = () => {
                 justifyContent: 'space-between',
               }}
             >
-              <M.CheckBoxContainer>
-                <M.CheckBox
+              <P.CheckBoxContainer>
+                <P.CheckBox
                   checked={showNicknameOnly === true}
                   onClick={() => setProfile({ showNicknameOnly: !showNicknameOnly })}
                 >
                   <Check />
-                </M.CheckBox>
-                <M.CheckBoxLabel>닉네임만 보여주기</M.CheckBoxLabel>
-              </M.CheckBoxContainer>
-              <M.MaxLengthText style={{ marginTop: '-4px' }}>3/10자</M.MaxLengthText>
+                </P.CheckBox>
+                <P.CheckBoxLabel>닉네임만 보여주기</P.CheckBoxLabel>
+              </P.CheckBoxContainer>
+              <P.MaxLengthText style={{ marginTop: '-4px' }}>3/10자</P.MaxLengthText>
             </div>
 
             {/* 한 줄 소개 */}
-            <M.Title style={{ marginTop: '34px' }}>한 줄 소개</M.Title>
-            <M.Input
+            <P.Title style={{ marginTop: '34px' }}>한 줄 소개</P.Title>
+            <P.Input
               placeholder="한 줄 소개를 작성해주세요."
               maxLength={80}
               onChange={(e) => setProfile({ introduction: e.target.value.trim() })}
             />
-            <M.MaxLengthText>33/80자</M.MaxLengthText>
-            <M.SaveBtn disabled={(introduction ?? '')?.length === 0} onClick={() => saveProfile()}>
+            <P.MaxLengthText>33/80자</P.MaxLengthText>
+            <P.SaveBtn disabled={(introduction ?? '')?.length === 0} onClick={() => saveProfile()}>
               저장
-            </M.SaveBtn>
-          </M.Content>
+            </P.SaveBtn>
+          </P.Content>
         </Modal>
       );
     }
@@ -109,69 +130,69 @@ export const EditMyProfileModal = () => {
           height="680px"
           borderRadius="20px"
         >
-          <M.Header>
-            <M.CloseBtn onClick={() => closeModal()} />
-          </M.Header>
-          <M.Content>
+          <P.Header>
+            <P.CloseBtn onClick={() => closeModal()} />
+          </P.Header>
+          <P.Content>
             {availableLocation.location && (
-              <M.Chip>
-                <M.ChipLabel>
+              <P.Chip>
+                <P.ChipLabel>
                   {availableLocation.location} {availableLocation.detailedLocation}
-                </M.ChipLabel>
-                <M.ChipXBtn
+                </P.ChipLabel>
+                <P.ChipXBtn
                   onClick={() => setAvailableLocation({ location: null, detailedLocation: null })}
                 />
-              </M.Chip>
+              </P.Chip>
             )}
-            <M.LocationContainer>
-              <M.Locations>
-                <M.LocationsHeader>시/도</M.LocationsHeader>
-                <M.LocationScroller>
+            <P.LocationContainer>
+              <P.Locations>
+                <P.LocationsHeader>시/도</P.LocationsHeader>
+                <P.LocationScroller>
                   {locations.map((location) => (
-                    <M.Location
+                    <P.Location
                       key={location}
                       selected={availableLocation.location === location}
                       onClick={() => setAvailableLocation({ location })}
                     >
                       {location}
-                    </M.Location>
+                    </P.Location>
                   ))}
-                </M.LocationScroller>
-              </M.Locations>
-              <M.Divider />
-              <M.DetailedLocations>
-                <M.DetailedLocationsHeader>시/구</M.DetailedLocationsHeader>
-                <M.LocationScroller>
+                </P.LocationScroller>
+              </P.Locations>
+              <P.Divider />
+              <P.DetailedLocations>
+                <P.DetailedLocationsHeader>시/구</P.DetailedLocationsHeader>
+                <P.LocationScroller>
                   {detailedLocations.map((detailedLocation) => (
-                    <M.DetailedLocation
+                    <P.DetailedLocation
                       key={detailedLocation}
                       selected={availableLocation.detailedLocation === detailedLocation}
                       onClick={() => setAvailableLocation({ detailedLocation })}
                     >
                       {detailedLocation}
-                    </M.DetailedLocation>
+                    </P.DetailedLocation>
                   ))}
-                </M.LocationScroller>
-              </M.DetailedLocations>
-            </M.LocationContainer>
-            <M.Options>
+                </P.LocationScroller>
+              </P.DetailedLocations>
+            </P.LocationContainer>
+            <P.Options>
               {/* 활동 가능 범위 */}
               <div>
-                <M.Title>활동 가능 범위</M.Title>
-                <M.SecondaryText>(선택)</M.SecondaryText>
+                <P.Title>활동 가능 범위</P.Title>
+                <P.SecondaryText>(선택)</P.SecondaryText>
               </div>
               <div style={{ display: 'flex', alignItems: 'flex-end' }}>
-                <M.Input
+                <P.Input
                   style={{ marginTop: '8px', width: '150px' }}
                   disabled={availableLocation.availableAnywhere === true}
                 />
-                <M.SecondaryText style={{ marginLeft: '13px', fontWeight: '500' }}>
+                <P.SecondaryText style={{ marginLeft: '13px', fontWeight: '500' }}>
                   km 이내
-                </M.SecondaryText>
+                </P.SecondaryText>
               </div>
               {/* 전국 어디든 가능 */}
-              <M.CheckBoxContainer>
-                <M.CheckBox
+              <P.CheckBoxContainer>
+                <P.CheckBox
                   checked={availableLocation.availableAnywhere === true}
                   onClick={() =>
                     setAvailableLocation({
@@ -180,12 +201,12 @@ export const EditMyProfileModal = () => {
                   }
                 >
                   <Check />
-                </M.CheckBox>
-                <M.CheckBoxLabel>전국 어디든 가능</M.CheckBoxLabel>
-              </M.CheckBoxContainer>
+                </P.CheckBox>
+                <P.CheckBoxLabel>전국 어디든 가능</P.CheckBoxLabel>
+              </P.CheckBoxContainer>
               {/* 도서 지방 제외 */}
-              <M.CheckBoxContainer>
-                <M.CheckBox
+              <P.CheckBoxContainer>
+                <P.CheckBox
                   checked={availableLocation.excludeLimitedArea === true}
                   onClick={() =>
                     setAvailableLocation({
@@ -194,12 +215,12 @@ export const EditMyProfileModal = () => {
                   }
                 >
                   <Check />
-                </M.CheckBox>
-                <M.CheckBoxLabel>도서 지방 제외</M.CheckBoxLabel>
-              </M.CheckBoxContainer>
-            </M.Options>
-            <M.SaveBtn onClick={() => saveLocation()}>저장</M.SaveBtn>
-          </M.Content>
+                </P.CheckBox>
+                <P.CheckBoxLabel>도서 지방 제외</P.CheckBoxLabel>
+              </P.CheckBoxContainer>
+            </P.Options>
+            <P.SaveBtn onClick={() => saveLocation()}>저장</P.SaveBtn>
+          </P.Content>
         </Modal>
       );
     }
