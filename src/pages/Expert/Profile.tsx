@@ -62,8 +62,8 @@ export default function Portfolio() {
     <>
       <ViewPortfolioModal />
       <EditMyProfileModal />
-      <div style={{ marginTop: 84 }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', paddingBottom: '270px' }}>
+      <div style={{ marginTop: 84, paddingBottom: 270 }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           {/* 내 프로필 */}
           <M.Title>{isMyProfile && '내 '}프로필</M.Title>
           <M.Card>
@@ -132,7 +132,7 @@ export default function Portfolio() {
             {isMyProfile && (
               <M.EditText
                 onClick={() => {
-                  navigate('/expert/profile/edit');
+                  navigate('/expert/portfolio/edit');
                   // TODO scroll to top
                 }}
               >

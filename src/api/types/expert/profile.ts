@@ -32,7 +32,7 @@ export interface ProfileResponse extends BaseResponse {
     serviceDetail4: string | null;
     portfolio: {
       portfolioId: number;
-      thumbnailImg: string | null;
+      thumbnailImg: string;
       title: string;
     }[];
     expertLocationCategory: string;

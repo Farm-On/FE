@@ -95,8 +95,8 @@ const AppRoutes = () => {
         <Route path="/MyEstimate" element={<MyEstimatePage />} />
         <Route path="/update-info" element={<EditProfile />} />
         <Route path="/expert/profile" element={<ExpertProfileList />} />
-        <Route path="/expert/profile/edit" element={<PortfolioEdit />} />
-        <Route path="/expert/portfolio/editor" element={<PortfolioEditor />} />
+        <Route path="/expert/portfolio/edit" element={<PortfolioEdit />} />
+        <Route path="/expert/portfolio/editor/:portfolioId" element={<PortfolioEditor />} />
         <Route path="/expert/profile/:userID" element={<Profile />} />
         <Route path="/expert/estimates" element={<Estimates />} />
         <Route path="/expert/estimate/:estimateId" element={<Estimate />} />

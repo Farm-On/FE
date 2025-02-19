@@ -40,6 +40,7 @@ export const Card = styled.div`
 `;
 
 export const Section = styled.div`
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -98,6 +99,11 @@ export const Text = styled.span`
   line-height: 166%; /* 29.88px */
 `;
 
+export const Pre = styled.pre`
+  margin: 0;
+  ${Text.__emotion_styles}
+`;
+
 export const CareerListText = styled(Text)`
   &:before {
     content: '•';
@@ -123,7 +129,7 @@ export const MainServiceEdit = styled.span`
 
 export const Add = styled.button`
   display: inline-flex;
-  padding: 18px 300px 18px 30px;
+  padding: 18px 30px;
   justify-content: flex-start;
   align-items: center;
   gap: 10px;
@@ -142,7 +148,7 @@ export const Add = styled.button`
 export const DetailContainer = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: start;
   justify-content: space-between;
 `;
 

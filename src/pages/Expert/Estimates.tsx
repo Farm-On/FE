@@ -10,57 +10,7 @@ import axiosInstance from '@/api/axios';
 import { EstimatesResponse } from '@/api/types/expert/estimates';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from '@/store/useAuthStore';
-
-const menus = {
-  추천: '',
-  곡물: {
-    쌀: 'key1',
-    보리: 'key2',
-    옥수수: 'key3',
-    콩: 'key4',
-    '기타 곡물': 'key5',
-  },
-  채소작물: {
-    고구마: 'key6',
-    감자: 'key7',
-    엽채류: 'key8',
-    과채류: 'key9',
-    버섯: 'key10',
-    '기타 뿌리채소': 'key11',
-    '기타 채소': 'key12',
-  },
-  과일: {
-    사과: 'key13',
-    배: 'key14',
-    감: 'key15',
-    포도: 'key16',
-    복숭아: 'key17',
-    감귤: 'key18',
-    '기타 과일': 'key19',
-  },
-  특용: {
-    인삼: 'key20',
-    약초: 'key21',
-    섬유: 'key22',
-    유지: 'key23',
-    향신료: 'key24',
-    '기타 특용': 'key25',
-  },
-  화훼: {
-    '절화 및 절엽': 'key26',
-    '분화 및 분재': 'key27',
-    묘목: 'key28',
-    '기타 화훼': 'key29',
-  },
-  사료: {
-    목초: 'key30',
-    '기타 사료': 'key31',
-  },
-  기타: {
-    '종지, 묘목': 'key32',
-    '기타 작물': 'key33',
-  },
-} as const;
+import Crops from '@/constants/Crops';
 
 export default function Estimates() {
   const navigate = useNavigate();
@@ -72,7 +22,7 @@ export default function Estimates() {
 
   const { userInfo } = useAuthStore();
   const [cropCategory, setCropCategory] = useState<{
-    menu: keyof typeof menus;
+    menu: keyof typeof Crops | '추천';
     subMenu: string | null;
   }>({
     menu: '추천',
@@ -135,7 +85,7 @@ export default function Estimates() {
   });
 
   // 메뉴 변경
-  const changeMenu = (menu: keyof typeof menus) => {
+  const changeMenu = (menu: keyof typeof Crops) => {
     setCurrentPage(1);
     setCropCategory({ menu, subMenu: null });
   };
@@ -154,19 +104,19 @@ export default function Estimates() {
           <E.Title>견적 찾기</E.Title>
           <E.Container>
             <E.Sidebar>
-              {Object.keys(menus).map((menu) => {
-                if (typeof menus[menu as keyof typeof menus] === 'object') {
+              {Object.keys(Crops).map((crop) => {
+                if (typeof Crops[crop as keyof typeof Crops] === 'object') {
                   return (
-                    <div key={menu}>
+                    <div key={crop}>
                       <E.Menu
-                        active={menu === cropCategory.menu}
-                        onClick={() => changeMenu(menu as keyof typeof menus)}
+                        active={crop === cropCategory.menu}
+                        onClick={() => changeMenu(crop as keyof typeof Crops)}
                       >
-                        {menu}
+                        {crop}
                       </E.Menu>
-                      {menu === cropCategory.menu && (
+                      {crop === cropCategory.menu && (
                         <E.SubMenuContainer>
-                          {Object.keys(menus[menu as keyof typeof menus]).map((subMenu) => (
+                          {Crops[crop as keyof typeof Crops].map((subMenu) => (
                             <E.SubMenu
                               key={subMenu}
                               active={subMenu === cropCategory.subMenu}
@@ -182,11 +132,11 @@ export default function Estimates() {
                 } else {
                   return (
                     <E.Menu
-                      key={menu}
-                      active={menu === cropCategory.menu}
-                      onClick={() => changeMenu(menu as keyof typeof menus)}
+                      key={crop}
+                      active={crop === cropCategory.menu}
+                      onClick={() => changeMenu(crop as keyof typeof Crops)}
                     >
-                      {menu}
+                      {crop}
                     </E.Menu>
                   );
                 }
