@@ -67,6 +67,18 @@ export const useEditMyProfileModalStore = create<EditMyProfile>((set) => ({
     set((state) => ({ availableLocation: { ...state.availableLocation, ...availableLocation } })),
 }));
 
+// 전문가 프로필 > 포트폴리오 상세보기
+interface ViewPortfolio {
+  isOpen: boolean;
+  openModal: () => void;
+  closeModal: () => void;
+}
+export const useViewPortfolioModalStore = create<ViewPortfolio>((set) => ({
+  isOpen: false,
+  openModal: () => set(() => ({ isOpen: true })),
+  closeModal: () => set(() => ({ isOpen: false })),
+}));
+
 // 전문가, 내 프로필 > 내 포트폴리오 편집
 interface EditMyPortfolio {
   openedModalName: '경력' | '추가정보' | '활동 지역' | '대표 서비스' | null;
