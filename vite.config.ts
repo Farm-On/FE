@@ -14,15 +14,6 @@ export default defineConfig({
     svgr(),
     tsconfigPaths(),
   ],
-  server: {
-    proxy: {
-      '/api': {
-        target: 'http://43.201.137.131:8080',
-        changeOrigin: true,
-        secure: false,
-      },
-    },
-  },
   define: {
     global: 'window',
   },
