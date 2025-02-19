@@ -2,6 +2,7 @@ import { ExpertEstimateCard } from '@/components/ExpertEstimateCard';
 import { Pagination } from '@/components/Pagination';
 import * as ME from '@/styles/pages/Expert/MyEstimate.style';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const totalPage = 6;
 
@@ -14,27 +15,17 @@ const dummy = [
     date: '2024.11.11',
     isDone: true,
   },
-  {
-    id: 2,
-    title: '쌀농사 토양, 물 관리 관련 컨설팅 문의',
-    subtitle: '쌀 (곡물) | 토양 및 환경관리 | 경기 이천시',
-    estimatedCost: '500만원 ~ 1,000만원',
-    date: '2024.11.11',
-    isDone: false,
-  },
-  {
-    id: 3,
-    title: '쌀농사 토양, 물 관리 관련 컨설팅 문의',
-    subtitle: '쌀 (곡물) | 토양 및 환경관리 | 경기 이천시',
-    estimatedCost: '500만원 ~ 1,000만원',
-    date: '2024.11.11',
-    isDone: true,
-  },
+  // ... 다른 더미 데이터
 ];
 
 export default function ExpertMyEstimate() {
+  const navigate = useNavigate();
   const [currentTab, setCurrentTab] = useState<'all' | 'done'>('all');
   const [currentPage, setCurrentPage] = useState(1);
+
+  const handleCardClick = (id: number) => {
+    navigate(`/estimate/${id}`);
+  };
 
   return (
     <div style={{ marginTop: 84 }}>
@@ -52,12 +43,8 @@ export default function ExpertMyEstimate() {
           {dummy.map((data) => (
             <ExpertEstimateCard
               key={data.id}
-              id={data.id}
-              title={data.title}
-              subtitle={data.subtitle}
-              estimatedCost={data.estimatedCost}
-              date={data.date}
-              isDone={data.isDone}
+              {...data}
+              onClick={() => handleCardClick(data.id)}
               cardStyle={{ width: '336px', padding: '22px 27px 22px 27px' }}
             />
           ))}

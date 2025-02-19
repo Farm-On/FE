@@ -1,7 +1,7 @@
 import * as S from '@/styles/components/Search/Search.style';
 import SearchImg from '@/assets/images/search.png';
-import { Category } from './Category';
-import { Banner } from './Banner';
+import { Category } from './category';
+import { Banner } from './banner';
 import { useEffect, useRef, useState } from 'react';
 import XIcon from '@/assets/icons/greyX.svg?react';
 import Background from '@/assets/images/blur.png';

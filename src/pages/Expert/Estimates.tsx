@@ -1,10 +1,10 @@
 import * as E from '@/styles/pages/Expert/Estimates.style';
-
 import { ExpertEstimateCard } from '@/components/ExpertEstimateCard';
 import { Pagination } from '@/components/Pagination';
 import { useState } from 'react';
 import { useFilterModalStore } from '@/store/modals/useExpertModalStore';
 import { EstimatesFilterModal } from '@/components/modals/Expert/Estimates.modal';
+import { useNavigate } from 'react-router-dom';
 
 const menus = {
   추천: '',
@@ -44,27 +44,17 @@ const dummy = [
     estimatedCost: '500만원 ~ 1,000만원',
     date: '2024.11.11',
   },
-  {
-    id: 2,
-    title: '쌀농사 토양, 물 관리 관련 컨설팅 문의',
-    subtitle: '쌀 (곡물) | 토양 및 환경관리 | 경기 이천시',
-    estimatedCost: '500만원 ~ 1,000만원',
-    date: '2024.11.11',
-  },
-  {
-    id: 3,
-    title: '쌀농사 토양, 물 관리 관련 컨설팅 문의',
-    subtitle: '쌀 (곡물) | 토양 및 환경관리 | 경기 이천시',
-    estimatedCost: '500만원 ~ 1,000만원',
-    date: '2024.11.11',
-  },
+  // ... 다른 더미 데이터
 ];
 
 export default function Estimates() {
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
-
-  // 필터 모달 상태
   const { openFilterModal } = useFilterModalStore();
+
+  const handleCardClick = (id: number) => {
+    navigate(`/estimate/${id}`);
+  };
 
   return (
     <>
@@ -78,7 +68,7 @@ export default function Estimates() {
                 if (typeof menus[menu as keyof typeof menus] === 'object') {
                   return (
                     <div key={menu}>
-                      <E.Menu active={activeMenus[menu as keyof typeof menus]}>{menu}</E.Menu>
+                      <E.Menu active={activeMenus[menu as keyof typeof activeMenus]}>{menu}</E.Menu>
                       <E.SubMenuContainer>
                         {Object.keys(menus[menu as keyof typeof menus]).map((subMenu) => (
                           <E.SubMenu key={subMenu}>{subMenu}</E.SubMenu>
@@ -88,7 +78,7 @@ export default function Estimates() {
                   );
                 } else {
                   return (
-                    <E.Menu key={menu} active={activeMenus[menu as keyof typeof menus]}>
+                    <E.Menu key={menu} active={activeMenus[menu as keyof typeof activeMenus]}>
                       {menu}
                     </E.Menu>
                   );
@@ -104,11 +94,8 @@ export default function Estimates() {
                 {dummy.map((data) => (
                   <ExpertEstimateCard
                     key={data.id}
-                    id={data.id}
-                    title={data.title}
-                    subtitle={data.subtitle}
-                    estimatedCost={data.estimatedCost}
-                    date={data.date}
+                    {...data}
+                    onClick={() => handleCardClick(data.id)}
                   />
                 ))}
               </E.Grid>
