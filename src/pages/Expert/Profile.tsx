@@ -69,14 +69,6 @@ export default function Portfolio() {
                 </M.MyIntroduction>
                 <M.MyStatsContainer>
                   <M.MyStats>
-                    <M.MyStatsText>컨설팅 평점</M.MyStatsText>
-                    <M.StarIcon />
-                    <M.MyStatsText style={{ color: '#2C2C2C' }}>
-                      {String(data?.result.rate ?? '0.0')} (
-                      {String(data?.result.reviewCount ?? '0')}개)
-                    </M.MyStatsText>
-                  </M.MyStats>
-                  <M.MyStats>
                     <M.MyStatsText>컨설팅 수</M.MyStatsText>
                     <M.MyStatsText>{String(data?.result.consultingCount ?? '0')}건</M.MyStatsText>
                   </M.MyStats>
