@@ -331,11 +331,11 @@ export default function RequestEstimatePage(): JSX.Element {
                 <RE.Bubble>예산은 어느 정도인가요?</RE.Bubble>
                 <RE.InputContainer>
                   {[
-                    '10 ~ 50만원',
-                    '50 ~ 100만원',
-                    '100 ~ 200만원',
-                    '200 ~ 500만원',
-                    '500 ~ 1000만원',
+                    '10만원 ~ 50만원',
+                    '50만원 ~ 100만원',
+                    '100만원 ~ 200만원',
+                    '200만원 ~ 500만원',
+                    '500만원 ~ 1,000만원',
                     '1,000만원 이상',
                   ].map((value) => (
                     <EstimateBudget
