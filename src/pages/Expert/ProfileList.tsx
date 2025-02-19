@@ -79,7 +79,6 @@ export default function ExpertProfileList() {
                 isNicknameOnly={data.isNickNameOnly}
                 name={data.name}
                 nickname={data.nickName}
-                ratings={data.rate}
                 years={data.career}
                 location={`${data.expertLocationCategory} ${data.expertLocationDetail}`}
                 fields={`${data.expertCropCategory} ${data.expertCropDetail ? `(${data.expertCropDetail})` : ''}`}
