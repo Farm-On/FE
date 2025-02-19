@@ -20,6 +20,7 @@ export default function PortfolioEdit() {
     queryKey: ['expertMyPortfolio'],
     queryFn: () =>
       axiosInstance.get(`/expert/${userInfo?.expertId}`).then((response) => response.data),
+    enabled: !!userInfo?.expertId,
   });
 
   return (

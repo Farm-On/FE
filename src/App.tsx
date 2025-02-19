@@ -100,7 +100,7 @@ const AppRoutes = () => {
         <Route path="/expert/profile/:userID" element={<Profile />} />
         <Route path="/expert/estimates" element={<Estimates />} />
         <Route path="/expert/estimate/:estimateId" element={<Estimate />} />
-        <Route path="/expert/my/estimate" element={<ExpertMyEstimate />} />
+        <Route path="/expert/myestimate" element={<ExpertMyEstimate />} />
         <Route path="/expert-register" element={<Register />} />
         <Route path="/detail-category/:categoryId" element={<DetailCategory />} />
         <Route path="/location" element={<Location />} />
