@@ -36,8 +36,8 @@ import PasswordReset from './pages/Auth/PasswordReset';
 import PasswordComplete from './pages/Auth/PasswordComplete';
 import EditProfile from './pages/User/EditProfile';
 import CheckMyEstimatePage from './pages/Home/EstimateCheckPage';
-import ExpertProfile from './pages/Expert/Profile';
-import Portfolio from './pages/Expert/Portfolio';
+import ExpertProfileList from './pages/Expert/ProfileList';
+import Profile from './pages/Expert/Profile';
 import EstimateSheet from './pages/Home/EstimateSheet';
 
 // 컴포넌트
@@ -94,10 +94,10 @@ const AppRoutes = () => {
         <Route path="/" element={<Home />} />
         <Route path="/MyEstimate" element={<MyEstimatePage />} />
         <Route path="/update-info" element={<EditProfile />} />
-        <Route path="/expert/profile" element={<ExpertProfile />} />
-        <Route path="/expert/portfolio/edit" element={<PortfolioEdit />} />
+        <Route path="/expert/profile" element={<ExpertProfileList />} />
+        <Route path="/expert/profile/edit" element={<PortfolioEdit />} />
         <Route path="/expert/portfolio/editor" element={<PortfolioEditor />} />
-        <Route path="/expert/portfolio/:userID" element={<Portfolio />} />
+        <Route path="/expert/profile/:userID" element={<Profile />} />
         <Route path="/expert/estimates" element={<Estimates />} />
         <Route path="/expert/estimate" element={<Estimate />} />
         <Route path="/expert/my/estimate" element={<ExpertMyEstimate />} />
@@ -114,18 +114,17 @@ const AppRoutes = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/signup-complete" element={<SignupComplete />} />
 
-
-        <Route path="/MyEstimate/allEstimates" element={<AllEstimates/>} />
-        <Route path="/MyEstimate/RequestEstimate/CheckMyEstimate" element={<CheckMyEstimatePage/>} />
-        <Route path="/MyEstimate/detail/:estimateId" element={<EstimateSheet/>} />
+        <Route path="/MyEstimate/allEstimates" element={<AllEstimates />} />
+        <Route
+          path="/MyEstimate/RequestEstimate/CheckMyEstimate"
+          element={<CheckMyEstimatePage />}
+        />
+        <Route path="/MyEstimate/detail/:estimateId" element={<EstimateSheet />} />
 
         <Route path="/find-account" element={<FindAccount />} />
         <Route path="/find-account/id-complete" element={<FindAccountComplete />} />
         <Route path="/find-account/password-reset" element={<PasswordReset />} />
         <Route path="/find-account/password-complete" element={<PasswordComplete />} />
-        
-        
-
       </Routes>
       {shouldShowNavbarAndFooter && <Footer />}
     </>

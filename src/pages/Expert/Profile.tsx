@@ -1,155 +1,179 @@
-import { ExpertProfileCard } from '@/components/ExpertProfileCard';
-import { Pagination } from '@/components/Pagination';
-import * as P from '@/styles/pages/Expert/Profile.style';
-import { useState } from 'react';
+import * as M from '@/styles/pages/Expert/Profile.style';
+import { EditMyProfileModal, ViewPortfolioModal } from '@/components/modals/Expert/Portfolio.modal';
+import {
+  useEditMyProfileModalStore,
+  useViewPortfolioModalStore,
+} from '@/store/modals/useExpertModalStore';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import axiosInstance from '@/api/axios';
+import { ProfileResponse } from '@/api/types/expert/profile';
+import DefaultAvatar from '@/assets/icons/DefaultAvatar.svg?react';
+import useAuthStore from '@/store/useAuthStore';
 
-const totalPage = 6;
+export default function Portfolio() {
+  // 내 프로필, 활동 지역 모달
+  const { openModal: openEditMyProfileModal } = useEditMyProfileModalStore();
+  // 포트폴리오 상세보기 모달
+  const { openModal: openViewPortfolioModal } = useViewPortfolioModalStore();
 
-const dummy = [
-  {
-    id: 1,
-    profileImg:
-      'https://s3-alpha-sig.figma.com/img/cebb/5890/aa2791b8acee1732a37529d4647a9953?Expires=1739145600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=c2aaqTVMBnqZxZHR-poLxZwovJg3l0wVU9eT08bq36z8EP3xOIflR85Da1NqCND7OIC4M4-vtiBWIhT0t6SrQHXgT8cqMaPTRTuPH6qwE4vSkuD2KzEonlMSRl9Y9bOMlRbb-y0ZyNmNQG9tVxKzI6s7zjZGwqBf0IvZD2Pi6Dsnylm03RXfZhbX6jkwFf5ELpJ3NjFnrL1vOuA0-NSreg37e6PxFAtt5LqxTMXorFvOxjh~dEI2NREar5nzDe3qzN23rZb8dQZworFsD4oiP7cx7YOXZnvT6HEFFpDdVvnQ-Q56YKSRZ8bqP1XaJvZu5K8Wi36N2moTiJKiKmcc6Q__',
-    name: '김상우',
-    ratings: 4.8,
-    years: 20,
-    location: '경기 이천시',
-    fields: '쌀 (곡물)',
-    introduction: '농업을 기술로 혁신하겠습니다.',
-  },
-  {
-    id: 2,
-    profileImg:
-      'https://s3-alpha-sig.figma.com/img/cebb/5890/aa2791b8acee1732a37529d4647a9953?Expires=1739145600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=c2aaqTVMBnqZxZHR-poLxZwovJg3l0wVU9eT08bq36z8EP3xOIflR85Da1NqCND7OIC4M4-vtiBWIhT0t6SrQHXgT8cqMaPTRTuPH6qwE4vSkuD2KzEonlMSRl9Y9bOMlRbb-y0ZyNmNQG9tVxKzI6s7zjZGwqBf0IvZD2Pi6Dsnylm03RXfZhbX6jkwFf5ELpJ3NjFnrL1vOuA0-NSreg37e6PxFAtt5LqxTMXorFvOxjh~dEI2NREar5nzDe3qzN23rZb8dQZworFsD4oiP7cx7YOXZnvT6HEFFpDdVvnQ-Q56YKSRZ8bqP1XaJvZu5K8Wi36N2moTiJKiKmcc6Q__',
-    name: '김상우',
-    ratings: 4.8,
-    years: 20,
-    location: '경기 이천시',
-    fields: '쌀 (곡물)',
-    introduction: '농업을 기술로 혁신하겠습니다.',
-  },
-  {
-    id: 3,
-    profileImg:
-      'https://s3-alpha-sig.figma.com/img/cebb/5890/aa2791b8acee1732a37529d4647a9953?Expires=1739145600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=c2aaqTVMBnqZxZHR-poLxZwovJg3l0wVU9eT08bq36z8EP3xOIflR85Da1NqCND7OIC4M4-vtiBWIhT0t6SrQHXgT8cqMaPTRTuPH6qwE4vSkuD2KzEonlMSRl9Y9bOMlRbb-y0ZyNmNQG9tVxKzI6s7zjZGwqBf0IvZD2Pi6Dsnylm03RXfZhbX6jkwFf5ELpJ3NjFnrL1vOuA0-NSreg37e6PxFAtt5LqxTMXorFvOxjh~dEI2NREar5nzDe3qzN23rZb8dQZworFsD4oiP7cx7YOXZnvT6HEFFpDdVvnQ-Q56YKSRZ8bqP1XaJvZu5K8Wi36N2moTiJKiKmcc6Q__',
-    name: '김상우',
-    ratings: 4.8,
-    years: 20,
-    location: '경기 이천시',
-    fields: '쌀 (곡물)',
-    introduction: '농업을 기술로 혁신하겠습니다.',
-  },
-  {
-    id: 3,
-    profileImg:
-      'https://s3-alpha-sig.figma.com/img/cebb/5890/aa2791b8acee1732a37529d4647a9953?Expires=1739145600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=c2aaqTVMBnqZxZHR-poLxZwovJg3l0wVU9eT08bq36z8EP3xOIflR85Da1NqCND7OIC4M4-vtiBWIhT0t6SrQHXgT8cqMaPTRTuPH6qwE4vSkuD2KzEonlMSRl9Y9bOMlRbb-y0ZyNmNQG9tVxKzI6s7zjZGwqBf0IvZD2Pi6Dsnylm03RXfZhbX6jkwFf5ELpJ3NjFnrL1vOuA0-NSreg37e6PxFAtt5LqxTMXorFvOxjh~dEI2NREar5nzDe3qzN23rZb8dQZworFsD4oiP7cx7YOXZnvT6HEFFpDdVvnQ-Q56YKSRZ8bqP1XaJvZu5K8Wi36N2moTiJKiKmcc6Q__',
-    name: '김상우',
-    ratings: 4.8,
-    years: 20,
-    location: '경기 이천시',
-    fields: '쌀 (곡물)',
-    introduction: '농업을 기술로 혁신하겠습니다.',
-  },
-  {
-    id: 4,
-    profileImg:
-      'https://s3-alpha-sig.figma.com/img/cebb/5890/aa2791b8acee1732a37529d4647a9953?Expires=1739145600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=c2aaqTVMBnqZxZHR-poLxZwovJg3l0wVU9eT08bq36z8EP3xOIflR85Da1NqCND7OIC4M4-vtiBWIhT0t6SrQHXgT8cqMaPTRTuPH6qwE4vSkuD2KzEonlMSRl9Y9bOMlRbb-y0ZyNmNQG9tVxKzI6s7zjZGwqBf0IvZD2Pi6Dsnylm03RXfZhbX6jkwFf5ELpJ3NjFnrL1vOuA0-NSreg37e6PxFAtt5LqxTMXorFvOxjh~dEI2NREar5nzDe3qzN23rZb8dQZworFsD4oiP7cx7YOXZnvT6HEFFpDdVvnQ-Q56YKSRZ8bqP1XaJvZu5K8Wi36N2moTiJKiKmcc6Q__',
-    name: '김상우',
-    ratings: 4.8,
-    years: 20,
-    location: '경기 이천시',
-    fields: '쌀 (곡물)',
-    introduction: '농업을 기술로 혁신하겠습니다.',
-  },
-  {
-    id: 5,
-    profileImg:
-      'https://s3-alpha-sig.figma.com/img/cebb/5890/aa2791b8acee1732a37529d4647a9953?Expires=1739145600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=c2aaqTVMBnqZxZHR-poLxZwovJg3l0wVU9eT08bq36z8EP3xOIflR85Da1NqCND7OIC4M4-vtiBWIhT0t6SrQHXgT8cqMaPTRTuPH6qwE4vSkuD2KzEonlMSRl9Y9bOMlRbb-y0ZyNmNQG9tVxKzI6s7zjZGwqBf0IvZD2Pi6Dsnylm03RXfZhbX6jkwFf5ELpJ3NjFnrL1vOuA0-NSreg37e6PxFAtt5LqxTMXorFvOxjh~dEI2NREar5nzDe3qzN23rZb8dQZworFsD4oiP7cx7YOXZnvT6HEFFpDdVvnQ-Q56YKSRZ8bqP1XaJvZu5K8Wi36N2moTiJKiKmcc6Q__',
-    name: '김상우',
-    ratings: 4.8,
-    years: 20,
-    location: '경기 이천시',
-    fields: '쌀 (곡물)',
-    introduction: '농업을 기술로 혁신하겠습니다.',
-  },
-  {
-    id: 6,
-    profileImg:
-      'https://s3-alpha-sig.figma.com/img/cebb/5890/aa2791b8acee1732a37529d4647a9953?Expires=1739145600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=c2aaqTVMBnqZxZHR-poLxZwovJg3l0wVU9eT08bq36z8EP3xOIflR85Da1NqCND7OIC4M4-vtiBWIhT0t6SrQHXgT8cqMaPTRTuPH6qwE4vSkuD2KzEonlMSRl9Y9bOMlRbb-y0ZyNmNQG9tVxKzI6s7zjZGwqBf0IvZD2Pi6Dsnylm03RXfZhbX6jkwFf5ELpJ3NjFnrL1vOuA0-NSreg37e6PxFAtt5LqxTMXorFvOxjh~dEI2NREar5nzDe3qzN23rZb8dQZworFsD4oiP7cx7YOXZnvT6HEFFpDdVvnQ-Q56YKSRZ8bqP1XaJvZu5K8Wi36N2moTiJKiKmcc6Q__',
-    name: '김상우',
-    ratings: 4.8,
-    years: 20,
-    location: '경기 이천시',
-    fields: '쌀 (곡물)',
-    introduction: '농업을 기술로 혁신하겠습니다.',
-  },
-];
+  const navigate = useNavigate();
+  const { userID } = useParams();
 
-export default function ExpertProfile() {
-  const [currentPage, setCurrentPage] = useState(1);
+  const { userInfo } = useAuthStore();
+
+  const { data } = useQuery<ProfileResponse>({
+    queryKey: ['expertProfile', userID],
+    queryFn: () => axiosInstance.get(`/expert/${userID}`).then((response) => response.data),
+    enabled: !!userID,
+  });
+
+  // 내 프로필인 경우
+  const isMyProfile = userInfo?.role === 'EXPERT' && String(userInfo?.expertId) === userID;
 
   return (
-    <div style={{ marginTop: 84 }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        <P.Title>전문가 프로필</P.Title>
-        <P.FilterChips>
-          <P.FilterChip>
-            <P.FilterChipLabel>분야</P.FilterChipLabel>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="17"
-              viewBox="0 0 16 17"
-              fill="none"
-            >
-              <path
-                d="M4 6.5L8 10.5L12 6.5"
-                stroke="black"
-                strokeWidth="0.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </P.FilterChip>
-          <P.FilterChip>
-            <P.FilterChipLabel>지역</P.FilterChipLabel>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="17"
-              viewBox="0 0 16 17"
-              fill="none"
-            >
-              <path
-                d="M4 6.5L8 10.5L12 6.5"
-                stroke="black"
-                strokeWidth="0.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </P.FilterChip>
-        </P.FilterChips>
-        <P.Grid>
-          {dummy.map((data) => (
-            <ExpertProfileCard
-              key={data.id}
-              profileImg={data.profileImg}
-              name={data.name}
-              ratings={data.ratings}
-              years={data.years}
-              location={data.location}
-              fields={data.fields}
-              introduction={data.introduction}
-            />
-          ))}
-        </P.Grid>
-        <Pagination
-          totalPages={totalPage}
-          currentPage={currentPage}
-          onPageClick={(page) => setCurrentPage(page)}
-        />
+    <>
+      <ViewPortfolioModal />
+      <EditMyProfileModal />
+      <div style={{ marginTop: 84 }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          {/* 내 프로필 */}
+          <M.Title>{isMyProfile && '내 '}프로필</M.Title>
+          <M.Card>
+            {isMyProfile && (
+              <M.EditText onClick={() => openEditMyProfileModal('내 프로필')}>편집</M.EditText>
+            )}
+            <M.MyInfoContainer>
+              <M.AvatarContainer>
+                {data?.result.profileImg ? (
+                  <M.Avatar src={data?.result.profileImg} alt="" />
+                ) : (
+                  <DefaultAvatar width={126} height={126} />
+                )}
+                <M.CameraIcon />
+              </M.AvatarContainer>
+              <M.MyInfo>
+                <div
+                  style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 12 }}
+                >
+                  <M.MyName>
+                    {data?.result.isNickNameOnly
+                      ? data?.result.nickName
+                      : data?.result.name +
+                        (data?.result.nickName ? ` (${data?.result.nickName})` : '')}
+                  </M.MyName>
+                  <M.VerifiedBadge>본인인증 완료</M.VerifiedBadge>
+                </div>
+                <M.MyIntroduction>
+                  {data?.result.expertDescription && `“${data?.result.expertDescription}”`}
+                </M.MyIntroduction>
+                <M.MyStatsContainer>
+                  <M.MyStats>
+                    <M.MyStatsText>컨설팅 평점</M.MyStatsText>
+                    <M.StarIcon />
+                    <M.MyStatsText style={{ color: '#2C2C2C' }}>
+                      {String(data?.result.rate ?? '0.0')} (
+                      {String(data?.result.reviewCount ?? '0')}개)
+                    </M.MyStatsText>
+                  </M.MyStats>
+                  <M.MyStats>
+                    <M.MyStatsText>컨설팅 수</M.MyStatsText>
+                    <M.MyStatsText>{String(data?.result.consultingCount ?? '0')}건</M.MyStatsText>
+                  </M.MyStats>
+                </M.MyStatsContainer>
+              </M.MyInfo>
+            </M.MyInfoContainer>
+          </M.Card>
+
+          {/* 내 포트폴리오 */}
+          <M.Title style={{ marginTop: '55px' }}>{isMyProfile && '내 '} 포트폴리오</M.Title>
+          <M.Card>
+            {isMyProfile && (
+              <M.EditText
+                onClick={() => {
+                  navigate('/expert/profile/edit');
+                  // TODO scroll to top
+                }}
+              >
+                편집
+              </M.EditText>
+            )}
+            <M.ProfileContainer>
+              {/* 경력 */}
+              <M.ProfileLi>경력</M.ProfileLi>
+              {data?.result.careers.map((career) => (
+                <M.ProfileOl key={career.careerId}>
+                  {career.title} ({career.startYear} ~ {career.isOngoing ? '현재' : career.endYear})
+                  {career.detailContent1 && <M.ProfileUl>{career.detailContent1}</M.ProfileUl>}
+                  {career.detailContent2 && <M.ProfileUl>{career.detailContent2}</M.ProfileUl>}
+                  {career.detailContent3 && <M.ProfileUl>{career.detailContent3}</M.ProfileUl>}
+                  {career.detailContent4 && <M.ProfileUl>{career.detailContent4}</M.ProfileUl>}
+                </M.ProfileOl>
+              ))}
+
+              {/* 추가정보 */}
+              <M.ProfileLi>추가정보</M.ProfileLi>
+              <M.ProfileOl>{data?.result.additionalInformation}</M.ProfileOl>
+
+              {/* 대표 서비스 */}
+              <M.ProfileLi>대표 서비스</M.ProfileLi>
+              <M.ProfileOl>
+                {data?.result.expertCropCategory} ({data?.result.expertCropDetail})
+                {data?.result.serviceDetail1 && (
+                  <M.ProfileUl>{data?.result.serviceDetail1}</M.ProfileUl>
+                )}
+                {data?.result.serviceDetail2 && (
+                  <M.ProfileUl>{data?.result.serviceDetail2}</M.ProfileUl>
+                )}
+                {data?.result.serviceDetail3 && (
+                  <M.ProfileUl>{data?.result.serviceDetail4}</M.ProfileUl>
+                )}
+                {data?.result.serviceDetail4 && (
+                  <M.ProfileUl>{data?.result.serviceDetail4}</M.ProfileUl>
+                )}
+              </M.ProfileOl>
+
+              {/* 포트폴리오 */}
+              <M.ProfileLi>포트폴리오</M.ProfileLi>
+              <M.PortfolioImages>
+                {data?.result.portfolio.map((pf) => (
+                  <M.PortfolioImageCard
+                    key={pf.portfolioId}
+                    onClick={() => openViewPortfolioModal()}
+                  >
+                    <M.PortfolioImageContainer>
+                      <M.PortfolioImage src={pf.thumbnailImg!} />
+                      <M.PortfolioImageAlt>{pf.title}</M.PortfolioImageAlt>
+                    </M.PortfolioImageContainer>
+                  </M.PortfolioImageCard>
+                ))}
+              </M.PortfolioImages>
+            </M.ProfileContainer>
+          </M.Card>
+
+          {/* 활동 지역 */}
+          <M.Title style={{ marginTop: '55px' }}>활동 지역</M.Title>
+          <M.Card>
+            {isMyProfile && (
+              <M.EditText onClick={() => openEditMyProfileModal('활동 지역')}>편집</M.EditText>
+            )}
+            <M.RegionContainer>
+              <M.GPSIcon />
+              <M.RegionDetailContainer>
+                <M.RegionPrimaryText>
+                  {data?.result.expertLocationCategory} {data?.result.expertLocationDetail}
+                </M.RegionPrimaryText>
+                <M.RegionSecondaryText>
+                  활동 가능 범위: {data?.result.availableRange ?? '0'}km 이동 가능
+                </M.RegionSecondaryText>
+                {data?.result.isExcludeIsland && (
+                  <M.RegionSecondaryText>도서지방 제외</M.RegionSecondaryText>
+                )}
+              </M.RegionDetailContainer>
+            </M.RegionContainer>
+          </M.Card>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

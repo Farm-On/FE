@@ -19,7 +19,7 @@ export const Card = styled.div`
 export const Avatar = styled.img`
   width: 84px;
   height: 84px;
-  border-radius: 84px;
+  border-radius: 9999px;
   object-fit: cover;
 `;
 

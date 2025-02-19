@@ -75,6 +75,11 @@ export const Navbar = () => {
           role: response.result.exchangeRole,
         };
 
+        // expertId 추가
+        if (targetRole === 'EXPERT') {
+          updatedUserInfo.expertId = response.result.expertId;
+        }
+
         updateUserInfo(updatedUserInfo);
       } else {
         if (response.code === 'EXPERT4002') {
