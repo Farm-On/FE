@@ -159,6 +159,10 @@ export const SaveBtn = styled.button`
   cursor: pointer;
 `;
 
+export const ChipContainer = styled.div`
+  height: 40px;
+`;
+
 export const Chip = styled.div`
   display: inline-flex;
   padding: 8px 16px;

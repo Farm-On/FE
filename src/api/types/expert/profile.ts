@@ -42,3 +42,16 @@ export interface ProfileResponse extends BaseResponse {
     isExcludeIsland: boolean;
   };
 }
+
+export interface EditProfileMutation {
+  nickName: string | null;
+  isNickNameOnly: boolean;
+  expertDescription: string | null;
+}
+
+export interface EditLocationMutation {
+  areaNameDetail: string;
+  availableRange: string;
+  isAvailableEverywhere: boolean;
+  isExcludeIsland: boolean;
+}

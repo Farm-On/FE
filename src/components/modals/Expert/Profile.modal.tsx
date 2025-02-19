@@ -11,6 +11,8 @@ import {
 import * as P from '@/styles/components/modals/Expert/Portfolio.style';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
+import CityList from '@/constants/CityList';
+import { useEditLocation, useEditProfile } from '@/hooks/useEditProfile';
 
 const Check = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" viewBox="0 0 14 15" fill="none">
@@ -122,11 +124,24 @@ export const EditMyProfileModal = () => {
     setAvailableLocation,
   } = useEditMyProfileModalStore();
 
+  // 내 프로필 편집 mutation
+  const { mutate: editProfile } = useEditProfile();
+
+  // 활동 지역 mutation
+  const { mutate: editLocation } = useEditLocation();
+
   switch (openedModalName) {
     // 내 프로필 편집 모달
     case '내 프로필': {
       const saveProfile = () => {
         console.log(nickname, showNicknameOnly, introduction);
+
+        editProfile({
+          nickName: nickname,
+          isNickNameOnly: showNicknameOnly,
+          expertDescription: introduction,
+        });
+
         closeModal();
       };
 
@@ -188,11 +203,19 @@ export const EditMyProfileModal = () => {
 
     // 활동 지역 편집 모달
     case '활동 지역': {
-      const locations = ['서울', '경기', '인천', '강원', '등등'];
-      const detailedLocations = ['전체', '수원시', '성남시', '이천시', '남양주시', '등등'];
-
       const saveLocation = () => {
         console.log(availableLocation);
+
+        const { detailedLocation, availableRange, availableAnywhere, excludeLimitedArea } =
+          availableLocation;
+
+        editLocation({
+          areaNameDetail: detailedLocation!,
+          availableRange: availableRange!,
+          isAvailableEverywhere: availableAnywhere,
+          isExcludeIsland: excludeLimitedArea,
+        });
+
         closeModal();
       };
 
@@ -208,27 +231,34 @@ export const EditMyProfileModal = () => {
             <P.CloseBtn onClick={() => closeModal()} />
           </P.Header>
           <P.Content>
-            {availableLocation.location && (
-              <P.Chip>
-                <P.ChipLabel>
-                  {availableLocation.location} {availableLocation.detailedLocation}
-                </P.ChipLabel>
-                <P.ChipXBtn
-                  onClick={() => setAvailableLocation({ location: null, detailedLocation: null })}
-                />
-              </P.Chip>
-            )}
+            <P.ChipContainer>
+              {availableLocation.location && (
+                <P.Chip>
+                  <P.ChipLabel>
+                    {availableLocation.location}{' '}
+                    {availableLocation.detailedLocation?.includes('전체')
+                      ? availableLocation.detailedLocation?.slice(2, 4)
+                      : availableLocation.detailedLocation}
+                  </P.ChipLabel>
+                  <P.ChipXBtn
+                    onClick={() => setAvailableLocation({ location: null, detailedLocation: null })}
+                  />
+                </P.Chip>
+              )}
+            </P.ChipContainer>
             <P.LocationContainer>
               <P.Locations>
                 <P.LocationsHeader>시/도</P.LocationsHeader>
                 <P.LocationScroller>
-                  {locations.map((location) => (
+                  {Object.keys(CityList).map((city) => (
                     <P.Location
-                      key={location}
-                      selected={availableLocation.location === location}
-                      onClick={() => setAvailableLocation({ location })}
+                      key={city}
+                      selected={availableLocation.location === city}
+                      onClick={() =>
+                        setAvailableLocation({ location: city, detailedLocation: null })
+                      }
                     >
-                      {location}
+                      {city}
                     </P.Location>
                   ))}
                 </P.LocationScroller>
@@ -237,15 +267,19 @@ export const EditMyProfileModal = () => {
               <P.DetailedLocations>
                 <P.DetailedLocationsHeader>시/구</P.DetailedLocationsHeader>
                 <P.LocationScroller>
-                  {detailedLocations.map((detailedLocation) => (
-                    <P.DetailedLocation
-                      key={detailedLocation}
-                      selected={availableLocation.detailedLocation === detailedLocation}
-                      onClick={() => setAvailableLocation({ detailedLocation })}
-                    >
-                      {detailedLocation}
-                    </P.DetailedLocation>
-                  ))}
+                  {CityList?.[availableLocation.location as keyof typeof CityList]?.map(
+                    (detailedLocation) => (
+                      <P.DetailedLocation
+                        key={detailedLocation}
+                        selected={availableLocation.detailedLocation === detailedLocation}
+                        onClick={() => setAvailableLocation({ detailedLocation })}
+                      >
+                        {detailedLocation.includes('전체')
+                          ? detailedLocation.slice(2, 4)
+                          : detailedLocation}
+                      </P.DetailedLocation>
+                    )
+                  )}
                 </P.LocationScroller>
               </P.DetailedLocations>
             </P.LocationContainer>
@@ -259,11 +293,15 @@ export const EditMyProfileModal = () => {
                 <P.Input
                   style={{ marginTop: '8px', width: '150px' }}
                   disabled={availableLocation.availableAnywhere === true}
+                  type="number"
+                  pattern="[0-9]"
+                  onChange={(e) => setAvailableLocation({ availableRange: e.target.value.trim() })}
                 />
                 <P.SecondaryText style={{ marginLeft: '13px', fontWeight: '500' }}>
                   km 이내
                 </P.SecondaryText>
               </div>
+
               {/* 전국 어디든 가능 */}
               <P.CheckBoxContainer>
                 <P.CheckBox
@@ -278,6 +316,7 @@ export const EditMyProfileModal = () => {
                 </P.CheckBox>
                 <P.CheckBoxLabel>전국 어디든 가능</P.CheckBoxLabel>
               </P.CheckBoxContainer>
+
               {/* 도서 지방 제외 */}
               <P.CheckBoxContainer>
                 <P.CheckBox

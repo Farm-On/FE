@@ -38,7 +38,7 @@ interface EditMyProfile {
   availableLocation: {
     location: string | null;
     detailedLocation: string | null;
-    availableRange: number | null;
+    availableRange: string | null;
     availableAnywhere: boolean;
     excludeLimitedArea: boolean; // 도서 지방 제외
   };
