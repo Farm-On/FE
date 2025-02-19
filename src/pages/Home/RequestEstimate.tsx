@@ -28,7 +28,7 @@ const initialCategories: Category[] = [
 
 export default function RequestEstimatePage(): JSX.Element {
   const navigate = useNavigate();
-  const {userInfo,isLoggedIn} = useAuthStore();
+  const { userInfo, isLoggedIn } = useAuthStore();
   const userId = userInfo?.userId;
   const location = useLocation();
   const editData = location.state?.editData;
@@ -54,16 +54,16 @@ export default function RequestEstimatePage(): JSX.Element {
 
   //이미지 관련 상태
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
-  
 
+  const categoryTitle = location.state?.categoryTitle || '카테고리 선택';
+  const subcategory = location.state?.subcategory || '세부 항목 선택';
 
   useEffect(() => {
     if (!isLoggedIn) {
-      alert('로그인이 필요한 서비스입니다')
+      alert('로그인이 필요한 서비스입니다');
       navigate('/signup');
     }
   }, [isLoggedIn, navigate]);
-
 
   const handleLocationSelect = (city: string, district: string) => {
     setAreaName(city);
@@ -130,7 +130,6 @@ export default function RequestEstimatePage(): JSX.Element {
     scrollToSection(budgetRef, 'budget');
   };
 
-
   // 수정 모드로 진입했을 때 기존 데이터 설정
   useEffect(() => {
     if (editSection && editData) {
@@ -139,29 +138,31 @@ export default function RequestEstimatePage(): JSX.Element {
       const categoryId = initialCategories.find((item) => item.title === editData.category)?.id;
       if (categoryId) setSelected(categoryId);
       setIsChecked(editData.budget);
-  
+
       setAreaName(editData.areaName);
       setNameDetail(editData.areaNameDetail);
-  
+
       // 이미지 설정 - 전달받은 모든 이미지 URL 사용
       if (editData.images && editData.images.length > 0) {
         // 문자열 배열 또는 File 객체 배열일 수 있으므로 타입 확인
         type ImageType = string | File | (string | File)[];
-        const imageList = editData.images.map((img:ImageType) => {
-          // 이미 URL 문자열이면 그대로 사용
-          if (typeof img === 'string') {
-            return img;
-          }
-          // File 객체면 임시 URL 생성
-          else if (img instanceof File) {
-            return URL.createObjectURL(img);
-          }
-          return null;
-        }).filter(url => url !== null);
-        
+        const imageList = editData.images
+          .map((img: ImageType) => {
+            // 이미 URL 문자열이면 그대로 사용
+            if (typeof img === 'string') {
+              return img;
+            }
+            // File 객체면 임시 URL 생성
+            else if (img instanceof File) {
+              return URL.createObjectURL(img);
+            }
+            return null;
+          })
+          .filter((url) => url !== null);
+
         setSelectedImages(imageList);
       }
-  
+
       switch (editSection) {
         case 'detail': {
           scrollToSection(detailRef, 'detail');
@@ -207,30 +208,30 @@ export default function RequestEstimatePage(): JSX.Element {
       body: contentValue,
     };
 
-    console.log('서버로 보낼 데이터:', inputData); 
+    console.log('서버로 보낼 데이터:', inputData);
 
     try {
       if (location.state?.editSection) {
         const imageUrls = selectedImages
-        .filter(file => file instanceof File)  // 실제 File 객체만 필터링
-        .map(file => {
-          try {
-            return URL.createObjectURL(file); //url로 변환
-          } catch (error) {
-            console.error('URL 생성 실패:', error);
-            return null;
-          }
-        })
-        .filter(url => url !== null);
+          .filter((file) => file instanceof File) // 실제 File 객체만 필터링
+          .map((file) => {
+            try {
+              return URL.createObjectURL(file); //url로 변환
+            } catch (error) {
+              console.error('URL 생성 실패:', error);
+              return null;
+            }
+          })
+          .filter((url) => url !== null);
         // 수정된 데이터 가지고 이동
         navigate('/MyEstimate/RequestEstimate/CheckMyEstimate', {
           state: {
             estimateData: {
               ...inputData,
-              imageUrls,    
+              imageUrls,
               originalFiles: selectedImages,
               editMode: true,
-              areaName: areaName, 
+              areaName: areaName,
               areaNameDetail: areaNameDetail,
             },
           },
@@ -239,7 +240,7 @@ export default function RequestEstimatePage(): JSX.Element {
         // 새로운 견적서 생성일 때 (기존 코드)
         const response = await createEstimateMutation.mutateAsync({
           data: inputData,
-          files: selectedImages.filter(file => file instanceof File)
+          files: selectedImages.filter((file) => file instanceof File),
         });
         console.log('✅ 요청한 데이터:', inputData);
         console.log('✅ 서버 응답 데이터:', response);
@@ -254,7 +255,6 @@ export default function RequestEstimatePage(): JSX.Element {
             },
           });
           console.log('전달된 데이터들!!:', response);
-
         }
       }
     } catch (error) {
@@ -262,6 +262,9 @@ export default function RequestEstimatePage(): JSX.Element {
       alert('견적서 생성에 실패했습니다. 다시 시도해주세요.');
     }
   };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <>
@@ -273,9 +276,9 @@ export default function RequestEstimatePage(): JSX.Element {
           <RE.Category>
             <HomeIcon />
             <GreyRightIcon />
-            <p>곡물</p>
+            <p>{categoryTitle}</p>
             <GreyRightIcon />
-            <p>쌀</p>
+            <p>{subcategory}</p>
           </RE.Category>
           <RE.Process>
             <p>진행률 {processing}%</p>
