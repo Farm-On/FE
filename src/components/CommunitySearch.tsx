@@ -63,7 +63,7 @@ export const CommunitySearch = ({ boardId }: CSProps) => {
     }, 500); // 0.5초 딜레이 후 API 호출
 
     return () => clearTimeout(delayDebounceFn); // 이전 요청 취소
-  }, []);
+  }, [searchValue]);
 
   // 게시글 클릭 시 FreePage로 이동
   const handlePostClick = (postId: number) => {
@@ -155,4 +155,5 @@ const StyledIcon = styled(SearchIcon)`
 
 const SearchResultsContainer = styled.div`
   margin-top: 20px;
+  margin-left: 20px;
 `;

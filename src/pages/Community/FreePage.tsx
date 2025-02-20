@@ -154,9 +154,7 @@ export const FreePage = () => {
         ))}
       </S.AnswersSection>
 
-      <S.ReplyButtonWrapper>
-        <S.ReplyButton>답변하기</S.ReplyButton>
-      </S.ReplyButtonWrapper>
+      <S.ReplyButtonWrapper>{/* <S.ReplyButton>답변하기</S.ReplyButton> */}</S.ReplyButtonWrapper>
     </S.Container>
   );
 };
