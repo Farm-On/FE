@@ -1,9 +1,10 @@
-import * as CP from '../../styles/pages/Community.Style';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axiosInstance from '@/api/axios';
+import * as CP from '../../styles/pages/Community.Style';
 import { CommunitySearch } from '@/components/CommunitySearch';
 import DownIcon from '../../assets/icons/chevron-down.svg?react';
 import styled from '@emotion/styled';
-import axiosInstance from '@/api/axios';
 import { CommuPageBtn } from '@/components/CommuPageBtn';
 import { CommunityModal } from '@/components/CommunityModal';
 import { CommuFeed } from '@/components/CommuFeed';
@@ -13,6 +14,7 @@ interface Category {
   title: string;
   apiValue: string;
 }
+
 interface Post {
   id: number;
   headline: string;
@@ -21,6 +23,7 @@ interface Post {
   product: string;
   productDetail?: string;
   imgSrc?: string;
+  boardId: number;
 }
 
 interface ApiPost {
@@ -42,31 +45,36 @@ const Categories: Category[] = [
 ];
 
 export default function CommunityPage() {
-  const [selectedCategory, setSelectedCategory] = useState<string>('1');
-  const [searchValue, setSearchValue] = useState<string>(''); // 검색어 상태
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const totalPages = 24; // 총 페이지 수(임시)
+  const [selectedCategory, setSelectedCategory] = useState<string>('popular');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  const handlePostClick = (postId: number, boardId: number) => {
+    if (selectedCategory === 'qna') {
+      navigate(`/qna/${postId}`);
+    } else {
+      navigate(`/${selectedCategory}/${boardId}/${postId}`);
+    }
+  };
 
   const decodeImageUrl = (url: string): string => {
     try {
       let decodedUrl = decodeURIComponent(url);
-
       if (decodedUrl.includes('https://umcfarmon.s3.ap-northeast-2.amazonaws.com/https://')) {
         decodedUrl = decodedUrl.replace('https://umcfarmon.s3.ap-northeast-2.amazonaws.com/', '');
       }
-
       return decodedUrl;
     } catch (e) {
       console.error('이미지 URL 디코딩 실패:', e);
-      return url; // 디코딩 실패하면 원본 반환
+      return url;
     }
   };
 
-  const fetchCommunityPosts = async (boardId: number, pageNum: number = 1, apiValue: string) => {
+  const fetchCommunityPosts = async (boardId: number, pageNum: number, apiValue: string) => {
     setLoading(true);
     setError(null);
 
@@ -85,18 +93,17 @@ export default function CommunityPage() {
       console.log('API 응답 데이터:', response.data);
       const fetchedPosts = response.data?.result?.content || [];
 
-      //`ApiPost` 타입 사용
       const formattedPosts: Post[] = fetchedPosts.map((post: ApiPost) => ({
         id: post.id,
         headline: post.postTitle,
         content: post.postContent,
         category: post.category,
-        product: '공통', // 필요하면 API 데이터에 맞게 수정
+        product: '공통',
         productDetail: '',
-        imgSrc: post.imgUrls?.[0] || '', // 이미지가 있으면 첫 번째 이미지 사용
+        boardId: Number(boardId),
+        imgSrc: post.imgUrls?.length ? decodeImageUrl(post.imgUrls[0]) : '',
       }));
 
-      console.log('변환된 데이터:', formattedPosts);
       setPosts(formattedPosts);
     } catch (err) {
       console.error('API 호출 실패:', err);
@@ -106,12 +113,10 @@ export default function CommunityPage() {
     }
   };
 
-  // 카테고리 변경 시 데이터 가져오기
   useEffect(() => {
     const selectedCategoryData = Categories.find(
       (category) => category.apiValue === selectedCategory
     );
-
     if (selectedCategoryData) {
       fetchCommunityPosts(
         Number(selectedCategoryData.id),
@@ -121,19 +126,17 @@ export default function CommunityPage() {
     }
   }, [selectedCategory, currentPage]);
 
-  // 카테고리 선택 핸들러
   const handleCategoryClick = (id: string) => {
     const selectedApiValue =
       Categories.find((category) => category.id === id)?.apiValue || 'popular';
     if (selectedApiValue !== selectedCategory) {
       setSelectedCategory(selectedApiValue);
-      setCurrentPage(1); // 페이지 초기화
+      setCurrentPage(1);
     }
   };
 
   return (
     <CP.Container style={{ display: 'flex' }}>
-      {/* 모달창 */}
       {isModalOpen && (
         <>
           <Modal>
@@ -143,7 +146,6 @@ export default function CommunityPage() {
         </>
       )}
 
-      {/* 왼쪽 카테고리 */}
       <CP.LeftCommunity className="left">
         <CP.Title>커뮤니티</CP.Title>
         <CP.Category>
@@ -151,7 +153,7 @@ export default function CommunityPage() {
             <CP.CategoryItem key={item.id}>
               <CP.Item
                 onClick={() => handleCategoryClick(item.id)}
-                isSelected={item.id === selectedCategory}
+                isSelected={selectedCategory === item.apiValue}
               >
                 <p>{item.title}</p>
               </CP.Item>
@@ -160,17 +162,18 @@ export default function CommunityPage() {
         </CP.Category>
       </CP.LeftCommunity>
 
-      {/* 오른쪽 컨텐츠 */}
       <CP.RightCommunity className="right">
         <div style={{ position: 'relative' }}>
-          <CommunitySearch onChange={(e) => setSearchValue(e.target.value)} value={searchValue} />
+          <CommunitySearch
+            boardId={Number(Categories.find((c) => c.apiValue === selectedCategory)?.id || 4)}
+          />
           <CP.FilterChip onClick={() => setIsModalOpen(true)}>
             <p>분야</p>
             <StyledDownIcon />
           </CP.FilterChip>
         </div>
 
-        <div style={{ paddingTop: '30px' }}>
+        <div style={{ paddingLeft: '8vw', paddingTop: '30px' }}>
           {loading && <p>데이터 불러오는 중...</p>}
           {error && <p>{error}</p>}
           {!loading && !error && posts.length === 0 && <p>게시글이 없습니다.</p>}
@@ -183,7 +186,8 @@ export default function CommunityPage() {
               category={post.category}
               product={post.product}
               productDetail={post.productDetail}
-              imgSrc={post.imgSrc ? decodeImageUrl(post.imgSrc) : ''}
+              imgSrc={post.imgSrc || ''}
+              onClick={() => handlePostClick(post.id, post.boardId)}
             />
           ))}
         </div>
@@ -191,7 +195,7 @@ export default function CommunityPage() {
         <div style={{ paddingLeft: '20.94vw', paddingBottom: '12.14vw' }}>
           <CommuPageBtn
             currentPage={currentPage}
-            totalPages={totalPages}
+            totalPages={24}
             onPageChange={(page) => setCurrentPage(page)}
           />
         </div>
@@ -200,7 +204,6 @@ export default function CommunityPage() {
   );
 }
 
-// 스타일 컴포넌트
 const StyledDownIcon = styled(DownIcon)`
   width: 16px;
   height: 16px;

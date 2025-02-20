@@ -39,6 +39,8 @@ import CheckMyEstimatePage from './pages/Home/EstimateCheckPage';
 import ExpertProfile from './pages/Expert/Profile';
 import Portfolio from './pages/Expert/Portfolio';
 import EstimateSheet from './pages/Home/EstimateSheet';
+import QnA from './pages/Community/QnA';
+import { FreePage } from './pages/Community/FreePage';
 
 // 컴포넌트
 import LoginModal from './components/LoginModal';
@@ -113,19 +115,20 @@ const AppRoutes = () => {
         <Route path="/agreement" element={<Agreement />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signup-complete" element={<SignupComplete />} />
+        <Route path="/qna/:postId" element={<QnA />} />
+        <Route path="/:apiValue/:boardId/:postId" element={<FreePage />} />
 
-
-        <Route path="/MyEstimate/allEstimates" element={<AllEstimates/>} />
-        <Route path="/MyEstimate/RequestEstimate/CheckMyEstimate" element={<CheckMyEstimatePage/>} />
-        <Route path="/MyEstimate/detail/:estimateId" element={<EstimateSheet/>} />
+        <Route path="/MyEstimate/allEstimates" element={<AllEstimates />} />
+        <Route
+          path="/MyEstimate/RequestEstimate/CheckMyEstimate"
+          element={<CheckMyEstimatePage />}
+        />
+        <Route path="/MyEstimate/detail/:estimateId" element={<EstimateSheet />} />
 
         <Route path="/find-account" element={<FindAccount />} />
         <Route path="/find-account/id-complete" element={<FindAccountComplete />} />
         <Route path="/find-account/password-reset" element={<PasswordReset />} />
         <Route path="/find-account/password-complete" element={<PasswordComplete />} />
-        
-        
-
       </Routes>
       {shouldShowNavbarAndFooter && <Footer />}
     </>

@@ -56,8 +56,9 @@ export const Item = styled.div<{ isSelected: boolean }>`
   align-items: center;
   gap: 10px;
   border-radius: 10px;
-  background: ${(props) => (props.isSelected ? '#00BA6D' : '')};
+  background: ${(props) => (props.isSelected ? '#00BA6D' : 'transparent')}; /* ✅ 기본값 설정 */
   cursor: pointer;
+
   @media (max-width: 768px) {
     height: 50px;
     padding: 0 15px;
@@ -67,15 +68,17 @@ export const Item = styled.div<{ isSelected: boolean }>`
     height: 50px;
     padding: 0 10px;
   }
+
   p {
-    color: ${(props) => (props.isSelected ? 'rgba(255, 255, 255, 1)' : '#5D5D5D')};
+    color: ${(props) => (props.isSelected ? '#FFFFFF' : '#5D5D5D')};
     font-family: 'PretendardMedium';
     font-size: 20px;
-    line-height: 150%; /* 30px */
+    line-height: 150%;
     margin: 0;
     min-width: 52px;
     width: fit-content;
     white-space: nowrap;
+
     @media (max-width: 768px) {
       font-size: 14px;
     }
@@ -85,6 +88,7 @@ export const Item = styled.div<{ isSelected: boolean }>`
     }
   }
 `;
+
 export const CategoryItem = styled.div`
   width: 219px;
   height: 66px;
