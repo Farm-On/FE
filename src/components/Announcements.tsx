@@ -2,7 +2,7 @@ import * as A from '@/styles/components/Annoucements.style';
 import { ReactNode } from 'react';
 
 import New from '@/assets/icons/New.svg?react';
-import Speaker from '@/assets/icons/speaker.svg?react';
+import Speaker from '@/assets/icons/Speaker.svg?react';
 
 interface AnnouncementProps {
   icon: ReactNode;

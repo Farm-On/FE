@@ -14,21 +14,25 @@ export default defineConfig({
     svgr(),
     tsconfigPaths(),
   ],
-  server: {
-    proxy: {
-      '/api': {
-        target: 'https://farmon-be.site',
-        changeOrigin: true,
-        secure: false,
-      },
-    },
-  },
   define: {
     global: 'window',
   },
   resolve: {
     alias: {
       '@': '/src',
+    },
+  },
+  preview: {
+    port: 5173,
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://farmon-be.site/api',
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
     },
   },
 });
