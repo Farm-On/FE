@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance from '@/api/axios';
 import * as C from '@/styles/components/MainCommunityStyle.style';
 import { QnAFeed } from './QnAfeed';
 import { Feed } from './Feed';
@@ -38,7 +38,7 @@ export const Community = () => {
     console.log(`API 요청: /api/home/community?category=${category}`);
 
     try {
-      const response = await axios.get(`/api/home/community?category=${category}`);
+      const response = await axiosInstance.get(`/home/community?category=${category}`);
       console.log('API 응답 데이터:', response.data.result.postList);
       setPosts(response.data.result.postList);
     } catch (err) {
