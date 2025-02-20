@@ -55,6 +55,9 @@ export default function RequestEstimatePage(): JSX.Element {
   //이미지 관련 상태
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
 
+  const categoryTitle = location.state?.categoryTitle || '카테고리 선택';
+  const subcategory = location.state?.subcategory || '세부 항목 선택';
+
   useEffect(() => {
     if (!isLoggedIn) {
       alert('로그인이 필요한 서비스입니다');
@@ -259,6 +262,9 @@ export default function RequestEstimatePage(): JSX.Element {
       alert('견적서 생성에 실패했습니다. 다시 시도해주세요.');
     }
   };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <>
@@ -270,9 +276,9 @@ export default function RequestEstimatePage(): JSX.Element {
           <RE.Category>
             <HomeIcon />
             <GreyRightIcon />
-            <p>곡물</p>
+            <p>{categoryTitle}</p>
             <GreyRightIcon />
-            <p>쌀</p>
+            <p>{subcategory}</p>
           </RE.Category>
           <RE.Process>
             <p>진행률 {processing}%</p>

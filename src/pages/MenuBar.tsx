@@ -9,6 +9,7 @@ import flowerImg from '@/assets/images/flower.png';
 import feedImg from '@/assets/images/feed.png';
 import otherImg from '@/assets/images/etc.png';
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const categories = [
   {
@@ -67,9 +68,16 @@ const categories = [
 ];
 
 export default function MenuBar() {
+  const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState(categories[0].id);
   const categoryRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const [searchParams] = useSearchParams();
+
+  const handleSubcategoryClick = (categoryTitle: string, subcategory: string) => {
+    navigate('/MyEstimate/RequestEstimate', {
+      state: { categoryTitle, subcategory },
+    });
+  };
 
   useEffect(() => {
     const categoryFromUrl = searchParams.get('category');
@@ -127,8 +135,17 @@ export default function MenuBar() {
               <M.SubcategoryContainer>
                 {category.subcategories.map((pair, index) => (
                   <React.Fragment key={`row-${category.id}-${index}`}>
-                    <M.SubcategoryItem>{pair[0]}</M.SubcategoryItem>
-                    <M.SubcategoryItem>{pair[1]}</M.SubcategoryItem>
+                    {pair.map(
+                      (subcategory, _) =>
+                        subcategory && (
+                          <M.SubcategoryItem
+                            key={subcategory}
+                            onClick={() => handleSubcategoryClick(category.title, subcategory)}
+                          >
+                            {subcategory}
+                          </M.SubcategoryItem>
+                        )
+                    )}
                   </React.Fragment>
                 ))}
               </M.SubcategoryContainer>
