@@ -32,7 +32,7 @@ export interface ProfileResponse extends BaseResponse {
     serviceDetail4: string | null;
     portfolio: {
       portfolioId: number;
-      thumbnailImg: string | null;
+      thumbnailImg: string;
       title: string;
     }[];
     expertLocationCategory: string;
@@ -43,4 +43,15 @@ export interface ProfileResponse extends BaseResponse {
   };
 }
 
-export interface PortfolioResponse extends BaseResponse {}
+export interface EditProfileMutation {
+  nickName: string | null;
+  isNickNameOnly: boolean;
+  expertDescription: string | null;
+}
+
+export interface EditLocationMutation {
+  areaNameDetail: string;
+  availableRange: string;
+  isAvailableEverywhere: boolean;
+  isExcludeIsland: boolean;
+}

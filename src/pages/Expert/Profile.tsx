@@ -1,27 +1,29 @@
 import * as M from '@/styles/pages/Expert/Profile.style';
-import { EditMyProfileModal, ViewPortfolioModal } from '@/components/modals/Expert/Portfolio.modal';
+import { EditMyProfileModal, ViewPortfolioModal } from '@/components/modals/Expert/Profile.modal';
 import {
   useEditMyProfileModalStore,
   useViewPortfolioModalStore,
 } from '@/store/modals/useExpertModalStore';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axiosInstance from '@/api/axios';
 import { ProfileResponse } from '@/api/types/expert/profile';
 import DefaultAvatar from '@/assets/icons/DefaultAvatar.svg?react';
 import useAuthStore from '@/store/useAuthStore';
+import { ChangeEvent } from 'react';
 
 export default function Portfolio() {
   // 내 프로필, 활동 지역 모달
   const { openModal: openEditMyProfileModal } = useEditMyProfileModalStore();
   // 포트폴리오 상세보기 모달
-  const { openModal: openViewPortfolioModal } = useViewPortfolioModalStore();
+  const { openModal: openViewPortfolioModal, setPortfolioId } = useViewPortfolioModalStore();
 
   const navigate = useNavigate();
   const { userID } = useParams();
 
   const { userInfo } = useAuthStore();
 
+  const queryClient = useQueryClient();
   const { data } = useQuery<ProfileResponse>({
     queryKey: ['expertProfile', userID],
     queryFn: () => axiosInstance.get(`/expert/${userID}`).then((response) => response.data),
@@ -31,11 +33,36 @@ export default function Portfolio() {
   // 내 프로필인 경우
   const isMyProfile = userInfo?.role === 'EXPERT' && String(userInfo?.expertId) === userID;
 
+  // 프로필 사진 수정
+  const { mutate: uploadProfileImg } = useMutation({
+    mutationFn: (formData: FormData) =>
+      axiosInstance.put(`/expert/${userInfo?.expertId}/profileImg`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['expertProfile'] });
+    },
+  });
+
+  const onProfileImgUpload = (e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+
+    const file = e.target.files?.[0];
+
+    if (file) {
+      const formData = new FormData();
+
+      formData.append('file', file);
+
+      uploadProfileImg(formData);
+    }
+  };
+
   return (
     <>
       <ViewPortfolioModal />
       <EditMyProfileModal />
-      <div style={{ marginTop: 84 }}>
+      <div style={{ marginTop: 84, paddingBottom: 270 }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           {/* 내 프로필 */}
           <M.Title>{isMyProfile && '내 '}프로필</M.Title>
@@ -50,7 +77,21 @@ export default function Portfolio() {
                 ) : (
                   <DefaultAvatar width={126} height={126} />
                 )}
-                <M.CameraIcon />
+                {isMyProfile && (
+                  <>
+                    <input
+                      id="uploadProfileImg"
+                      type="file"
+                      accept="image/*"
+                      multiple={false}
+                      hidden
+                      onChange={onProfileImgUpload}
+                    />
+                    <label htmlFor="uploadProfileImg">
+                      <M.CameraIcon />
+                    </label>
+                  </>
+                )}
               </M.AvatarContainer>
               <M.MyInfo>
                 <div
@@ -83,7 +124,7 @@ export default function Portfolio() {
             {isMyProfile && (
               <M.EditText
                 onClick={() => {
-                  navigate('/expert/profile/edit');
+                  navigate('/expert/portfolio/edit');
                   // TODO scroll to top
                 }}
               >
@@ -131,7 +172,10 @@ export default function Portfolio() {
                 {data?.result.portfolio.map((pf) => (
                   <M.PortfolioImageCard
                     key={pf.portfolioId}
-                    onClick={() => openViewPortfolioModal()}
+                    onClick={() => {
+                      setPortfolioId(pf.portfolioId);
+                      openViewPortfolioModal();
+                    }}
                   >
                     <M.PortfolioImageContainer>
                       <M.PortfolioImage src={pf.thumbnailImg!} />
@@ -153,10 +197,16 @@ export default function Portfolio() {
               <M.GPSIcon />
               <M.RegionDetailContainer>
                 <M.RegionPrimaryText>
-                  {data?.result.expertLocationCategory} {data?.result.expertLocationDetail}
+                  {data?.result.expertLocationCategory}{' '}
+                  {data?.result.expertLocationDetail.includes('전체')
+                    ? null
+                    : data?.result.expertLocationDetail}
                 </M.RegionPrimaryText>
                 <M.RegionSecondaryText>
-                  활동 가능 범위: {data?.result.availableRange ?? '0'}km 이동 가능
+                  활동 가능 범위:{' '}
+                  {data?.result.isAvailableEverywhere
+                    ? '전국 어디든 가능'
+                    : `${data?.result.availableRange ?? '0'}km 이동 가능`}
                 </M.RegionSecondaryText>
                 {data?.result.isExcludeIsland && (
                   <M.RegionSecondaryText>도서지방 제외</M.RegionSecondaryText>

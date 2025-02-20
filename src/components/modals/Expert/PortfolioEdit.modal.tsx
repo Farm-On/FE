@@ -1,7 +1,13 @@
+import { ProfileResponse } from '@/api/types/expert/profile';
 import { Modal } from '@/components/Modal';
+import { MonthSelectDropDown } from '@/components/MonthSelectDropDown';
+import { YearSelectDropDown } from '@/components/YearSelectDropDown';
+import { useEditCareer, useEditDetail, useEditMainService } from '@/hooks/useEditPortfolio';
 import { useEditMyPortfolioModalStore } from '@/store/modals/useExpertModalStore';
+import { useQueryClient } from '@tanstack/react-query';
 
 import * as ME from '@/styles/components/modals/Expert/PortfolioEdit.style';
+import Crops from '@/constants/Crops';
 
 const Check = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" viewBox="0 0 14 15" fill="none">
@@ -27,12 +33,41 @@ export const EditMyPortfolioModal = () => {
     setMainService,
   } = useEditMyPortfolioModalStore();
 
+  const queryClient = useQueryClient();
+
+  // 추가정보 hook
+  const { mutate: editDetail } = useEditDetail();
+
+  // 경력 hook
+  const {
+    data: careerData,
+    mutate: { mutate: editCareer },
+  } = useEditCareer();
+
+  // 대표 서비스 hook
+  const { mutate: editMainService } = useEditMainService();
+
   // 모달들
   switch (openedModalName) {
     case '경력': {
       //경력 저장
       const saveCareer = () => {
         console.log(career);
+
+        editCareer({
+          careerId: career.careerId, // null이면 경력 등록
+          title: career.title!,
+          startYear: career.startYear!,
+          startMonth: career.startMonth!,
+          endYear: career.endYear,
+          endMonth: career.endMonth,
+          detailContent1: career.detail1 || null,
+          detailContent2: career.detail2 || null,
+          detailContent3: career.detail3 || null,
+          detailContent4: career.detail4 || null,
+          isOngoing: career.isOngoing,
+        });
+
         closeModal();
       };
 
@@ -51,45 +86,53 @@ export const EditMyPortfolioModal = () => {
             {/* 타이틀 */}
             <ME.Title>타이틀</ME.Title>
             <ME.Input
+              defaultValue={careerData?.title}
               placeholder="제목을 입력해주세요."
               maxLength={20}
               style={{ marginTop: '8px' }}
               onChange={(e) => setCareer({ title: e.target.value.trim() })}
             />
-            <ME.MaxLengthText>0/20자</ME.MaxLengthText>
+            <ME.MaxLengthText>{career.title?.length ?? 0}/20자</ME.MaxLengthText>
 
             {/* 시작 일시 */}
             <ME.Title>시작 일시</ME.Title>
             <ME.Dropdowns>
-              <ME.Dropdown selected>
-                <ME.DropdownLabel>2009</ME.DropdownLabel>
-                <ME.ChevronDown />
-              </ME.Dropdown>
-              <ME.Dropdown selected>
-                <ME.DropdownLabel>6</ME.DropdownLabel>
-                <ME.ChevronDown />
-              </ME.Dropdown>
+              <YearSelectDropDown
+                year={careerData?.startYear || career.startYear}
+                onYearSelect={(year) => setCareer({ startYear: year })}
+              />
+              <MonthSelectDropDown
+                month={careerData?.startMonth || career.startMonth}
+                onMonthSelect={(month) => setCareer({ startMonth: month })}
+              />
             </ME.Dropdowns>
 
             {/* 종료 일시 */}
             <ME.Title style={{ marginTop: '28px' }}>종료 일시</ME.Title>
             <ME.Dropdowns>
-              <ME.Dropdown>
-                <ME.DropdownLabel>년도</ME.DropdownLabel>
-                <ME.ChevronDown />
-              </ME.Dropdown>
-              <ME.Dropdown>
-                <ME.DropdownLabel>월</ME.DropdownLabel>
-                <ME.ChevronDown />
-              </ME.Dropdown>
+              <YearSelectDropDown
+                year={careerData?.endYear || career.endYear}
+                onYearSelect={(year) => setCareer({ endYear: year })}
+                disabled={career.isOngoing}
+              />
+              <MonthSelectDropDown
+                month={careerData?.endMonth || career.endMonth}
+                onMonthSelect={(month) => setCareer({ endMonth: month })}
+                disabled={career.isOngoing}
+              />
               <ME.CheckBoxContainer>
                 <ME.CheckBox
+                  defaultChecked={careerData?.isOngoing}
                   checked={career.isOngoing === true}
                   onClick={() => setCareer({ isOngoing: !career.isOngoing })}
                 >
                   <Check />
                 </ME.CheckBox>
-                <ME.CheckBoxLabel>진행 중</ME.CheckBoxLabel>
+                <ME.CheckBoxLabel
+                  onClick={() => setCareer({ isOngoing: true, endYear: null, endMonth: null })}
+                >
+                  진행 중
+                </ME.CheckBoxLabel>
               </ME.CheckBoxContainer>
             </ME.Dropdowns>
 
@@ -98,18 +141,22 @@ export const EditMyPortfolioModal = () => {
             <ME.Inputs>
               <ME.Input
                 placeholder="내용을 입력해주세요."
+                defaultValue={careerData?.detailContent1 || ''}
                 onChange={(e) => setCareer({ detail1: e.target.value.trim() })}
               />
               <ME.Input
                 placeholder="내용을 입력해주세요."
+                defaultValue={careerData?.detailContent2 || ''}
                 onChange={(e) => setCareer({ detail2: e.target.value.trim() })}
               />
               <ME.Input
                 placeholder="내용을 입력해주세요."
+                defaultValue={careerData?.detailContent3 || ''}
                 onChange={(e) => setCareer({ detail3: e.target.value.trim() })}
               />
               <ME.Input
                 placeholder="내용을 입력해주세요."
+                defaultValue={careerData?.detailContent4 || ''}
                 onChange={(e) => setCareer({ detail4: e.target.value.trim() })}
               />
             </ME.Inputs>
@@ -130,6 +177,9 @@ export const EditMyPortfolioModal = () => {
     case '추가정보': {
       const saveAdditionalInfo = () => {
         console.log(additionalInfo);
+
+        editDetail({ content: additionalInfo! });
+
         closeModal();
       };
 
@@ -149,9 +199,16 @@ export const EditMyPortfolioModal = () => {
             <ME.Title>추가정보</ME.Title>
             <ME.TextArea
               placeholder="내용을 입력해주세요"
+              defaultValue={
+                queryClient.getQueryData<ProfileResponse>(['expertMyPortfolio'])?.result
+                  .additionalInformation ?? ''
+              }
+              maxLength={100}
               onChange={(e) => setAdditionalInfo(e.target.value.trim())}
             />
-            <ME.MaxLengthText style={{ marginRight: '3px' }}>0/100자</ME.MaxLengthText>
+            <ME.MaxLengthText style={{ marginRight: '3px' }}>
+              {additionalInfo?.length ?? '0'}/100자
+            </ME.MaxLengthText>
             <ME.SaveBtn onClick={() => saveAdditionalInfo()}>저장</ME.SaveBtn>
           </ME.Content>
         </Modal>
@@ -159,11 +216,17 @@ export const EditMyPortfolioModal = () => {
     }
 
     case '대표 서비스': {
-      const fields = ['곡물', '채소작물', '과일', '특용', '등등'];
-      const detailedFields = ['감자', '엽채류', '과채류', '버섯', '기타 뿌리채소', '등등'];
-
       const saveMainService = () => {
         console.log(mainService);
+
+        editMainService({
+          crop: mainService.detailedField!,
+          serviceDetail1: mainService.detail1,
+          serviceDetail2: mainService.detail2,
+          serviceDetail3: mainService.detail3,
+          serviceDetail4: mainService.detail4,
+        });
+
         closeModal();
       };
 
@@ -192,13 +255,13 @@ export const EditMyPortfolioModal = () => {
               <ME.Fields>
                 <ME.FieldsHeader>시/도</ME.FieldsHeader>
                 <ME.FieldScroller>
-                  {fields.map((field) => (
+                  {Object.keys(Crops).map((crop) => (
                     <ME.Field
-                      key={field}
-                      selected={mainService.field === field}
-                      onClick={() => setMainService({ field })}
+                      key={crop}
+                      selected={mainService.field === crop}
+                      onClick={() => setMainService({ field: crop, detailedField: null })}
                     >
-                      {field}
+                      {crop}
                     </ME.Field>
                   ))}
                 </ME.FieldScroller>
@@ -207,13 +270,13 @@ export const EditMyPortfolioModal = () => {
               <ME.DetailedFields>
                 <ME.DetailedFieldsHeader>시/구</ME.DetailedFieldsHeader>
                 <ME.FieldScroller>
-                  {detailedFields.map((detailedField) => (
+                  {Crops[mainService.field as keyof typeof Crops]?.map((crop) => (
                     <ME.DetailedField
-                      key={detailedField}
-                      selected={mainService.detailedField === detailedField}
-                      onClick={() => setMainService({ detailedField })}
+                      key={crop}
+                      selected={mainService.detailedField === crop}
+                      onClick={() => setMainService({ detailedField: crop })}
                     >
-                      {detailedField}
+                      {crop}
                     </ME.DetailedField>
                   ))}
                 </ME.FieldScroller>

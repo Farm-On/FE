@@ -61,6 +61,7 @@ export const CameraIcon = styled(Camera)`
   position: absolute;
   bottom: 0;
   right: -4.2px;
+  cursor: pointer;
 `;
 
 export const MyInfoContainer = styled.div`

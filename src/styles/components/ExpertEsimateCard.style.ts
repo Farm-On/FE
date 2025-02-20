@@ -8,6 +8,7 @@ export const Card = styled.div`
   border-radius: 20px;
   border: 0.436px solid #d7d7d7;
   background: #fff;
+  cursor: pointer;
 `;
 
 export const CardHeader = styled.div`

@@ -2,22 +2,21 @@ import { CSSProperties, Dispatch, SetStateAction } from 'react';
 import ReactQuill from 'react-quill';
 
 interface EditorProps {
-  content: string;
+  defaultContent: string;
   setContent: Dispatch<SetStateAction<string>>;
   style?: CSSProperties;
 }
 
-export const Editor = ({ content, setContent, style }: EditorProps) => {
+export const Editor = ({ defaultContent, setContent, style }: EditorProps) => {
   const Size = ReactQuill.Quill.import('attributors/style/size');
   Size.whitelist = ['14px', '16px', '18px'];
   ReactQuill.Quill.register(Size, true);
 
   return (
     <>
-      {' '}
       <ReactQuill
         theme="snow"
-        value={content}
+        defaultValue={defaultContent}
         onChange={setContent}
         modules={{
           toolbar: {
