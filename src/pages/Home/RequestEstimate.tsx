@@ -11,22 +11,15 @@ import { useLocation } from 'react-router-dom';
 import ImgUpload from '../../components/RequestImageUpload';
 import { useCreateEstimateMutation } from '@/hooks/useMyEstimate';
 import useAuthStore from '../../store/useAuthStore';
+import { CreateEstimate } from '@/api/types/userEstimate';
 
 interface Category {
   id: string;
   title: string;
 }
 
-interface NavigateEstimateResponse {
+interface NavigateEstimateResponse extends CreateEstimate {
   estimateId: number;
-  userId: number;
-  cropName: string;
-  category: string;
-  areaName: string;
-  areaNameDetail: string;
-  budget: string;
-  title: string;
-  body: string;
 }
 
 const initialCategories: Category[] = [
@@ -250,7 +243,7 @@ export default function RequestEstimatePage(): JSX.Element {
         const response = (await createEstimateMutation.mutateAsync({
           data: inputData,
           files: selectedImages.filter((file) => file instanceof File),
-        })) as { isSuccess: boolean; result: NavigateEstimateResponse }; // 타입 단언 추가
+        })) as unknown as { isSuccess: boolean; result: NavigateEstimateResponse };
 
         console.log('✅ 요청한 데이터:', inputData);
         console.log('✅ 서버 응답 데이터:', response);
