@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axiosInstance from '@/api/axios';
 import * as CP from '../../styles/pages/Community.Style';
 import { CommunitySearch } from '@/components/CommunitySearch';
+import DownIcon from '../../assets/icons/chevron-down.svg?react';
 import styled from '@emotion/styled';
 import { CommuPageBtn } from '@/components/CommuPageBtn';
 import { CommunityModal } from '@/components/CommunityModal';
@@ -33,12 +34,6 @@ interface ApiPost {
   postlike: number;
   postcomment: number;
   imgUrls?: string[];
-}
-
-interface ApiResponse {
-  result: {
-    postList: ApiPost[];
-  };
 }
 
 const Categories: Category[] = [
@@ -83,19 +78,20 @@ export default function CommunityPage() {
     setLoading(true);
     setError(null);
 
-    const requestUrl = `/home/community`;
-    console.log(`API 요청: ${requestUrl}?category=${apiValue}`);
+    const requestUrl = `/posts/${apiValue}/list/${boardId}`;
+    console.log(`API 요청: ${requestUrl}?pageNum=${pageNum}&size=10&sort=DESC`);
 
     try {
-      const response = await axiosInstance.get<ApiResponse>(requestUrl, {
-        params: { category: apiValue.toUpperCase() },
+      const response = await axiosInstance.get<{ result: { content: ApiPost[] } }>(requestUrl, {
+        params: { pageNum, size: 10, sort: 'DESC' },
         headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
           Accept: '*/*',
         },
       });
 
       console.log('API 응답 데이터:', response.data);
-      const fetchedPosts = response.data?.result?.postList || [];
+      const fetchedPosts = response.data?.result?.content || [];
 
       const formattedPosts: Post[] = fetchedPosts.map((post: ApiPost) => ({
         id: post.id,
@@ -171,6 +167,10 @@ export default function CommunityPage() {
           <CommunitySearch
             boardId={Number(Categories.find((c) => c.apiValue === selectedCategory)?.id || 4)}
           />
+          {/* <CP.FilterChip onClick={() => setIsModalOpen(true)}>
+            <p>분야</p>
+            <StyledDownIcon />
+          </CP.FilterChip> */}
         </div>
 
         <div style={{ paddingLeft: '8vw', paddingTop: '30px' }}>
@@ -203,6 +203,11 @@ export default function CommunityPage() {
     </CP.Container>
   );
 }
+
+// const StyledDownIcon = styled(DownIcon)`
+//   width: 16px;
+//   height: 16px;
+// `;
 
 const Modal = styled.div`
   position: absolute;
