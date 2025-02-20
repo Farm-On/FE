@@ -40,7 +40,11 @@ import ExpertProfileList from './pages/Expert/ProfileList';
 import Profile from './pages/Expert/Profile';
 import EstimateSheet from './pages/Home/EstimateSheet';
 
+// 레이아웃
 import MainLayout from './layouts/MainLayout';
+
+// 토스트
+import { ToastContainer } from 'react-toastify';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -166,6 +170,7 @@ function App() {
         />
         <RouterProvider router={router} />
       </AppContainer>
+      <ToastContainer />
     </QueryClientProvider>
   );
 }
