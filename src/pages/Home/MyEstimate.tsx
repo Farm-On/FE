@@ -5,11 +5,8 @@ import styled from '@emotion/styled';
 import AddBtn from '@/assets/icons/addBtn.svg?react';
 import ChevronRight from '@/assets/icons/Che.svg?react';
 import { useNavigate } from 'react-router-dom';
-import SuhwanPhoto from '../../assets/images/suhwan.png';
-import JiminPhoto from '../../assets/images/jimin.png';
-import DonghoPhoto from '../../assets/images/dongho.png';
 import GreenRight from '../../assets/icons/chevron-right-green.svg?react';
-import { useRecentEstimates } from '@/hooks/useMyEstimate';
+import { useRecentEstimates,useFindExpertCard } from '@/hooks/useMyEstimate';
 import useAuthStore from '../../store/useAuthStore';
 import { useEffect } from 'react';
 
@@ -19,6 +16,15 @@ export default function MyEstimatePage() {
   const userID = userInfo?.userId;
 
   const { data: estimates, isLoading, isError } = useRecentEstimates(userID);
+  const { data: findExpert, isLoading: isfindingLoading, isError: isfindingError} = useFindExpertCard();
+  console.log('직접전문가카드 데이터:',findExpert)
+
+  if(isfindingLoading){
+    console.log('직접찾기 전문가 조회중')
+  }
+  if(isfindingError){
+    console.log('직접찾기 전문가 조회실패')
+  }
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -90,23 +96,19 @@ export default function MyEstimatePage() {
           </E.Title2>
 
           <E.ExpertCardWrap>
-            <ExpertCard
-              name="농사꾼131"
-              product="곡물,벼"
-              star={4.8}
-              years={10}
-              url={DonghoPhoto}
-            />
-
-            <ExpertCard name="이수환" product="과일,감귤" star={4.8} years={12} url={SuhwanPhoto} />
-
-            <ExpertCard
-              name="이지민(해충해방)"
-              product="채소작물,버섯"
-              star={4.8}
-              years={20}
-              url={JiminPhoto}
-            />
+            {findExpert?.expertCardDTOList.map((expertCard)=>(
+                <ExpertCard
+                  key={expertCard?.expertId}
+                  name={expertCard?.name}
+                  nickName={expertCard?.nickname}
+                  cropCategory={expertCard?.cropCategory}
+                  cropName={expertCard?.cropName}
+                  star={expertCard?.rating}
+                  years={expertCard?.careerYears}
+                  url={expertCard?.profileImageUrl}
+                  onClick={()=>navigate(`/expert/profile/${expertCard?.expertId}`)}
+                />
+            ))}
 
             <E.ChevronRight>
               <ChevronRightB />

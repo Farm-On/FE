@@ -9,84 +9,9 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import useAuthStore from '../../store/useAuthStore';
 
-// const dummy = [
-//   {
-//     id: 1,
-//     title: '토양 관리 및 물 관리 방법',
-//     subtitle: '콩 (곡물) | 토양 및 환경관리 | 경기 이천시',
-//     estimatedCost: '500만원 ~ 1,000만원',
-//     date: '2024.11.11',
-//     isDone: false,
-//   },
-//   {
-//     id: 2,
-//     title: '논 배수와 비료 사용법',
-//     subtitle: '쌀 (곡물) | 토양 및 환경관리 | 경기 이천시',
-//     estimatedCost: '500만원 ~ 1,000만원',
-//     date: '2024.11.11',
-//     isDone: false,
-//   },
-//   {
-//     id: 3,
-//     title: '논 배수와 비료 사용법',
-//     subtitle: '쌀 (곡물) | 토양 및 환경관리 | 경기 이천시',
-//     estimatedCost: '500만원 ~ 1,000만원',
-//     date: '2024.11.11',
-//     isDone: false,
-//   },
-//   {
-//     id: 4,
-//     title: '병해충 예방 관련 컨설팅 건',
-//     subtitle: '옥수수 (곡물) | 토양 및 환경관리 | 경기 이천시',
-//     estimatedCost: '500만원 ~ 1,000만원',
-//     date: '2024.11.11',
-//     isDone: false,
-//   },
-//   {
-//     id: 5,
-//     title: '쌀농사 토양, 물 관리 관련 컨설팅 문의',
-//     subtitle: '쌀 (곡물) | 토양 및 환경관리 | 경기 이천시',
-//     estimatedCost: '500만원 ~ 1,000만원',
-//     date: '2024.11.11',
-//     isDone: false,
-//   },
-//   {
-//     id: 6,
-//     title: '쌀농사 토양, 물 관리 관련 컨설팅 문의',
-//     subtitle: '쌀 (곡물) | 토양 및 환경관리 | 경기 이천시',
-//     estimatedCost: '500만원 ~ 1,000만원',
-//     date: '2024.11.11',
-//     isDone: true,
-//   },
-//   {
-//     id: 7,
-//     title: '쌀농사 토양, 물 관리 관련 컨설팅 문의',
-//     subtitle: '쌀 (곡물) | 토양 및 환경관리 | 경기 이천시',
-//     estimatedCost: '500만원 ~ 1,000만원',
-//     date: '2024.11.11',
-//     isDone: true,
-//   },
-//   {
-//     id: 8,
-//     title: '옥수수 재배 초보 입니다. 비료 사...',
-//     subtitle: '옥수수 (곡물) | 토양 및 환경관리 | 경기 이천시',
-//     estimatedCost: '500만원 ~ 1,000만원',
-//     date: '2024.11.11',
-//     isDone: false,
-//   },
-//   {
-//     id: 9,
-//     title: '병해충 예방 관련 컨설팅 건',
-//     subtitle: '옥수수 (곡물) | 토양 및 환경관리 | 경기 이천시',
-//     estimatedCost: '500만원 ~ 1,000만원',
-//     date: '2024.11.11',
-//     isDone: true,
-//   },
-// ];
-
 export default function AllEstimates() {
   const navigate = useNavigate();
-  const { userInfo,isLoggedIn } = useAuthStore();
+  const { userInfo, isLoggedIn } = useAuthStore();
   const userId = userInfo?.userId;
   const [currentTab, setCurrentTab] = useState<'all' | 'done'>('all');
   const [currentPage, setCurrentPage] = useState(1);
@@ -94,7 +19,7 @@ export default function AllEstimates() {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      alert('로그인이 필요한 서비스입니다')
+      alert('로그인이 필요한 서비스입니다');
       navigate('/signup');
     }
   }, [isLoggedIn, navigate]);
@@ -114,16 +39,16 @@ export default function AllEstimates() {
     isError: isErrorCompleted,
   } = useCompletedEstimates(userId);
 
-  if (isLoadingAll || (currentTab === 'done' && isLoadingCompleted)){
-     console.log('견적서 전체 조회 로딩중');
+  if (isLoadingAll || (currentTab === 'done' && isLoadingCompleted)) {
+    console.log('견적서 전체 조회 로딩중');
     return null;
   }
-  if (isErrorAll || (currentTab === 'done' && isErrorCompleted)){
-      console.log('견적서 전체 조회 실패~!');
+  if (isErrorAll || (currentTab === 'done' && isErrorCompleted)) {
+    console.log('견적서 전체 조회 실패~!');
     return null;
   }
-  if(isErrorCompleted){
-    console.log("완료견적 에러:",)
+  if (isErrorCompleted) {
+    console.log('완료견적 에러:');
     return null;
   }
 
@@ -138,7 +63,6 @@ export default function AllEstimates() {
   const startIndex = (currentPage - 1) * perPage;
   const endIndex = startIndex + perPage;
   const currentPageEstimates = currentData.slice(startIndex, endIndex);
-  
 
   return (
     <div style={{ marginTop: 84 }}>
@@ -181,7 +105,7 @@ export default function AllEstimates() {
           <ME.Grid>
             {currentPageEstimates.map((estimate: EstimateListItem) => (
               <ExpertEstimateCard
-                onClick={()=>handleEstimateClick(estimate.estimateId)}
+                onClick={() => handleEstimateClick(estimate.estimateId)}
                 key={estimate.estimateId}
                 id={estimate.estimateId}
                 title={estimate.title}
@@ -194,6 +118,25 @@ export default function AllEstimates() {
             ))}
           </ME.Grid>
         )}
+
+        {currentTab === 'done' && currentData.length > 0 && (
+          <ME.Grid>
+            {completedEstimates?.map((estimate) => (
+              <ExpertEstimateCard
+                onClick={() => handleEstimateClick(estimate.estimateId)}
+                key={estimate.estimateId}
+                id={estimate.estimateId}
+                title={estimate.title}
+                subtitle={`${estimate.cropName} (${estimate.cropCategory}) | ${estimate.estimateCategory} | ${estimate.areaName}`}
+                estimatedCost={estimate.budget}
+                date={format(new Date(estimate.createdAt), 'yyyy.MM.dd')}
+                isDone={true}
+                cardStyle={{ width: '336px', padding: '22px 27px 22px 27px' }}
+              />
+            ))}
+          </ME.Grid>
+        )}
+
         <Pagination
           totalPages={totalPages}
           currentPage={currentPage}
