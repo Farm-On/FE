@@ -54,6 +54,7 @@ export const ViewPortfolioModal = () => {
           alignItems: 'center',
           justifyContent: 'center',
           background: 'rgba(0,0,0,0.5)',
+          zIndex: 99999,
         },
         content: {
           position: 'relative',
@@ -70,12 +71,16 @@ export const ViewPortfolioModal = () => {
         },
       }}
     >
-      <P.PreviousArrow
-        onClick={() =>
-          currentPortfolioIndex! > 0 &&
-          setPortfolioId(portfolioList?.[currentPortfolioIndex! - 1].portfolioId ?? 0)
-        }
-      />
+      {portfolioList && currentPortfolioIndex! > 0 ? (
+        <P.PreviousArrow
+          onClick={() =>
+            currentPortfolioIndex! > 0 &&
+            setPortfolioId(portfolioList?.[currentPortfolioIndex! - 1].portfolioId ?? 0)
+          }
+        />
+      ) : (
+        <P.ArrowPlaceholder />
+      )}
       <section>
         <P.PortfolioIndicator>
           포트폴리오 {portfolioList ? (currentPortfolioIndex ?? 0) + 1 : '?'} /{' '}
@@ -89,6 +94,7 @@ export const ViewPortfolioModal = () => {
             display: 'flex',
             flexDirection: 'column',
             borderRadius: '28px',
+            margin: '0px 110px',
           }}
         >
           <P.Header>
@@ -102,12 +108,16 @@ export const ViewPortfolioModal = () => {
           </P.Content>
         </div>
       </section>
-      <P.NextArrow
-        onClick={() =>
-          currentPortfolioIndex! < portfolioList!.length - 1 &&
-          setPortfolioId(portfolioList?.[(currentPortfolioIndex ?? 1) + 1].portfolioId ?? 0)
-        }
-      />
+      {portfolioList && currentPortfolioIndex! + 1 < portfolioList!.length ? (
+        <P.NextArrow
+          onClick={() =>
+            currentPortfolioIndex! < portfolioList!.length - 1 &&
+            setPortfolioId(portfolioList?.[(currentPortfolioIndex ?? 1) + 1].portfolioId ?? 0)
+          }
+        />
+      ) : (
+        <P.ArrowPlaceholder />
+      )}
     </ReactModal>
   );
 };

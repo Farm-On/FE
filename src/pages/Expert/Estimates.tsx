@@ -99,78 +99,76 @@ export default function Estimates() {
   return (
     <>
       <EstimatesFilterModal />
-      <div style={{ marginTop: 84 }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <E.Title>견적 찾기</E.Title>
-          <E.Container>
-            <E.Sidebar>
-              {Object.keys(Crops).map((crop) => {
-                if (typeof Crops[crop as keyof typeof Crops] === 'object') {
-                  return (
-                    <div key={crop}>
-                      <E.Menu
-                        active={crop === cropCategory.menu}
-                        onClick={() => changeMenu(crop as keyof typeof Crops)}
-                      >
-                        {crop}
-                      </E.Menu>
-                      {crop === cropCategory.menu && (
-                        <E.SubMenuContainer>
-                          {Crops[crop as keyof typeof Crops].map((subMenu) => (
-                            <E.SubMenu
-                              key={subMenu}
-                              active={subMenu === cropCategory.subMenu}
-                              onClick={() => changeSubMenu(subMenu)}
-                            >
-                              {subMenu}
-                            </E.SubMenu>
-                          ))}
-                        </E.SubMenuContainer>
-                      )}
-                    </div>
-                  );
-                } else {
-                  return (
+      <div>
+        <E.Title>견적 찾기</E.Title>
+        <E.Container>
+          <E.Sidebar>
+            {Object.keys(Crops).map((crop) => {
+              if (typeof Crops[crop as keyof typeof Crops] === 'object') {
+                return (
+                  <div key={crop}>
                     <E.Menu
-                      key={crop}
                       active={crop === cropCategory.menu}
                       onClick={() => changeMenu(crop as keyof typeof Crops)}
                     >
                       {crop}
                     </E.Menu>
-                  );
-                }
-              })}
-            </E.Sidebar>
-            <E.Content>
-              <E.Header>
-                <E.SelectedCategoryLabel>
-                  {cropCategory.menu}
-                  {cropCategory.subMenu ? ` > ${cropCategory.subMenu}` : null}
-                </E.SelectedCategoryLabel>
-                <E.FilterBtn onClick={() => openFilterModal()} />
-              </E.Header>
-              <E.Grid>
-                {data?.result.estimateList.map((estimate) => (
-                  <ExpertEstimateCard
-                    key={estimate.estimateId}
-                    id={estimate.estimateId}
-                    title={estimate.title}
-                    subtitle={`${estimate.cropName} (${estimate.cropCategory}) | ${estimate.estimateCategory} | ${estimate.areaName} ${estimate.areaNameDetail}`}
-                    estimatedCost={estimate.budget}
-                    date={estimate.createdAt}
-                    onClick={() => navigate(`/expert/estimate/${estimate.estimateId}`)}
-                  />
-                ))}
-              </E.Grid>
-              <Pagination
-                totalPages={data?.result.totalPage ?? 0}
-                currentPage={currentPage}
-                onPageClick={(page) => setCurrentPage(page)}
-              />
-            </E.Content>
-          </E.Container>
-        </div>
+                    {crop === cropCategory.menu && (
+                      <E.SubMenuContainer>
+                        {Crops[crop as keyof typeof Crops].map((subMenu) => (
+                          <E.SubMenu
+                            key={subMenu}
+                            active={subMenu === cropCategory.subMenu}
+                            onClick={() => changeSubMenu(subMenu)}
+                          >
+                            {subMenu}
+                          </E.SubMenu>
+                        ))}
+                      </E.SubMenuContainer>
+                    )}
+                  </div>
+                );
+              } else {
+                return (
+                  <E.Menu
+                    key={crop}
+                    active={crop === cropCategory.menu}
+                    onClick={() => changeMenu(crop as keyof typeof Crops)}
+                  >
+                    {crop}
+                  </E.Menu>
+                );
+              }
+            })}
+          </E.Sidebar>
+          <E.Content>
+            <E.Header>
+              <E.SelectedCategoryLabel>
+                {cropCategory.menu}
+                {cropCategory.subMenu ? ` > ${cropCategory.subMenu}` : null}
+              </E.SelectedCategoryLabel>
+              <E.FilterBtn onClick={() => openFilterModal()} />
+            </E.Header>
+            <E.Grid>
+              {data?.result.estimateList.map((estimate) => (
+                <ExpertEstimateCard
+                  key={estimate.estimateId}
+                  id={estimate.estimateId}
+                  title={estimate.title}
+                  subtitle={`${estimate.cropName} (${estimate.cropCategory}) | ${estimate.estimateCategory} | ${estimate.areaName} ${estimate.areaNameDetail}`}
+                  estimatedCost={estimate.budget}
+                  date={estimate.createdAt}
+                  onClick={() => navigate(`/expert/estimate/${estimate.estimateId}`)}
+                />
+              ))}
+            </E.Grid>
+            <Pagination
+              totalPages={data?.result.totalPage ?? 0}
+              currentPage={currentPage}
+              onPageClick={(page) => setCurrentPage(page)}
+            />
+          </E.Content>
+        </E.Container>
       </div>
     </>
   );

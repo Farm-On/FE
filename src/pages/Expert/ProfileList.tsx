@@ -28,71 +28,67 @@ export default function ExpertProfileList() {
   });
 
   return (
-    <>
-      <div style={{ marginTop: 84, paddingBottom: 165 }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <P.Title>전문가 프로필</P.Title>
-          <P.FilterChips>
-            <P.FilterChip onClick={() => {}}>
-              <P.FilterChipLabel>분야</P.FilterChipLabel>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="17"
-                viewBox="0 0 16 17"
-                fill="none"
-              >
-                <path
-                  d="M4 6.5L8 10.5L12 6.5"
-                  stroke="black"
-                  strokeWidth="0.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </P.FilterChip>
-            <P.FilterChip>
-              <P.FilterChipLabel>지역</P.FilterChipLabel>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="17"
-                viewBox="0 0 16 17"
-                fill="none"
-              >
-                <path
-                  d="M4 6.5L8 10.5L12 6.5"
-                  stroke="black"
-                  strokeWidth="0.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </P.FilterChip>
-          </P.FilterChips>
-          <P.Grid>
-            {data?.result?.expertProfileList?.map((data) => (
-              <ExpertProfileCard
-                key={data.expertId}
-                id={data.expertId}
-                profileImg={data.profileImg}
-                isNicknameOnly={data.isNickNameOnly}
-                name={data.name}
-                nickname={data.nickName}
-                years={data.career}
-                location={`${data.expertLocationCategory} ${data.expertLocationDetail}`}
-                fields={`${data.expertCropCategory} ${data.expertCropDetail ? `(${data.expertCropDetail})` : ''}`}
-                introduction={data.expertDescription}
-              />
-            ))}
-          </P.Grid>
-          <Pagination
-            totalPages={data?.result.totalPage || 1}
-            currentPage={currentPage}
-            onPageClick={(page) => setCurrentPage(page)}
+    <div>
+      <P.Title>전문가 프로필</P.Title>
+      <P.FilterChips>
+        <P.FilterChip onClick={() => {}}>
+          <P.FilterChipLabel>분야</P.FilterChipLabel>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="17"
+            viewBox="0 0 16 17"
+            fill="none"
+          >
+            <path
+              d="M4 6.5L8 10.5L12 6.5"
+              stroke="black"
+              strokeWidth="0.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </P.FilterChip>
+        <P.FilterChip>
+          <P.FilterChipLabel>지역</P.FilterChipLabel>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="17"
+            viewBox="0 0 16 17"
+            fill="none"
+          >
+            <path
+              d="M4 6.5L8 10.5L12 6.5"
+              stroke="black"
+              strokeWidth="0.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </P.FilterChip>
+      </P.FilterChips>
+      <P.Grid>
+        {data?.result?.expertProfileList?.map((data) => (
+          <ExpertProfileCard
+            key={data.expertId}
+            id={data.expertId}
+            profileImg={data.profileImg}
+            isNicknameOnly={data.isNickNameOnly}
+            name={data.name}
+            nickname={data.nickName}
+            years={data.career}
+            location={`${data.expertLocationCategory} ${data.expertLocationDetail}`}
+            fields={`${data.expertCropCategory} ${data.expertCropDetail ? `(${data.expertCropDetail})` : ''}`}
+            introduction={data.expertDescription}
           />
-        </div>
-      </div>
-    </>
+        ))}
+      </P.Grid>
+      <Pagination
+        totalPages={data?.result.totalPage || 1}
+        currentPage={currentPage}
+        onPageClick={(page) => setCurrentPage(page)}
+      />
+    </div>
   );
 }

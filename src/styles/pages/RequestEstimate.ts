@@ -2,8 +2,6 @@ import styled from '@emotion/styled';
 
 export const Title = styled.div`
   height: 51px;
-  display: flex;
-  align-items: center;
   background-color: rgba(255, 255, 255, 1);
   h2 {
     margin: 0;
@@ -12,6 +10,7 @@ export const Title = styled.div`
 export const Wrapper = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
 `;
 export const Category = styled.div`
   display: flex;
@@ -25,7 +24,6 @@ export const Category = styled.div`
 `;
 
 export const Process = styled.div`
-  padding-left: 1008px;
   p {
     margin: 0;
     color: rgba(87, 87, 87, 1);
@@ -110,7 +108,6 @@ export const DividingLine = styled.div`
   background-color: rgba(206, 206, 206, 1);
   margin: 14px 0;
   margin-top: 100px; //임시 값
-  margin-bottom: 40px; //임시 값
 
   @media (max-width: 768px) {
     width: 750px;
@@ -288,7 +285,7 @@ export const PostContent = styled.textarea`
   border: 1px solid rgba(142, 142, 142, 1);
   padding-left: 16px;
   padding-top: 24px;
-  padding-bottom:160px;
+  padding-bottom: 160px;
   font-size: 16px;
   font-family: 'PretendardRegular';
   resize: none;
@@ -341,8 +338,6 @@ export const PageWrapper = styled.div`
 export const CenteredContainer = styled.div`
   width: 100%;
   max-width: 1200px; // 또는 원하는 최대 너비
-  //margin: 0 auto;
-  padding: 0 20px; 
   box-sizing: border-box;
   position: relative;
 `;

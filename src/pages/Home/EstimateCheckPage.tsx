@@ -7,6 +7,7 @@ import { useLocation } from 'react-router-dom';
 //import { CreateEstimate } from '@/api/types';
 //import CheckingImgUpload from '../../components/CheckingImageUpload';
 import { axiosInstance } from '../../api/axios';
+import Crops from '@/constants/Crops';
 
 // 더미 데이터
 // const dummy = {
@@ -176,12 +177,18 @@ export default function EstimateCheckPage() {
   // };
 
   return (
-    <div style={{ backgroundColor: '#F9F9F9', paddingTop: 84 }}>
+    <div>
       {isModalOpen === true ? (
         <RequestModal onClick={handleModalOpen} onSubmit={handleSubmitEstimate} />
       ) : null}
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        <E.Title>쌀(곡물) 컨설팅 요청 내역</E.Title>
+        <E.Title>
+          {estimateData.cropName}(
+          {Object.keys(Crops).find((c) =>
+            Crops[c as keyof typeof Crops].includes(estimateData.cropName)
+          )}
+          ) 컨설팅 요청 내역
+        </E.Title>
         <E.Subtitle>컨설팅 신청 정보가 올바른지 확인해주세요</E.Subtitle>
         <E.Content>
           {/* 제목 */}

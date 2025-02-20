@@ -175,6 +175,7 @@ export const ProfileContainer = styled.div`
 export const PortfolioImages = styled.div`
   width: 100%;
   margin-top: 18px;
+  padding-bottom: 8px;
   display: inline-flex;
   gap: 26px;
   overflow: auto;
@@ -204,6 +205,7 @@ export const PortfolioImage = styled.img`
   width: 122px;
   height: 122px;
   border-radius: 10px;
+  object-fit: cover;
 `;
 
 export const PortfolioImageAlt = styled.span`

@@ -37,56 +37,54 @@ export default function PortfolioEditor() {
   };
 
   return (
-    <div style={{ marginTop: 84 }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        <PE.Title>포트폴리오 {portfolioId === 'new' ? '추가' : '편집'}</PE.Title>
-        <PE.Content>
-          <PE.TitleInput
-            key={data?.title}
-            placeholder="제목을 입력하세요."
-            defaultValue={data?.title}
-            onChange={(e) => setTitle(e.target.value.trim())}
-          />
-          <PE.Divider />
-          <PE.MainImageContainer>
-            {mainImage.url ? (
-              <PE.MainImage key={data?.thumbnailImg} base64Url={mainImage.url}>
-                <PE.RemoveButton onClick={() => setMainImage({ file: null, url: null })} />
-              </PE.MainImage>
-            ) : (
-              <label htmlFor="uploadImg" style={{ cursor: 'pointer' }}>
-                <PE.MainImagePlaceholder>
-                  <Gallery />
-                  대표사진
-                  <br />
-                  등록하기
-                </PE.MainImagePlaceholder>
-                <input
-                  id="uploadImg"
-                  type="file"
-                  accept="image/*"
-                  multiple={false}
-                  hidden
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
+    <div>
+      <PE.Title>포트폴리오 {portfolioId === 'new' ? '추가' : '편집'}</PE.Title>
+      <PE.Content>
+        <PE.TitleInput
+          key={data?.title}
+          placeholder="제목을 입력하세요."
+          defaultValue={data?.title}
+          onChange={(e) => setTitle(e.target.value.trim())}
+        />
+        <PE.Divider />
+        <PE.MainImageContainer>
+          {mainImage.url ? (
+            <PE.MainImage key={data?.thumbnailImg} base64Url={mainImage.url}>
+              <PE.RemoveButton onClick={() => setMainImage({ file: null, url: null })} />
+            </PE.MainImage>
+          ) : (
+            <label htmlFor="uploadImg" style={{ cursor: 'pointer' }}>
+              <PE.MainImagePlaceholder>
+                <Gallery />
+                대표사진
+                <br />
+                등록하기
+              </PE.MainImagePlaceholder>
+              <input
+                id="uploadImg"
+                type="file"
+                accept="image/*"
+                multiple={false}
+                hidden
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
 
-                    if (file) {
-                      setMainImage({ file, url: URL.createObjectURL(file) });
-                    }
-                  }}
-                />
-              </label>
-            )}
-          </PE.MainImageContainer>
-          <Editor
-            key={data?.text}
-            defaultContent={data?.text ?? ''}
-            setContent={setContent}
-            style={{ height: 779 }}
-          />
-          <PE.SaveBtn onClick={() => savePortfolio()}>등록</PE.SaveBtn>
-        </PE.Content>
-      </div>
+                  if (file) {
+                    setMainImage({ file, url: URL.createObjectURL(file) });
+                  }
+                }}
+              />
+            </label>
+          )}
+        </PE.MainImageContainer>
+        <Editor
+          key={data?.text}
+          defaultContent={data?.text ?? ''}
+          setContent={setContent}
+          style={{ height: 779 }}
+        />
+        <PE.SaveBtn onClick={() => savePortfolio()}>등록</PE.SaveBtn>
+      </PE.Content>
     </div>
   );
 }
