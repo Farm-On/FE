@@ -1,106 +1,194 @@
-import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useChatStore } from '@/store/chatStore';
+import { useEffect, useState, useRef, useCallback } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import * as S from '@/styles/pages/ChatRoom.style';
 import { Camera, Send, Smile } from 'lucide-react';
-
-interface Message {
-  id: string;
-  text: string;
-  isMe: boolean;
-  time: string;
-}
-
-interface Room {
-  id: string;
-  user: {
-    name: string;
-    image: string;
-    category: string;
-    subCategory: string;
-    location: string;
-  };
-  lastMessage: string;
-  unreadCount: number;
-  budget: string;
-  date: string;
-}
-
-const INITIAL_MESSAGES: Message[] = [
-  {
-    id: '1',
-    text: '너무 많이 주면 작물에 무리가 갈 수 있으니 적정량을 꼭 지켜주세요. 결과가 나오기 전까지는 이렇게 기본 관리에 신경 써주시면 좋아요',
-    isMe: false,
-    time: '오후 5:11',
-  },
-  {
-    id: '2',
-    text: '병충해는 초기에 예방하는 게 가장 중요해요. 예를 들어, 종자 소독을 하면 심기 전에 병원균 감염을 막을 수 있고요. 또 논 주변에 잡초가 많으면 병충해가 생기기 쉬우니까 잡초 제거도 꼭 해주시는 게 좋아요. 비료는 너무 많이 주면 오히려 병해충을 부를 수 있으니까 적정량을 지키는 게 중요합니다.',
-    isMe: false,
-    time: '오후 5:11',
-  },
-  {
-    id: '3',
-    text: '말씀해주신 대로 관리해보고, 토양 검사 결과 나오면 다시 문의드릴게요.',
-    isMe: true,
-    time: '오후 5:11',
-  },
-  {
-    id: '4',
-    text: '네, 궁금한 거 있으면 언제든 연락주세요.',
-    isMe: false,
-    time: '오후 5:11',
-  },
-  {
-    id: '5',
-    text: '감사합니다!',
-    isMe: true,
-    time: '오후 5:11',
-  },
-];
+import {
+  useSocket,
+  useChatRoom,
+  useChatMessages,
+  useChatEstimate,
+  useUploadChatImage,
+  type SocketMessage,
+} from '@/hooks/useChat';
+import useAuthStore from '@/store/useAuthStore';
+import { format } from 'date-fns';
+import { ko } from 'date-fns/locale';
 
 const ChatRoom = () => {
-  const { roomId } = useParams();
   const navigate = useNavigate();
-  const { chatRooms } = useChatStore();
+  const { roomId } = useParams<{ roomId: string }>();
+  const { userInfo } = useAuthStore();
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
-  const [currentRoom, setCurrentRoom] = useState<Room | null>(null);
+  const [messageHistory, setMessageHistory] = useState<SocketMessage[]>([]);
+  const messageEndRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isSending, setIsSending] = useState(false);
+
+  const chatRoomId = roomId ? parseInt(roomId, 10) : 0;
+  const userId = userInfo?.userId || 0;
+
+  const { connected, subscribeToChat, sendMessage } = useSocket(userId);
+
+  const { data: roomData, isLoading: roomLoading } = useChatRoom(userId, chatRoomId);
+  const { data: messagesData } = useChatMessages(userId, chatRoomId, 1);
+  const { data: estimateData } = useChatEstimate(userId, chatRoomId);
+  const uploadImageMutation = useUploadChatImage();
 
   useEffect(() => {
-    const findRoom = chatRooms.find((room) => room.id === roomId);
-    if (findRoom) {
-      setCurrentRoom(findRoom);
-    } else {
+    if (!roomId || !userInfo) {
       navigate('/chat');
+      return;
     }
-  }, [roomId, navigate, chatRooms]);
 
-  const handleSendMessage = () => {
-    if (message.trim()) {
-      const newMessage = {
-        id: String(messages.length + 1),
-        text: message,
-        isMe: true,
-        time: new Date().toLocaleTimeString('ko-KR', {
-          hour: 'numeric',
-          minute: 'numeric',
-          hour12: true,
-        }),
+    if (connected && userId && chatRoomId) {
+      const currentTime = format(new Date(), 'a h:mm', { locale: ko });
+      sendMessage(chatRoomId, {
+        senderId: userId,
+        messageType: 'ENTER',
+        messageContent: '',
+        isMine: true,
+        sendTime: currentTime,
+        isOtherRead: false,
+      });
+    }
+
+    return () => {
+      if (connected && userId && chatRoomId) {
+        const currentTime = format(new Date(), 'a h:mm', { locale: ko });
+        sendMessage(chatRoomId, {
+          senderId: userId,
+          messageType: 'EXIT',
+          messageContent: '',
+          isMine: true,
+          sendTime: currentTime,
+          isOtherRead: false,
+        });
+      }
+    };
+  }, [roomId, userInfo, connected, userId, chatRoomId, navigate, sendMessage]);
+
+  const scrollToBottom = useCallback(() => {
+    if (messageEndRef.current) {
+      messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, []);
+
+  const handleNewMessage = useCallback(
+    (newMsg: SocketMessage) => {
+      setMessageHistory((prev) => [...prev, newMsg]);
+      scrollToBottom();
+    },
+    [scrollToBottom]
+  );
+
+  useEffect(() => {
+    if (messagesData?.result.chatMesageList) {
+      const convertedMessages: SocketMessage[] = messagesData.result.chatMesageList.map((msg) => ({
+        ...msg,
+        senderId: userId,
+        messageType: 'TEXT',
+        isEstimateComplete: false,
+      }));
+      setMessageHistory(convertedMessages);
+      scrollToBottom();
+    }
+  }, [messagesData?.result.chatMesageList, scrollToBottom, userId]);
+
+  useEffect(() => {
+    if (connected && userId && chatRoomId) {
+      const unsubscribe = subscribeToChat(chatRoomId, handleNewMessage);
+      return () => {
+        unsubscribe();
       };
-      setMessages([...messages, newMessage]);
+    }
+  }, [connected, chatRoomId, userId, subscribeToChat, handleNewMessage]);
+
+  const formatMessageTime = useCallback((timeString: string) => {
+    try {
+      const [period, time] = timeString.split(' ');
+      const [hours, minutes] = time.split(':').map(Number);
+      const date = new Date();
+      date.setHours(period === '오후' ? hours + 12 : hours);
+      date.setMinutes(minutes);
+      return format(date, 'a h:mm', { locale: ko });
+    } catch {
+      return timeString;
+    }
+  }, []);
+
+  const handleSendMessage = useCallback(async () => {
+    if (!message.trim() || !connected || isSending || !chatRoomId || !userId) return;
+
+    try {
+      setIsSending(true);
+      const currentTime = format(new Date(), 'a h:mm', { locale: ko });
+      await sendMessage(chatRoomId, {
+        senderId: userId,
+        messageType: 'TEXT',
+        messageContent: message.trim(),
+        isMine: true,
+        sendTime: currentTime,
+        isOtherRead: false,
+      });
       setMessage('');
+    } finally {
+      setIsSending(false);
     }
-  };
+  }, [message, connected, isSending, chatRoomId, userId, sendMessage]);
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
-    }
-  };
+  const handleImageUpload = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file || !connected || isSending || !chatRoomId || !userId) return;
 
-  if (!currentRoom) return null;
+      try {
+        setIsSending(true);
+        const response = await uploadImageMutation.mutateAsync({
+          userId,
+          chatRoomId,
+          image: file,
+        });
+
+        if (response.isSuccess) {
+          const currentTime = format(new Date(), 'a h:mm', { locale: ko });
+          await sendMessage(chatRoomId, {
+            senderId: userId,
+            messageType: 'IMAGE',
+            messageContent: response.result.chatImageURL,
+            isMine: true,
+            sendTime: currentTime,
+            isOtherRead: false,
+          });
+        }
+      } catch (error) {
+        console.error('Image upload failed:', error);
+      } finally {
+        setIsSending(false);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
+      }
+    },
+    [connected, isSending, chatRoomId, userId, uploadImageMutation, sendMessage]
+  );
+
+  const handleKeyPress = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        handleSendMessage();
+      }
+    },
+    [handleSendMessage]
+  );
+
+  if (roomLoading) {
+    return <S.Container>로딩 중...</S.Container>;
+  }
+
+  if (!roomData) {
+    return <S.Container>채팅방을 찾을 수 없습니다.</S.Container>;
+  }
 
   return (
     <S.Container>
@@ -108,48 +196,98 @@ const ChatRoom = () => {
         <S.FixedHeader>
           <S.Header>
             <S.ProfileInfo>
-              <S.ProfileImage src={currentRoom.user.image} alt={currentRoom.user.name} />
+              <S.ProfileImage
+                src={roomData.result.profileImage || '/default-profile.png'}
+                alt={roomData.result.name}
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = '/default-profile.png';
+                }}
+              />
               <S.UserInfo>
-                <S.UserName>{currentRoom.user.name}</S.UserName>
-                <S.ExpertBadge>전문가</S.ExpertBadge>
+                <S.UserName>
+                  {roomData.result.isExpertNickNameOnly && roomData.result.nickName
+                    ? roomData.result.nickName
+                    : roomData.result.name}
+                </S.UserName>
+                {roomData.result.type === 'EXPERT' && <S.ExpertBadge>전문가</S.ExpertBadge>}
               </S.UserInfo>
-              <S.LastSeen>28분 전 접속</S.LastSeen>
+              <S.LastSeen>{roomData.result.lastEnterTime} 전 접속</S.LastSeen>
             </S.ProfileInfo>
-            <S.ViewEstimateButton>견적서 보기</S.ViewEstimateButton>
+            {estimateData && (
+              <S.ViewEstimateButton onClick={() => navigate(`/estimate/${chatRoomId}`)}>
+                견적서 보기
+              </S.ViewEstimateButton>
+            )}
           </S.Header>
         </S.FixedHeader>
 
         <S.MessageList>
-          {messages.map((msg) => (
-            <S.MessageContainer key={msg.id} isMe={msg.isMe}>
-              {!msg.isMe && (
-                <S.ProfileImage src={currentRoom.user.image} alt={currentRoom.user.name} />
+          {messageHistory.map((msg, index) => (
+            <S.MessageContainer key={`${msg.sendTime}-${index}`} isMe={msg.isMine}>
+              {!msg.isMine && (
+                <S.ProfileImage
+                  src={roomData.result.profileImage || '/default-profile.png'}
+                  alt={roomData.result.name}
+                />
               )}
-              <S.MessageContent isMe={msg.isMe}>
-                <S.MessageText isMe={msg.isMe}>{msg.text}</S.MessageText>
-                <S.MessageTime>{msg.time}</S.MessageTime>
+              <S.MessageContent isMe={msg.isMine}>
+                <S.MessageText isMe={msg.isMine}>
+                  {msg.messageType === 'IMAGE' ? (
+                    <img
+                      src={msg.messageContent}
+                      alt="Sent"
+                      style={{ maxWidth: '200px' }}
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = '/default-profile.png';
+                      }}
+                    />
+                  ) : (
+                    msg.messageContent
+                  )}
+                </S.MessageText>
+                <S.MessageTime>{msg.sendTime ? formatMessageTime(msg.sendTime) : ''}</S.MessageTime>
               </S.MessageContent>
             </S.MessageContainer>
           ))}
+          <div ref={messageEndRef} />
         </S.MessageList>
 
         <S.InputContainer>
+          <input
+            type="file"
+            accept="image/*"
+            style={{ display: 'none' }}
+            ref={fileInputRef}
+            onChange={handleImageUpload}
+          />
+
           <S.Input
             type="text"
             placeholder="메시지를 입력하세요"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyPress={handleKeyPress}
+            disabled={isSending}
           />
+
           <S.IconButtonsContainer>
             <S.IconButton>
               <Smile size={20} />
             </S.IconButton>
-            <S.IconButton>
+            <S.IconButton onClick={() => fileInputRef.current?.click()} disabled={isSending}>
               <Camera size={20} />
             </S.IconButton>
           </S.IconButtonsContainer>
-          <S.SendButton onClick={handleSendMessage}>
+
+          <S.SendButton
+            onClick={handleSendMessage}
+            disabled={isSending || !message.trim()}
+            style={{
+              backgroundColor: message.trim() && !isSending ? '#00A05E' : '#E9E9E9',
+            }}
+          >
             <Send size={16} />
           </S.SendButton>
         </S.InputContainer>
