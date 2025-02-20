@@ -37,7 +37,7 @@ export default function AllEstimates() {
     data: completedEstimatesData,
     isLoading: isLoadingCompleted,
     isError: isErrorCompleted,
-  } = useCompletedEstimates(userId);
+  } = useCompletedEstimates(userId); //2를 넣으면 완료견적 뜸
 
   if (isLoadingAll || (currentTab === 'done' && isLoadingCompleted)) {
     console.log('견적서 전체 조회 로딩중');
@@ -53,11 +53,11 @@ export default function AllEstimates() {
   }
 
   const allEstimates = allEstimatesData?.result?.estimateList || [];
-  const completedEstimates = completedEstimatesData?.result?.estimateList || [];
+  const completedEstimates = completedEstimatesData?.estimateList || [];
   const currentData = currentTab === 'all' ? allEstimates : completedEstimates;
 
   console.log('완료된 데이터:', completedEstimates);
-  console.log('완료된 데이터:', completedEstimatesData?.result?.estimateList);
+  console.log('완료된 데이터만:', completedEstimatesData?.estimateList);
 
   const totalPages = Math.ceil(currentData.length / perPage);
   const startIndex = (currentPage - 1) * perPage;
@@ -101,7 +101,7 @@ export default function AllEstimates() {
           </div>
         )}
 
-        {currentData.length > 0 && (
+        {currentTab === 'all' && currentData.length > 0 && (
           <ME.Grid>
             {currentPageEstimates.map((estimate: EstimateListItem) => (
               <ExpertEstimateCard
@@ -119,7 +119,7 @@ export default function AllEstimates() {
           </ME.Grid>
         )}
 
-        {currentTab === 'done' && currentData.length > 0 && (
+        {currentTab === 'done' && completedEstimates.length > 0 && (
           <ME.Grid>
             {completedEstimates?.map((estimate) => (
               <ExpertEstimateCard
