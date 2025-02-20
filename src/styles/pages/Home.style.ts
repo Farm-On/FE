@@ -6,7 +6,6 @@ export const HomeContainer = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  padding-bottom: 180px; // Height of Footer
 `;
 
 export const MainContent = styled.div`
@@ -31,12 +30,10 @@ export const TrendingsSection = styled(Section)``;
 
 export const AnnouncementSection = styled(Section)``;
 
-export const BannerSection = styled(Section)``;
-
-export const FooterWrapper = styled.div`
-  position: absolute;
-  bottom: 0;
-  width: 100%;
+export const BannerSection = styled(Section)`
+  max-width: unset;
+  margin: 0;
+  padding-bottom: 110px;
 `;
 
 export const HeaderContainer = styled.div`

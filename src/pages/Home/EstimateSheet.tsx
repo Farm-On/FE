@@ -8,20 +8,18 @@ import { useParams } from 'react-router-dom';
 import { OfferList } from '@/api/types/userEstimate';
 import { useEffect } from 'react';
 
-
 export default function EstimateSheet() {
   // 특정 견적서 상세페이지
 
   const params = useParams();
-  console.log('URL 파라미터:', params); 
+  console.log('URL 파라미터:', params);
 
-  const rawEstimateId = params.estimateId;  // 라우터에서 정의한 이름과 동일하게 사용
+  const rawEstimateId = params.estimateId; // 라우터에서 정의한 이름과 동일하게 사용
   console.log('URL에서 받은 견적서 ID:', rawEstimateId);
 
   const estimateId = rawEstimateId ? parseInt(rawEstimateId) : 0;
   console.log('변환된 견적서 ID:', estimateId);
-  
-  
+
   //견적서 디테일 가져오기
   const {
     data: estimateDetail,
@@ -31,12 +29,11 @@ export default function EstimateSheet() {
 
   if (isDetailLoading) {
     console.log('특정 조회 로딩중');
-    <div>견적서 조회 중..</div>
+    <div>견적서 조회 중..</div>;
   }
   if (isDetailError) {
     console.log('특정 조회 실패');
   }
-
 
   useEffect(() => {
     if (estimateDetail && !isDetailLoading) {
@@ -54,17 +51,16 @@ export default function EstimateSheet() {
 
   if (isOfferedLoading) {
     console.log('제안받은 견적 로딩중');
-    <div>제안받은 견적서 조회 중..</div>
+    <div>제안받은 견적서 조회 중..</div>;
   }
   if (isOfferedError) {
     console.error('제안받은 견적 조회 실패');
-    
   }
-  console.log('제안받은 견적 데이터:',offeredData);
- 
+  console.log('제안받은 견적 데이터:', offeredData);
+
   const ConsultingImages = ({ images }: { images: string[] }) => {
     if (!images || images.length === 0) {
-      return <div style={{padding:'50px 0px 50px 0px'}}>첨부된 이미지가 없습니다.</div>;
+      return <div style={{ padding: '50px 0px 50px 0px' }}>첨부된 이미지가 없습니다.</div>;
     }
     return (
       <E.ConsultingImageContainer>
@@ -83,9 +79,8 @@ export default function EstimateSheet() {
     );
   };
 
-
   return (
-    <div style={{ backgroundColor: '#F9F9F9', paddingTop: 84 }}>
+    <div>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <E.Title>{estimateDetail?.title}</E.Title>
         <E.Subtitle>{estimateDetail?.createdDate}</E.Subtitle>
@@ -225,4 +220,4 @@ const Subtitle = styled.div`
     font-size: 14px;
     margin-left: 20px;
   }
-`
+`;

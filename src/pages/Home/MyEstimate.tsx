@@ -93,7 +93,7 @@ export default function MyEstimatePage() {
           <E.DividingLine />
         </div>
 
-        <div>
+        <div style={{ marginTop: 96, display: 'flex' }}>
           <E.Title2>
             <h2>직접 찾기</h2>
             <h3>원하는 전문가와 직접 연결해보세요</h3>

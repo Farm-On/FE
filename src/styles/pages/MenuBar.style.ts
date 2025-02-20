@@ -1,20 +1,20 @@
 import styled from '@emotion/styled';
 
 export const Container = styled.div`
+  padding-top: 84px;
+  max-width: 1200px;
   width: 100%;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   background-color: #ffffff;
 `;
 
 export const Title = styled.h1`
+  max-width: 1200px;
+  margin: 0 auto;
   font-size: 34px;
   font-weight: 600;
   color: black;
   margin-bottom: 52px;
-  margin-right: 850px;
 
   @media (max-width: 1024px) {
     font-size: 30px;
@@ -35,7 +35,8 @@ export const Title = styled.h1`
 export const ContentWrapper = styled.div`
   display: flex;
   width: 100%;
-  max-width: 1000px;
+  max-width: 1200px;
+  margin: 0 auto;
   justify-content: center;
   align-content: center;
 
@@ -51,7 +52,6 @@ export const Sidebar = styled.div`
   width: 200px;
   display: flex;
   flex-direction: column;
-  padding: 10px;
   position: sticky;
   top: 100px;
   height: fit-content;
@@ -77,14 +77,17 @@ export const SidebarItem = styled.div<{ isActive: boolean }>`
   color: ${({ isActive }) => (isActive ? 'white' : '#5D5D5D')};
   font-size: 20px;
   font-weight: ${({ isActive }) => (isActive ? '600' : '400')};
-  padding: 12px;
+  padding: 18px 0 18px 24px;
   border-radius: 8px;
   text-align: left;
   width: 200px;
   height: 66px;
+  display: flex;
+  align-items: center;
   margin-bottom: 10px;
   transition: background 0.3s;
   font-family: 'PretendardSemiBold';
+  cursor: pointer;
 
   @media (max-width: 1024px) {
     font-size: 18px;

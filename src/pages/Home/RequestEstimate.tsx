@@ -263,21 +263,23 @@ export default function RequestEstimatePage(): JSX.Element {
   return (
     <>
       <TopContainer>
-        <RE.Title>
-          <h2>견적요청</h2>
-        </RE.Title>
-        <RE.Wrapper>
-          <RE.Category>
-            <HomeIcon />
-            <GreyRightIcon />
-            <p>곡물</p>
-            <GreyRightIcon />
-            <p>쌀</p>
-          </RE.Category>
-          <RE.Process>
-            <p>진행률 {processing}%</p>
-          </RE.Process>
-        </RE.Wrapper>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <RE.Title>
+            <h2>견적요청</h2>
+          </RE.Title>
+          <RE.Wrapper>
+            <RE.Category>
+              <HomeIcon />
+              <GreyRightIcon />
+              <p>곡물</p>
+              <GreyRightIcon />
+              <p>쌀</p>
+            </RE.Category>
+            <RE.Process>
+              <p>진행률 {processing}%</p>
+            </RE.Process>
+          </RE.Wrapper>
+        </div>
       </TopContainer>
 
       <RE.PageWrapper>
@@ -310,7 +312,7 @@ export default function RequestEstimatePage(): JSX.Element {
               </div>
 
               {/* 두 번째 섹션 */}
-              <div ref={locationRef}>
+              <div ref={locationRef} style={{ paddingTop: 40 }}>
                 <RE.Bubble>컨설팅 위치는 어디인가요?</RE.Bubble>
                 <div style={{ paddingBottom: '18px', paddingLeft: '6px' }}>
                   <ChoiceCity
@@ -324,7 +326,7 @@ export default function RequestEstimatePage(): JSX.Element {
               </div>
 
               {/* 세 번째 섹션 */}
-              <div ref={budgetRef}>
+              <div ref={budgetRef} style={{ paddingTop: 40 }}>
                 <RE.Bubble>예산은 어느 정도인가요?</RE.Bubble>
                 <RE.InputContainer>
                   {[
@@ -349,7 +351,7 @@ export default function RequestEstimatePage(): JSX.Element {
               </div>
 
               {/* 네 번째 섹션 */}
-              <div ref={detailRef}>
+              <div ref={detailRef} style={{ paddingTop: 40 }}>
                 <RE.Bubble>해당 컨설팅에 대해 자세히 설명해주세요.</RE.Bubble>
                 <div
                   style={{
@@ -417,13 +419,14 @@ const ApplyBtn = styled.div`
   margin: 172px 0 350px;
 `;
 const TopContainer = styled.div`
-  display: flex;
+  margin: 0 auto !important;
+  width: 100%;
   flex-direction: column;
   gap: 11px;
-  padding-left: 180px;
-  max-width: 1200px;
+  align-items: center;
   padding-bottom: 25px;
   padding-top: 70px;
+  background: #fff;
 
   @media (max-width: 768px) {
     padding-left: 30px;

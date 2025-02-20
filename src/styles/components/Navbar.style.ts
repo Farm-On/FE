@@ -8,7 +8,9 @@ export const NavContainer = styled.nav`
   border-bottom: 1px solid #dadada;
   display: flex;
   justify-content: center;
-  position: relative;
+  position: sticky;
+  top: 0;
+  z-index: 9999;
 
   @media (min-width: 768px) {
     height: 70px;

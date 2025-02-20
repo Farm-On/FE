@@ -3,6 +3,7 @@ import LoginModal from '@/components/LoginModal';
 import Navbar from '@/components/Navbar';
 import useAuthStore from '@/store/useAuthStore';
 import { Outlet, useLocation } from 'react-router-dom';
+import styled from '@emotion/styled';
 
 export default function MainLayout() {
   const location = useLocation();
@@ -23,17 +24,33 @@ export default function MainLayout() {
   const isAuthPage = authPages.includes(location.pathname);
 
   // Navbar와 Footer 표시 여부
-  const shouldShowNavbarAndFooter =
-    !isHomePage && (!isAuthPage || location.pathname === '/update-info');
+  const shouldShowNavbarAndFooter = !isAuthPage || location.pathname === '/update-info';
+
+  // padding 및 margin 여부
+  const noGuttersPaths = ['/', '/my/estimate/request', '/menu'];
+  const noGutters = noGuttersPaths.some((p) => p === location.pathname);
 
   const { isLoginModalOpen, closeLoginModal, loginModalType } = useAuthStore();
 
   return (
     <>
       {shouldShowNavbarAndFooter && <Navbar />}
-      <Outlet />
+      <Content noGutters={noGutters} style={{ background: isHomePage ? '#FFFEFC' : undefined }}>
+        <Outlet />
+      </Content>
       {shouldShowNavbarAndFooter && <Footer />}
       <LoginModal isOpen={isLoginModalOpen} onClose={closeLoginModal} type={loginModalType} />
     </>
   );
 }
+
+const Content = styled.main<{ noGutters?: boolean }>`
+  padding-top: ${(props) => (props.noGutters ? 0 : '84px')};
+  padding-bottom: ${(props) => (props.noGutters ? 0 : '200px')};
+  padding: ${(props) => (props.noGutters ? 0 : undefined)};
+  background: #f9f9f9;
+  & > div {
+    margin: ${(props) => (props.noGutters ? 0 : '0 auto')};
+    max-width: ${(props) => (props.noGutters ? 'unset' : '1200px')};
+  }
+`;
