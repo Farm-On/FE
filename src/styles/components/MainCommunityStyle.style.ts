@@ -118,11 +118,17 @@ export const Headline = styled.div`
 export const Content = styled.div`
   padding: 0;
   margin: 0;
+  max-height: 75px;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
   p {
     margin: 0;
     font-size: 16px;
     font-family: 'PretendardMedium';
     color: rgba(94, 94, 94, 1);
+
     @media (max-width: 768px) {
       margin: 20px 0;
       width: 700px;
