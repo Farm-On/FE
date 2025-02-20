@@ -119,9 +119,7 @@ const QnA = () => {
       </S.AnswersSection>
 
       {/* 답변하기 버튼 */}
-      <S.ReplyButtonWrapper>
-        <S.ReplyButton>답변하기</S.ReplyButton>
-      </S.ReplyButtonWrapper>
+      <S.ReplyButtonWrapper>{/* <S.ReplyButton>답변하기</S.ReplyButton> */}</S.ReplyButtonWrapper>
     </S.Container>
   );
 };

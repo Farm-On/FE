@@ -167,10 +167,10 @@ export default function CommunityPage() {
           <CommunitySearch
             boardId={Number(Categories.find((c) => c.apiValue === selectedCategory)?.id || 4)}
           />
-          <CP.FilterChip onClick={() => setIsModalOpen(true)}>
+          {/* <CP.FilterChip onClick={() => setIsModalOpen(true)}>
             <p>분야</p>
             <StyledDownIcon />
-          </CP.FilterChip>
+          </CP.FilterChip> */}
         </div>
 
         <div style={{ paddingLeft: '8vw', paddingTop: '30px' }}>
