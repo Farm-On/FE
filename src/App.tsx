@@ -166,9 +166,18 @@ function App() {
                 src: url(${PretendardMedium}) format('woff');
                 font-weight: 500;
               }
+
               body {
                 margin: 0;
                 padding: 0;
+                background: #f9f9f9;
+              }
+
+              .ReactModal__Body--open {
+                overflow: hidden;
+                position: fixed;
+                width: 100%;
+                height: 100%;
               }
             `}
           />
