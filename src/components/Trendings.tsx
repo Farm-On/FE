@@ -3,6 +3,7 @@ import * as T from '@/styles/components/Trendings.style';
 import ChevronRight from '@/assets/icons/ChevronRight.svg?react';
 import DefaultAvatar from '@/assets/icons/DefaultAvatar.svg?react';
 import healthImg from '@/assets/images/image.png';
+import strawberryImg from '@/assets/images/freshStrawberry.png';
 
 interface TrendingCardData {
   id: number;
@@ -24,12 +25,16 @@ export const TrendingCard = ({ data }: { data: TrendingCardData }) => {
     }
   };
 
+  const imageSrc =
+    data.id === 1
+      ? strawberryImg // id가 1이면 strawberryImg 사용
+      : isValidUrl(data.thumbnail_url)
+        ? data.thumbnail_url
+        : healthImg; // 유효한 URL이 없으면 healthImg 사용
+
   return (
     <T.Card>
-      <T.ThumbnailImage
-        src={isValidUrl(data.thumbnail_url) ? data.thumbnail_url : healthImg}
-        alt=""
-      />
+      <T.ThumbnailImage src={imageSrc} alt="" />
       <T.Content>
         <T.Title>{data.title}</T.Title>
         <T.Description>{data.description}</T.Description>
