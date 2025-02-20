@@ -148,9 +148,10 @@ export default function EstimateSheet() {
                     profileImg={profile?.profileImageUrl}
                     name={profile?.name}
                     nickName={profile?.nickname}
-                    ratings={profile?.rating}
                     years={profile?.consultingCount}
                     introduction={profile?.description}
+                    expertId={profile.expertId}
+                    roomId={profile.expertId}
                   />
                 );
               })}
