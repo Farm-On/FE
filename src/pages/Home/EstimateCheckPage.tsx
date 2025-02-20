@@ -36,10 +36,8 @@ export default function EstimateCheckPage() {
   const [localImages, setLocalImages] = useState<string[]>(estimateData?.imageUrls || []);
   //const [images, setImages] = useState<string[]>(estimateData?.imageUrls || []);
   const [newImageFiles, setNewImageFiles] = useState<File[]>([]); // 이미지를 추가했을 때 실제 File 객체를 저장,서버에 보낼
-  
+
   //const [imagesToRemove, setImagesToRemove] = useState<string[]>([]); // 삭제할 이미지 URL 목록
-
-
 
   const handleModalOpen = () => {
     setIsModalOpen(!isModalOpen);
@@ -48,7 +46,7 @@ export default function EstimateCheckPage() {
   const handleSubmitEstimate = async () => {
     try {
       const formData = new FormData();
-  
+
       const requestData = {
         userId: estimateData.userId,
         cropName: estimateData.cropName,
@@ -59,28 +57,27 @@ export default function EstimateCheckPage() {
         title: estimateData.title,
         body: estimateData.body,
         // 최종적으로 표시된 기존 이미지 URL들만 포함
-        imageUrls: localImages.filter(url => 
-          estimateData?.imageUrls?.includes(url) || 
-          !url.startsWith('blob:')
-        )
+        imageUrls: localImages.filter(
+          (url) => estimateData?.imageUrls?.includes(url) || !url.startsWith('blob:')
+        ),
       };
-      
+
       formData.append('request', JSON.stringify(requestData));
-      
+
       // 새로 추가된 이미지 파일만 포함
-      newImageFiles.forEach(file => {
+      newImageFiles.forEach((file) => {
         formData.append('imageFiles', file);
       });
-      
+
       // 서버에 전송
       const response = await axiosInstance.post('/estimate', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      
+
       if (response.data.isSuccess) {
-        navigate('/MyEstimate/allEstimates');
+        navigate('/my/estimate/all');
       } else {
         alert('견적서 제출에 실패했습니다: ' + response.data.message);
       }
@@ -93,9 +90,12 @@ export default function EstimateCheckPage() {
   const uploadImages = async (files: File[]) => {
     const formData = new FormData();
     //formData.append('estimateId', estimateData.estimateId.toString());
-    formData.append('request', JSON.stringify({
-      estimateId: estimateData.estimateId // 필요한 경우 견적서 ID 포함
-    }));
+    formData.append(
+      'request',
+      JSON.stringify({
+        estimateId: estimateData.estimateId, // 필요한 경우 견적서 ID 포함
+      })
+    );
 
     files.forEach((file) => {
       formData.append('imageFiles', file);
@@ -119,9 +119,9 @@ export default function EstimateCheckPage() {
   const handleModify = async (section: string) => {
     // 현재 표시된 모든 이미지(원본+추가된 것) URL 수집
     const allImageUrls = [...localImages];
-    
+
     // 새로 추가한 이미지 파일도 함께 전송
-    navigate('/MyEstimate/RequestEstimate', {
+    navigate('/my/estimate/request', {
       state: {
         editSection: section,
         editData: {
@@ -146,15 +146,15 @@ export default function EstimateCheckPage() {
   //       alert('이미지는 최대 15개까지 추가할 수 있습니다.');
   //       return;
   //     }
-  
+
   //     const newFiles = files.slice(0, remainingSlots);
-      
+
   //     // 임시 URL 생성하여 화면에 표시
   //     const temporaryUrls = newFiles.map((file) => URL.createObjectURL(file));
-      
+
   //     // 이미지 상태 업데이트
   //     setLocalImages((prev) => [...prev, ...temporaryUrls]);
-      
+
   //     // 파일 객체 저장
   //     setNewImageFiles((prev) => [...prev, ...newFiles]);
   //   } catch (error) {
@@ -162,14 +162,12 @@ export default function EstimateCheckPage() {
   //     alert('이미지 처리에 실패했습니다. 다시 시도해주세요.');
   //   }
   // };
-  
-
 
   // 이미지 삭제 처리 함수
   // const handleRemoveImage = (index: number) => {
   //   // 로컬 상태에서 이미지 제거
   //   setLocalImages(prev => prev.filter((_, i) => i !== index));
-    
+
   //   // 새로 추가한 이미지인 경우, 해당 파일도 제거
   //   if (index >= (estimateData?.imageUrls?.length || 0)) {
   //     const newImageIndex = index - (estimateData?.imageUrls?.length || 0);
@@ -179,7 +177,9 @@ export default function EstimateCheckPage() {
 
   return (
     <div style={{ backgroundColor: '#F9F9F9', paddingTop: 84 }}>
-      {isModalOpen === true ? <RequestModal onClick={handleModalOpen} onSubmit={handleSubmitEstimate}/> : null}
+      {isModalOpen === true ? (
+        <RequestModal onClick={handleModalOpen} onSubmit={handleSubmitEstimate} />
+      ) : null}
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <E.Title>쌀(곡물) 컨설팅 요청 내역</E.Title>
         <E.Subtitle>컨설팅 신청 정보가 올바른지 확인해주세요</E.Subtitle>
@@ -255,7 +255,9 @@ export default function EstimateCheckPage() {
             </E.ConsultingImageContainer>
             <E.ConsultingContent>{estimateData?.body}</E.ConsultingContent>
           </E.Card>
-          <E.ChatButton onClick={handleModalOpen} onSubmit={handleSubmitEstimate}>신청하기</E.ChatButton>
+          <E.ChatButton onClick={handleModalOpen} onSubmit={handleSubmitEstimate}>
+            신청하기
+          </E.ChatButton>
         </E.Content>
       </div>
     </div>

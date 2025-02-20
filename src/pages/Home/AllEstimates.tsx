@@ -25,7 +25,7 @@ export default function AllEstimates() {
   }, [isLoggedIn, navigate]);
 
   const handleEstimateClick = (estimateId: number) => {
-    navigate(`/MyEstimate/detail/${estimateId}`);
+    navigate(`/my/estimate/${estimateId}`);
   };
   const {
     data: allEstimatesData,
