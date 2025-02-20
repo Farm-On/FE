@@ -1,20 +1,58 @@
-import { useParams } from 'react-router-dom';
-
+import { useParams, useNavigate } from 'react-router-dom';
 import * as E from '@/styles/pages/Expert/Estimate.style';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import axiosInstance from '@/api/axios';
 import { EstimateResponse } from '@/api/types/expert/estimate';
+import useAuthStore from '@/store/useAuthStore';
+import { createChatRoom } from '@/api/services/chatService';
 
 export default function Estimate() {
-  // 견적서 상세페이지
-
   const { estimateId } = useParams();
+  const navigate = useNavigate();
+  const { userInfo } = useAuthStore();
 
   const { data } = useQuery<EstimateResponse>({
     queryKey: ['expertViewEstimate'],
     queryFn: () => axiosInstance.get(`/estimate/${estimateId}`).then((response) => response.data),
     enabled: !!estimateId,
   });
+
+  const createChatRoomMutation = useMutation({
+    mutationFn: async () => {
+      if (!userInfo?.userId || !estimateId) {
+        throw new Error('필요한 정보가 없습니다.');
+      }
+      const response = await createChatRoom(userInfo.userId, parseInt(estimateId));
+      return response;
+    },
+    onSuccess: (response) => {
+      if (response.result.chatRoomId) {
+        navigate(`/chat/${response.result.chatRoomId}`);
+      }
+    },
+    onError: (error) => {
+      console.error('채팅방 생성 실패:', error);
+      alert('채팅방 생성에 실패했습니다. 다시 시도해주세요.');
+    },
+  });
+
+  const handleChatStart = async () => {
+    if (!userInfo) {
+      alert('로그인이 필요한 서비스입니다.');
+      return;
+    }
+
+    if (userInfo.role !== 'EXPERT') {
+      alert('전문가만 채팅을 시작할 수 있습니다.');
+      return;
+    }
+
+    try {
+      await createChatRoomMutation.mutateAsync();
+    } catch (error) {
+      console.error('채팅 시작 실패:', error);
+    }
+  };
 
   return (
     <div style={{ backgroundColor: '#F9F9F9', paddingTop: 84, paddingBottom: 220 }}>
@@ -68,7 +106,9 @@ export default function Estimate() {
             </E.ConsultingImageContainer>
             <E.ConsultingContent>{data?.result.body}</E.ConsultingContent>
           </E.Card>
-          <E.ChatButton>채팅하기</E.ChatButton>
+          <E.ChatButton onClick={handleChatStart} disabled={createChatRoomMutation.isPending}>
+            {createChatRoomMutation.isPending ? '채팅방 생성중...' : '채팅하기'}
+          </E.ChatButton>
         </E.Content>
       </div>
     </div>
