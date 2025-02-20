@@ -29,7 +29,7 @@ export default function ExpertProfileList() {
 
   return (
     <>
-      <div style={{ marginTop: 84 }}>
+      <div style={{ marginTop: 84, paddingBottom: 165 }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <P.Title>전문가 프로필</P.Title>
           <P.FilterChips>

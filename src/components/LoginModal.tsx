@@ -76,7 +76,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, type = 'defaul
 
   const handleSignupClick = () => {
     handleModalClose();
-    navigate('/agreement');
+    navigate('/signup/agreement');
   };
 
   const handleFindAccountClick = () => {

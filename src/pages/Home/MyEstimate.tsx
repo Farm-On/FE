@@ -6,35 +6,39 @@ import AddBtn from '@/assets/icons/addBtn.svg?react';
 import ChevronRight from '@/assets/icons/Che.svg?react';
 import { useNavigate } from 'react-router-dom';
 import GreenRight from '../../assets/icons/chevron-right-green.svg?react';
-import { useRecentEstimates,useFindExpertCard } from '@/hooks/useMyEstimate';
+import { useRecentEstimates, useFindExpertCard } from '@/hooks/useMyEstimate';
 import useAuthStore from '../../store/useAuthStore';
 import { useEffect } from 'react';
 
 export default function MyEstimatePage() {
   const navigate = useNavigate();
-  const { userInfo,isLoggedIn } = useAuthStore();
+  const { userInfo, isLoggedIn } = useAuthStore();
   const userID = userInfo?.userId;
 
   const { data: estimates, isLoading, isError } = useRecentEstimates(userID);
-  const { data: findExpert, isLoading: isfindingLoading, isError: isfindingError} = useFindExpertCard();
-  console.log('직접전문가카드 데이터:',findExpert)
+  const {
+    data: findExpert,
+    isLoading: isfindingLoading,
+    isError: isfindingError,
+  } = useFindExpertCard();
+  console.log('직접전문가카드 데이터:', findExpert);
 
-  if(isfindingLoading){
-    console.log('직접찾기 전문가 조회중')
+  if (isfindingLoading) {
+    console.log('직접찾기 전문가 조회중');
   }
-  if(isfindingError){
-    console.log('직접찾기 전문가 조회실패')
+  if (isfindingError) {
+    console.log('직접찾기 전문가 조회실패');
   }
 
   useEffect(() => {
     if (!isLoggedIn) {
-      alert('로그인이 필요한 서비스입니다')
-      navigate('/');
+      alert('로그인이 필요한 서비스입니다');
+      navigate('/signup');
     }
   }, [isLoggedIn, navigate]);
 
   const handleEstimateClick = (estimateId: number) => {
-    navigate(`/MyEstimate/detail/${estimateId}`);
+    navigate(`/my/estimate/${estimateId}`);
   };
 
   if (isLoading) {
@@ -49,7 +53,7 @@ export default function MyEstimatePage() {
         <div>
           <E.Title1>
             <h2>내 견적</h2>
-            <E.ViewAll onClick={() => navigate('/MyEstimate/allEstimates')}>
+            <E.ViewAll onClick={() => navigate('/my/estimate/all')}>
               <h4>전체보기</h4>
               <GreenRight />
             </E.ViewAll>
@@ -70,7 +74,7 @@ export default function MyEstimatePage() {
               />
             ))}
 
-            <E.AddCard onClick={() => navigate('/MyEstimate/RequestEstimate')}>
+            <E.AddCard onClick={() => navigate('/my/estimate/request')}>
               <div
                 style={{
                   display: 'flex',
@@ -96,18 +100,18 @@ export default function MyEstimatePage() {
           </E.Title2>
 
           <E.ExpertCardWrap>
-            {findExpert?.expertCardDTOList.map((expertCard)=>(
-                <ExpertCard
-                  key={expertCard?.expertId}
-                  name={expertCard?.name}
-                  nickName={expertCard?.nickname}
-                  cropCategory={expertCard?.cropCategory}
-                  cropName={expertCard?.cropName}
-                  star={expertCard?.rating}
-                  years={expertCard?.careerYears}
-                  url={expertCard?.profileImageUrl}
-                  onClick={()=>navigate(`/expert/profile/${expertCard?.expertId}`)}
-                />
+            {findExpert?.expertCardDTOList.map((expertCard) => (
+              <ExpertCard
+                key={expertCard?.expertId}
+                name={expertCard?.name}
+                nickName={expertCard?.nickname}
+                cropCategory={expertCard?.cropCategory}
+                cropName={expertCard?.cropName}
+                star={expertCard?.rating}
+                years={expertCard?.careerYears}
+                url={expertCard?.profileImageUrl}
+                onClick={() => navigate(`/expert/profile/${expertCard?.expertId}`)}
+              />
             ))}
 
             <E.ChevronRight>
