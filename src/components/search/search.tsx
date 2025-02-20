@@ -1,7 +1,7 @@
 import * as S from '@/styles/components/Search/Search.style';
 import SearchImg from '@/assets/images/search.png';
-import { Category } from './Category';
-import { Banner } from './Banner';
+import { Category } from './category';
+import { Banner } from './banner';
 import { useEffect, useRef, useState } from 'react';
 import XIcon from '@/assets/icons/greyX.svg?react';
 import Background from '@/assets/images/blur.png';
@@ -15,8 +15,10 @@ import {
   useRecommendSearch,
 } from '@/hooks/useSearch';
 import useAuthStore from '@/store/useAuthStore';
+import { useNavigate } from 'react-router-dom';
 
 export const Search = () => {
+  const navigate = useNavigate();
   const [isFocused, setIsFocused] = useState(false);
   const [searchInput, setSearchInput] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -115,11 +117,18 @@ export const Search = () => {
       setIsSubmitting(false);
       return;
     }
+    Object.entries(categoryMapping).forEach(([keys, value]) => {
+      const keywords = keys.split(',');
+      if (keywords.includes(searchQuery)) {
+        categoryTitle = value;
+        subcategory = searchQuery;
+      }
+    });
 
+    console.log('이동할 데이터:', { categoryTitle, subcategory });
+
+    // 검색어 저장 후 페이지 이동
     const requestData = { userId: userInfo.userId, name: searchQuery };
-
-    console.log('POST 요청 전송 (검색어 저장):', requestData);
-
     saveSearch(requestData, {
       onSuccess: () => {
         console.log('검색어 저장 성공!');
@@ -129,6 +138,7 @@ export const Search = () => {
         setTimeout(() => {
           console.log('GET 요청 실행 (검색어 업데이트)');
           refetch();
+          navigate('/my/estimate/request', { state: { categoryTitle, subcategory } });
         }, 500);
       },
       onError: (error) => {
@@ -137,6 +147,19 @@ export const Search = () => {
       },
     });
   };
+
+  const categoryMapping: { [key: string]: string } = {
+    '쌀,보리,옥수수,콩': '곡물',
+    '고구마,감자,엽채류,과채류,버섯': '채소작물',
+    '사과,배,감,포도,복숭아,감귤': '과일',
+    '인삼,약초,섬유,유지,향신료': '특용',
+    '절화 및 절엽,분화 및 분재,묘목': '화훼',
+    '목초,기타 사료': '사료',
+    '종지,묘목': '기타',
+  };
+
+  let categoryTitle = '기타';
+  let subcategory = '기타작물';
 
   return (
     <S.Container backgroundImage={Background}>
