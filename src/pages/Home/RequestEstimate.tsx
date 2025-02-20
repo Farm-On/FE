@@ -140,8 +140,16 @@ export default function RequestEstimatePage(): JSX.Element {
       if (categoryId) setSelected(categoryId);
       setIsChecked(editData.budget);
   
-      setAreaName(editData.areaName);
-      setNameDetail(editData.areaNameDetail);
+      if (editData.location) {
+        // 문자열로 전달된 경우 분리
+        const [city, district] = editData.location.split(' ');
+        setAreaName(city);
+        setNameDetail(district);
+      } else {
+        // 개별 필드로 전달된 경우
+        setAreaName(editData.areaName || '');
+        setNameDetail(editData.areaNameDetail || '');
+      }
   
       // 이미지 설정 - 전달받은 모든 이미지 URL 사용
       if (editData.images && editData.images.length > 0) {
