@@ -14,7 +14,6 @@ export const ChatContainer = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  max-width: 1920px;
 `;
 
 export const FixedHeader = styled.div`

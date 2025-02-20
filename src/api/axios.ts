@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export const axiosInstance = axios.create({
   baseURL: '/api',
@@ -33,12 +34,32 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      if (!publicEndpoints.some((endpoint) => error.config.url?.includes(endpoint))) {
-        localStorage.removeItem('token');
-        window.location.href = '/';
-      }
+    switch (error.response?.status) {
+      case 401:
+        if (!publicEndpoints.some((endpoint) => error.config.url?.includes(endpoint))) {
+          localStorage.removeItem('token');
+          window.location.href = '/';
+        }
+
+        break;
+
+      case 400:
+        break;
+
+      default:
+        // 토스트
+        toast.error(
+          (error.response?.status ? `(${error.response?.status})` : '') +
+            ' 앗! 서버와 통신 중에 오류가 발생하였습니다.',
+          {
+            position: 'bottom-right',
+            autoClose: 5 * 1000,
+            pauseOnHover: false,
+          }
+        );
+        break;
     }
+
     return Promise.reject(error);
   }
 );

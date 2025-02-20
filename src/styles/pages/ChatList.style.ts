@@ -10,19 +10,9 @@ export const Container = styled.div`
 
 export const MainContent = styled.div`
   width: 100%;
-  max-width: 1028px;
-  margin: 0 auto;
-  padding: 16px 16px 60px;
+  padding-top: 0;
   flex: 1;
   box-sizing: border-box;
-
-  @media (min-width: 768px) {
-    padding: 30px 40px 90px;
-  }
-
-  @media (min-width: 1024px) {
-    padding: 40px 0 120px;
-  }
 `;
 
 export const Title = styled.h1`
@@ -197,7 +187,7 @@ export const ToggleSwitch = styled.div<{ isActive: boolean }>`
     width: 16px;
     height: 16px;
     background-color: white;
-    border-radius: 50%;
+    border-radius: 8px;
     top: 2px;
     left: ${(props) => (props.isActive ? '14px' : '2px')};
     transition: left 0.2s;

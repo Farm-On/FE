@@ -10,19 +10,8 @@ export const PageWrapper = styled.div`
   background-color: #f9f9f9;
 `;
 
-export const Container = styled.div`
-  padding-left: 80px;
-  max-width: 1920px;
-  width: 90%;
-  margin: 0 auto;
-  @media (max-width: 768px) {
-    padding-left: 20px;
-  }
+export const Container = styled.div``;
 
-  @media (max-width: 480px) {
-    padding-left: 30px;
-  }
-`;
 export const Title1 = styled.div`
   padding-top: 84px;
   width: 1200px;
@@ -55,9 +44,6 @@ export const Title1 = styled.div`
   }
 `;
 export const Title2 = styled.div`
-  padding-top: 84px;
-  width: 140px;
-  height: 99px;
   display: flex;
   flex-direction: column;
   margin-bottom: 0px;
@@ -175,11 +161,10 @@ export const DividingLine = styled.div`
 `;
 
 export const ExpertCardWrap = styled.div`
+  position: relative;
+  margin-left: 164px;
   display: flex;
   gap: 14px;
-  position: absolute;
-  top: 720px;
-  left: 462px;
 
   @media (max-width: 768px) {
     left: 90px;

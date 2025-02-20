@@ -65,84 +65,82 @@ export default function AllEstimates() {
   const currentPageEstimates = currentData.slice(startIndex, endIndex);
 
   return (
-    <div style={{ marginTop: 84 }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        <ME.Title>내 견적</ME.Title>
-        <ME.Tabs>
-          <ME.Tab
-            active={currentTab === 'all'}
-            onClick={() => {
-              setCurrentTab('all');
-              setCurrentPage(1);
-            }}
-          >
-            전체
-          </ME.Tab>
-          <ME.Tab
-            active={currentTab === 'done'}
-            onClick={() => {
-              setCurrentTab('done');
-              setCurrentPage(1);
-            }}
-          >
-            완료된 견적
-          </ME.Tab>
-        </ME.Tabs>
-        {currentData.length === 0 && !isLoadingAll && !isLoadingCompleted && (
-          <div
-            style={{
-              textAlign: 'center',
-              padding: '50px',
-              color: '#666',
-              fontSize: '20px',
-            }}
-          >
-            {currentTab === 'done' ? '완료된 견적이 없습니다.' : '견적서가 없습니다.'}
-          </div>
-        )}
+    <div>
+      <ME.Title>내 견적</ME.Title>
+      <ME.Tabs>
+        <ME.Tab
+          active={currentTab === 'all'}
+          onClick={() => {
+            setCurrentTab('all');
+            setCurrentPage(1);
+          }}
+        >
+          전체
+        </ME.Tab>
+        <ME.Tab
+          active={currentTab === 'done'}
+          onClick={() => {
+            setCurrentTab('done');
+            setCurrentPage(1);
+          }}
+        >
+          완료된 견적
+        </ME.Tab>
+      </ME.Tabs>
+      {currentData.length === 0 && !isLoadingAll && !isLoadingCompleted && (
+        <div
+          style={{
+            textAlign: 'center',
+            padding: '50px',
+            color: '#666',
+            fontSize: '20px',
+          }}
+        >
+          {currentTab === 'done' ? '완료된 견적이 없습니다.' : '견적서가 없습니다.'}
+        </div>
+      )}
 
-        {currentTab === 'all' && currentData.length > 0 && (
-          <ME.Grid>
-            {currentPageEstimates.map((estimate: EstimateListItem) => (
-              <ExpertEstimateCard
-                onClick={() => handleEstimateClick(estimate.estimateId)}
-                key={estimate.estimateId}
-                id={estimate.estimateId}
-                title={estimate.title}
-                subtitle={`${estimate.cropName} (${estimate.cropCategory}) | ${estimate.estimateCategory} | ${estimate.areaName}`}
-                estimatedCost={estimate.budget}
-                date={format(new Date(estimate.createdAt), 'yyyy.MM.dd')}
-                isDone={estimate.status === 1}
-                cardStyle={{ width: '336px', padding: '22px 27px 22px 27px' }}
-              />
-            ))}
-          </ME.Grid>
-        )}
+      {currentTab === 'all' && currentData.length > 0 && (
+        <ME.Grid>
+          {currentPageEstimates.map((estimate: EstimateListItem) => (
+            <ExpertEstimateCard
+              onClick={() => handleEstimateClick(estimate.estimateId)}
+              key={estimate.estimateId}
+              id={estimate.estimateId}
+              title={estimate.title}
+              subtitle={`${estimate.cropName} (${estimate.cropCategory}) | ${estimate.estimateCategory} | ${estimate.areaName}`}
+              estimatedCost={estimate.budget}
+              date={format(new Date(estimate.createdAt), 'yyyy.MM.dd')}
+              isDone={estimate.status === 1}
+              cardStyle={{ width: '336px', padding: '22px 27px 22px 27px' }}
+            />
+          ))}
+        </ME.Grid>
+      )}
 
-        {currentTab === 'done' && completedEstimates.length > 0 && (
-          <ME.Grid>
-            {completedEstimates?.map((estimate) => (
-              <ExpertEstimateCard
-                onClick={() => handleEstimateClick(estimate.estimateId)}
-                key={estimate.estimateId}
-                id={estimate.estimateId}
-                title={estimate.title}
-                subtitle={`${estimate.cropName} (${estimate.cropCategory}) | ${estimate.estimateCategory} | ${estimate.areaName}`}
-                estimatedCost={estimate.budget}
-                date={format(new Date(estimate.createdAt), 'yyyy.MM.dd')}
-                isDone={true}
-                cardStyle={{ width: '336px', padding: '22px 27px 22px 27px' }}
-              />
-            ))}
-          </ME.Grid>
-        )}
+      {currentTab === 'done' && completedEstimates.length > 0 && (
+        <ME.Grid>
+          {completedEstimates?.map((estimate) => (
+            <ExpertEstimateCard
+              onClick={() => handleEstimateClick(estimate.estimateId)}
+              key={estimate.estimateId}
+              id={estimate.estimateId}
+              title={estimate.title}
+              subtitle={`${estimate.cropName} (${estimate.cropCategory}) | ${estimate.estimateCategory} | ${estimate.areaName}`}
+              estimatedCost={estimate.budget}
+              date={format(new Date(estimate.createdAt), 'yyyy.MM.dd')}
+              isDone={true}
+              cardStyle={{ width: '336px', padding: '22px 27px 22px 27px' }}
+            />
+          ))}
+        </ME.Grid>
+      )}
 
-        <Pagination
-          totalPages={totalPages}
-          currentPage={currentPage}
-          onPageClick={(page) => setCurrentPage(page)}
-        />
-      </div>
+      <Pagination
+        totalPages={totalPages}
+        currentPage={currentPage}
+        onPageClick={(page) => setCurrentPage(page)}
+      />
     </div>
   );
 }

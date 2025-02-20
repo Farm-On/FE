@@ -38,7 +38,7 @@ export const Title = styled.span`
 `;
 
 export const PortfolioIndicator = styled.span`
-  margin-left: 20px;
+  margin-left: 130px;
   margin-bottom: 8px;
   color: #fff;
   font-family: PretendardRegular;
@@ -50,13 +50,16 @@ export const PortfolioIndicator = styled.span`
 
 export const PreviousArrow = styled(ChevronLeftWhite)`
   cursor: pointer;
-  margin-right: 110px;
 `;
 
 export const NextArrow = styled(ChevronLeftWhite)`
   cursor: pointer;
-  margin-left: 110px;
   rotate: 180deg;
+`;
+
+export const ArrowPlaceholder = styled.div`
+  width: 110px;
+  height: 110px;
 `;
 
 export const PortfolioTitle = styled.span`

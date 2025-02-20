@@ -29,6 +29,7 @@ export const Modal = ({
         alignItems: 'center',
         justifyContent: 'center',
         background: 'rgba(0,0,0,0.5)',
+        zIndex: 99999,
       },
       content: {
         overflow: 'hidden',

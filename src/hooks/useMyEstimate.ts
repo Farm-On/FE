@@ -1,22 +1,36 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { getEstimate, readEstimate,getAllEstimates,getAllCompleted,offeredEstimate,getFindExpert } from '../api/estimate';
-import { GetEstimate,EstimateDetail,FindExpertEsponse } from '../api/types/userEstimate';
-import { CreateEstimate,EachEstimateListResponse,OfferList,OfferedEstimateResponse } from '../api/types/userEstimate';
+import {
+  getEstimate,
+  readEstimate,
+  getAllEstimates,
+  getAllCompleted,
+  offeredEstimate,
+  getFindExpert,
+} from '../api/estimate';
+import { GetEstimate, EstimateDetail, FindExpertEsponse } from '../api/types/userEstimate';
+import {
+  CreateEstimate,
+  EachEstimateListResponse,
+  OfferList,
+  OfferedEstimateResponse,
+} from '../api/types/userEstimate';
 import { createEstimate } from '../api/estimate';
 
-export function useRecentEstimates(userId: number) {
+export function useRecentEstimates(userId: number | undefined) {
   return useQuery({
     queryKey: ['estimates', 'recent', userId],
-    queryFn: () => getEstimate(userId),
+    queryFn: () => getEstimate(userId!),
     select: (data: GetEstimate) => data.result.estimateList,
+    enabled: !!userId,
   });
 }
 
-export function useEstimateDetail(estimateId: number) {
+export function useEstimateDetail(estimateId: number | undefined) {
   return useQuery<EachEstimateListResponse, Error, EstimateDetail>({
     queryKey: ['estimate', estimateId],
-    queryFn: () => readEstimate(estimateId),
-    select: (data:EachEstimateListResponse) => data.result
+    queryFn: () => readEstimate(estimateId!),
+    select: (data: EachEstimateListResponse) => data.result,
+    enabled: !!estimateId,
   });
 }
 
@@ -35,30 +49,32 @@ export function useCreateEstimateMutation() {
   });
 }
 
-export function useAllEstimates(userId: number) {
+export function useAllEstimates(userId: number | undefined) {
   return useQuery({
     queryKey: ['estimates', 'all', userId],
-    queryFn: () => getAllEstimates(userId),
+    queryFn: () => getAllEstimates(userId!),
+    enabled: !!userId,
   });
 }
 
-export function useCompletedEstimates(userId: number) {
+export function useCompletedEstimates(userId: number | undefined) {
   return useQuery({
     queryKey: ['estimates', 'completed', userId],
-    queryFn: () => getAllCompleted(userId),
+    queryFn: () => getAllCompleted(userId!),
     select: (data) => {
       console.log('완료된 견적 데이터:', data.result);
       return data.result;
-    }
+    },
+    enabled: !!userId,
   });
 }
 
-export function useOfferedestimate(estimateId: number) {
+export function useOfferedestimate(estimateId: number | undefined) {
   return useQuery<OfferedEstimateResponse, Error, OfferList[]>({
     queryKey: ['estimates', 'offered', estimateId],
-    queryFn: () => offeredEstimate(estimateId),
-    select: (data:OfferedEstimateResponse)=> {
-      console.log('제안받은 견적 데이터~',data?.result.offerList);
+    queryFn: () => offeredEstimate(estimateId!),
+    select: (data: OfferedEstimateResponse) => {
+      console.log('제안받은 견적 데이터~', data?.result.offerList);
 
       // 데이터가 null이거나 undefined인 경우 빈배열
       if (!data?.result?.offerList || data.result.offerList.length === 0) {
@@ -71,7 +87,7 @@ export function useOfferedestimate(estimateId: number) {
         rating: offer.rating ?? 0,
         consultingCount: offer.consultingCount ?? 0,
         description: offer.description ?? '',
-        profileImageUrl: offer.profileImageUrl ?? '/default-profile.png'
+        profileImageUrl: offer.profileImageUrl ?? '/default-profile.png',
       }));
     },
     // 에러 발생 시 재시도 옵션 추가
@@ -82,16 +98,17 @@ export function useOfferedestimate(estimateId: number) {
     // onError: (error) => {
     //   console.error('제안받은 견적 조회 실패:', error);
     // }
+    enabled: !!estimateId,
   });
 }
 
-export function useFindExpertCard(){
+export function useFindExpertCard() {
   return useQuery({
-    queryKey:['estimate','findExpert'],
+    queryKey: ['estimate', 'findExpert'],
     queryFn: () => getFindExpert(),
-    select: (data:FindExpertEsponse)=>{
-      console.log('직접찾기 전문가.expertCardDTOList:',data?.result?.expertCardDTOList)
+    select: (data: FindExpertEsponse) => {
+      console.log('직접찾기 전문가.expertCardDTOList:', data?.result?.expertCardDTOList);
       return data.result;
-    }
-  })
+    },
+  });
 }
