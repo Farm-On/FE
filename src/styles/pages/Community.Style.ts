@@ -4,7 +4,7 @@ export const Container = styled.div`
   display: flex;
   //width: 100%;
   //position: relative;
-
+  justify-content: center;
   @media (max-width: 768px) {
     flex-direction: column; // 모바일에서는 세로로 배치
   }
@@ -22,6 +22,7 @@ export const LeftCommunity = styled.div`
   }
 `;
 export const RightCommunity = styled.div`
+  margin-right: 200px;
   @media (max-width: 768px) {
     padding: 20px;
     width: 90%;

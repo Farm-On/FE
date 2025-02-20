@@ -204,10 +204,10 @@ export default function CommunityPage() {
   );
 }
 
-const StyledDownIcon = styled(DownIcon)`
-  width: 16px;
-  height: 16px;
-`;
+// const StyledDownIcon = styled(DownIcon)`
+//   width: 16px;
+//   height: 16px;
+// `;
 
 const Modal = styled.div`
   position: absolute;
