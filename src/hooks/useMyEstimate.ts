@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { getEstimate, readEstimate,getAllEstimates,getAllCompleted,offeredEstimate } from '../api/estimate';
-import { GetEstimate,EstimateDetail } from '../api/types/userEstimate';
+import { getEstimate, readEstimate,getAllEstimates,getAllCompleted,offeredEstimate,getFindExpert } from '../api/estimate';
+import { GetEstimate,EstimateDetail,FindExpertEsponse } from '../api/types/userEstimate';
 import { CreateEstimate,EachEstimateListResponse,OfferList,OfferedEstimateResponse } from '../api/types/userEstimate';
 import { createEstimate } from '../api/estimate';
 
@@ -83,4 +83,15 @@ export function useOfferedestimate(estimateId: number) {
     //   console.error('제안받은 견적 조회 실패:', error);
     // }
   });
+}
+
+export function useFindExpertCard(){
+  return useQuery({
+    queryKey:['estimate','findExpert'],
+    queryFn: () => getFindExpert(),
+    select: (data:FindExpertEsponse)=>{
+      console.log('직접찾기 전문가.expertCardDTOList:',data?.result?.expertCardDTOList)
+      return data.result;
+    }
+  })
 }

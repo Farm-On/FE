@@ -42,8 +42,15 @@ export const Grid = styled.div`
   margin-bottom: 70px;
   max-width: 1200px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(390px, 1fr)); /* TODO 반응형 */
+  grid-template-columns: repeat(3, 1fr);
   grid-template-rows: auto;
+  grid-auto-flow: dense;
   column-gap: 15px;
   row-gap: 12px;
+
+  @media (max-width: 1200px) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 `;

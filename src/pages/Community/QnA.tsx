@@ -1,39 +1,81 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import axiosInstance from '@/api/axios';
 import * as S from '@/styles/pages/Community/QnA.style';
-import appleImage from '@/assets/images/appleImg.png';
 import writerImg from '@/assets/icons/people.svg';
-import moreIcon from '@/assets/icons/more.svg';
 import LikeIcon from '@/assets/icons/thumbs-up.svg?react';
 import ShareIcon from '@/assets/icons/share.svg?react';
 import BlackMoreIcon from '@/assets/icons/black-more.svg?react';
 
+interface Answer {
+  id: number;
+  content: string;
+  author: string;
+  role: string;
+  createdAt: string;
+}
+
+interface PostDetail {
+  postId: number;
+  postTitle: string;
+  subTitle: string;
+  postContent: string;
+  postLike: number;
+  postComment: number;
+  createdAt: string;
+  subCategory: string;
+  imageUrls: string[] | null;
+  answers: Answer[] | null;
+}
+
 const QnA = () => {
-  const [answers, setAnswers] = useState([
-    {
-      author: '김민수',
-      role: '전문가',
-      text: '사과 수확량을 늘리려면 가지치기를 통해 나무의 통풍과 햇빛이 잘 들도록 해주세요. 특히 중심 가지를 집중적으로 정리하고, 열매가 많이 달리면 직접 작업으로 개별 품질을 높이는 것도 중요합니다.',
-      time: '2025.01.22',
-    },
-    {
-      author: '이장민',
-      role: '비전문가',
-      text: '물 관리가 제일 중요해요. 특히 개화기나 과실이 커질 때 물이 부족하지 않게 꾸준히 챙겨주세요. 또, 토양에 유기질 비료를 넣으면 나무가 건강해지고 열매도 잘 맺힐 거예요. 주변 농사 환경을 한 번 알아보시면 좋을 것 같네요.',
-      time: '1시간 전',
-    },
-  ]);
+  const { postId } = useParams(); // URL에서 postId 가져오기
+  const [post, setPost] = useState<PostDetail | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchPostDetail = async () => {
+      try {
+        const response = await axiosInstance.get(`/posts/qna/list/${postId}/detail`, {
+          params: { boardId: 1 }, //QnA 게시판 boardId=1
+        });
+
+        console.log('QnA 상세 데이터:', response.data);
+
+        // post 데이터 설정, null 값 방지
+        const fetchedPost = response.data.result.post;
+        setPost({
+          ...fetchedPost,
+          imageUrls: fetchedPost.imageUrls ?? [],
+          answers: fetchedPost.answers ?? [],
+        });
+      } catch (err) {
+        console.error('QnA 데이터 불러오기 실패:', err);
+        setError('게시글을 불러오는 중 오류가 발생했습니다.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPostDetail();
+  }, [postId]);
+
+  if (loading) return <p>로딩 중...</p>;
+  if (error) return <p>{error}</p>;
+  if (!post) return <p>게시글을 찾을 수 없습니다.</p>;
 
   return (
     <S.Container>
       <S.QuestionSection>
-        <S.QuestionTitle>사과 재배 시 수확량을 높이는 방법이 궁금합니다.</S.QuestionTitle>
-        <S.Category>사과(과일)</S.Category>
+        <S.QuestionTitle>{post.postTitle}</S.QuestionTitle>
+        <S.Category>{post.subCategory}</S.Category>
         <S.QuestionHeader>
           <S.AuthorInfo>
             <S.WriterImage src={writerImg} alt="작성자 이미지" />
             <div>
-              <S.WriterName>김철수</S.WriterName>
-              <S.QuestionTime>3시간 전</S.QuestionTime>
+              <S.WriterName>익명</S.WriterName>
+              <S.QuestionTime>{post.createdAt}</S.QuestionTime>
             </div>
           </S.AuthorInfo>
           <div>
@@ -41,32 +83,36 @@ const QnA = () => {
             <BlackMoreIcon />
           </div>
         </S.QuestionHeader>
-        <S.QuestionText>
-          올해 사과 농사를 시작한 초보 농부입니다. 사과 수확량을 높이기 위해 어떤 방법이 효과적인지
-          궁금합니다. 경험이 많으신 분들의 조언 부탁드립니다.
-        </S.QuestionText>
-        <S.QuestionImage src={appleImage} alt="사과 나무" />
+        <S.QuestionText>{post.postContent}</S.QuestionText>
+
+        {/* 이미지가 있는 경우에만 렌더링 */}
+        {post.imageUrls && post.imageUrls.length > 0 && (
+          <S.QuestionImage src={post.imageUrls[0]} alt="게시글 이미지" />
+        )}
+
         <S.AnswersHeader>
           <LikeIcon />
-          <S.ViewCount>조회 4</S.ViewCount>
+          <S.ViewCount>좋아요 {post.postLike}개</S.ViewCount>
         </S.AnswersHeader>
       </S.QuestionSection>
 
+      {/* 댓글 목록 표시 */}
       <S.AnswersSection>
-        <S.AnswersCount>{answers.length}개 답변</S.AnswersCount>
+        <S.AnswersCount>{post.answers?.length ?? 0}개 댓글</S.AnswersCount>
 
-        {answers.map((answer, index) => (
-          <S.AnswerBox key={index}>
+        {post.answers?.map((answer) => (
+          <S.AnswerBox key={answer.id}>
             <S.AnswerBoxHeader>
               <S.AnswerInfo>
                 <S.WriterImage src={writerImg} alt="답변자 이미지" />
-                <S.AnswerAuthor>{answer.author} 님 답변</S.AnswerAuthor>
+                <S.AnswerAuthor>
+                  {answer.author} 님 ({answer.role})
+                </S.AnswerAuthor>
               </S.AnswerInfo>
-              <S.MoreIcon src={moreIcon} alt="더보기 아이콘" />
             </S.AnswerBoxHeader>
             <S.AnswerBody>
-              <S.AnswerText>{answer.text}</S.AnswerText>
-              <S.AnswerTime>{answer.time}</S.AnswerTime>
+              <S.AnswerText>{answer.content}</S.AnswerText>
+              <S.AnswerTime>{answer.createdAt}</S.AnswerTime>
             </S.AnswerBody>
           </S.AnswerBox>
         ))}

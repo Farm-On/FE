@@ -224,7 +224,7 @@ export default function RequestEstimatePage(): JSX.Element {
           })
           .filter((url) => url !== null);
         // 수정된 데이터 가지고 이동
-        navigate('/MyEstimate/RequestEstimate/CheckMyEstimate', {
+        navigate('/my/estimate/request', {
           state: {
             estimateData: {
               ...inputData,
@@ -246,7 +246,7 @@ export default function RequestEstimatePage(): JSX.Element {
         console.log('✅ 서버 응답 데이터:', response);
 
         if (response.isSuccess) {
-          navigate('/MyEstimate/RequestEstimate/CheckMyEstimate', {
+          navigate(`/my/estimate/request/${response.result.estimateId}`, {
             state: {
               estimateData: {
                 ...inputData,
@@ -334,12 +334,12 @@ export default function RequestEstimatePage(): JSX.Element {
                 <RE.Bubble>예산은 어느 정도인가요?</RE.Bubble>
                 <RE.InputContainer>
                   {[
-                    '10~50만원',
-                    '50~100만원',
-                    '100~200만원',
-                    '200~500만원',
-                    '500~1000만원',
-                    '1000만원 이상',
+                    '10만원 ~ 50만원',
+                    '50만원 ~ 100만원',
+                    '100만원 ~ 200만원',
+                    '200만원 ~ 500만원',
+                    '500만원 ~ 1,000만원',
+                    '1,000만원 이상',
                   ].map((value) => (
                     <EstimateBudget
                       key={value}

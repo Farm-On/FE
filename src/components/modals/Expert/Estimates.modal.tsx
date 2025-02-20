@@ -128,7 +128,11 @@ export const EstimatesFilterModal = () => {
                     selected={
                       location === Location ? (Location === '전국' ? 'all' : true) : undefined
                     }
-                    onClick={() => setFilter({ Location: location === Location ? null : location })}
+                    onClick={() =>
+                      location === Location
+                        ? setFilter({ Location: null })
+                        : setFilter({ Location: location === Location ? null : location })
+                    }
                   >
                     <EFM.ItemText>{location}</EFM.ItemText>
                     {/* 전국 */}
@@ -137,7 +141,7 @@ export const EstimatesFilterModal = () => {
                     {location === Location && Location !== '전국' && (
                       <EFM.ChevronDown active={true} />
                     )}
-                    {location !== Location && <EFM.ChevronDown />}
+                    {location !== Location && location !== '전국' && <EFM.ChevronDown />}
                   </EFM.ListItem>
                   {/* 세부 위치 목록 */}
                   {location === Location &&
@@ -147,7 +151,11 @@ export const EstimatesFilterModal = () => {
                         <EFM.SubListItem
                           key={detailedLocation}
                           selected={detailedLocation === DetailedLocation}
-                          onClick={() => setFilter({ DetailedLocation: detailedLocation })}
+                          onClick={() =>
+                            detailedLocation === DetailedLocation
+                              ? setFilter({ DetailedLocation: null })
+                              : setFilter({ DetailedLocation: detailedLocation })
+                          }
                         >
                           {detailedLocation}
                         </EFM.SubListItem>
@@ -162,7 +170,12 @@ export const EstimatesFilterModal = () => {
           <TabContent value="예산">
             <EFM.Items>
               {BudgetsList.map((budget) => (
-                <EFM.RadioItem key={budget} onClick={() => setFilter({ Budget: budget })}>
+                <EFM.RadioItem
+                  key={budget}
+                  onClick={() =>
+                    Budget === budget ? setFilter({ Budget: null }) : setFilter({ Budget: budget })
+                  }
+                >
                   {Budget === budget ? <EFM.SelectedRadioBtn /> : <EFM.UnselectedRadioBtn />}
                   <EFM.ItemText selected={Budget === budget}>{budget}</EFM.ItemText>
                 </EFM.RadioItem>

@@ -38,7 +38,7 @@ interface EditMyProfile {
   availableLocation: {
     location: string | null;
     detailedLocation: string | null;
-    availableRange: number | null;
+    availableRange: string | null;
     availableAnywhere: boolean;
     excludeLimitedArea: boolean; // 도서 지방 제외
   };
@@ -70,11 +70,15 @@ export const useEditMyProfileModalStore = create<EditMyProfile>((set) => ({
 // 전문가 프로필 > 포트폴리오 상세보기
 interface ViewPortfolio {
   isOpen: boolean;
+  portfolioId: number | null;
+  setPortfolioId: (portfolioId: ViewPortfolio['portfolioId']) => void;
   openModal: () => void;
   closeModal: () => void;
 }
 export const useViewPortfolioModalStore = create<ViewPortfolio>((set) => ({
   isOpen: false,
+  portfolioId: null,
+  setPortfolioId: (portfolioId) => set(() => ({ portfolioId })),
   openModal: () => set(() => ({ isOpen: true })),
   closeModal: () => set(() => ({ isOpen: false })),
 }));
@@ -86,6 +90,7 @@ interface EditMyPortfolio {
   closeModal: () => void;
   // 경력
   career: {
+    careerId: number | null;
     title: string | null;
     startYear: number | null;
     startMonth: number | null;
@@ -118,6 +123,7 @@ export const useEditMyPortfolioModalStore = create<EditMyPortfolio>((set) => ({
   openModal: (name) => set(() => ({ openedModalName: name })),
   closeModal: () => set(() => ({ openedModalName: null })),
   career: {
+    careerId: null,
     title: null,
     startYear: null,
     startMonth: null,
@@ -138,7 +144,6 @@ export const useEditMyPortfolioModalStore = create<EditMyPortfolio>((set) => ({
     detail3: null,
     detail4: null,
   },
-
   setCareer: (career) => set((state) => ({ career: { ...state.career, ...career } })),
   setAdditionalInfo: (additionalInfo) => set(() => ({ additionalInfo })),
   setMainService: (mainService) =>

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 import ReactModal from 'react-modal';
 
 interface ModalProps {
@@ -7,6 +7,7 @@ interface ModalProps {
   width?: string;
   height?: string;
   borderRadius?: string;
+  style?: CSSProperties;
   children: ReactNode;
 }
 
@@ -16,6 +17,7 @@ export const Modal = ({
   width,
   height,
   borderRadius = '10px',
+  style,
   children,
 }: ModalProps) => (
   <ReactModal
@@ -29,6 +31,7 @@ export const Modal = ({
         background: 'rgba(0,0,0,0.5)',
       },
       content: {
+        overflow: 'hidden',
         position: 'relative',
         margin: 0,
         padding: 0,
@@ -37,6 +40,7 @@ export const Modal = ({
         width,
         height,
         borderRadius,
+        ...style,
       },
     }}
   >

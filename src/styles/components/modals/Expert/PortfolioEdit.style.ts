@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 
 import X from '@/assets/icons/X.svg?react';
-import ChevronDownIcon from '@/assets/icons/ChevronDownGray.svg?react';
 
 export const Header = styled.div`
   display: flex;
@@ -84,44 +83,6 @@ export const Dropdowns = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 12px;
-`;
-
-export const DropdownLabel = styled.span`
-  font-family: Pretendard;
-  font-size: 18px;
-  font-style: normal;
-`;
-
-export const ChevronDown = styled(ChevronDownIcon)<{ selected?: boolean }>`
-  width: 24px;
-  height: 24px;
-  & path {
-    stroke: #000;
-  }
-  cursor: pointer;
-`;
-
-export const Dropdown = styled.div<{ selected?: boolean }>`
-  padding: 12px 14px 10px 16px;
-  width: 150px;
-  height: 52px;
-  display: inline-flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  border-radius: 6px;
-  border: 1px solid #d9d9d9;
-
-  ${DropdownLabel} {
-    color: ${(props) => (props.selected ? '#000' : '#8E8E8E')};
-    font-weight: ${(props) => (props.selected ? 500 : 400)};
-  }
-
-  ${ChevronDown} {
-    & path {
-      stroke: ${(props) => (props.selected ? '#000' : '#8E8E8E')};
-    }
-  }
 `;
 
 export const CheckBoxContainer = styled.div`

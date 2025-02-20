@@ -71,3 +71,9 @@ export const HeaderViewAllText = styled.span`
   text-transform: uppercase;
   cursor: pointer;
 `;
+
+export const LinkContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-content: center;
+`;

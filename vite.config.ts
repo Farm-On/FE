@@ -17,10 +17,18 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://43.201.137.131:8080',
+        target: 'https://farmon-be.site',
         changeOrigin: true,
         secure: false,
       },
+    },
+  },
+  define: {
+    global: 'window',
+  },
+  resolve: {
+    alias: {
+      '@': '/src',
     },
   },
 });

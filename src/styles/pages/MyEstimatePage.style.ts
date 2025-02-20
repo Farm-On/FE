@@ -178,7 +178,7 @@ export const ExpertCardWrap = styled.div`
   display: flex;
   gap: 14px;
   position: absolute;
-  top: 753px;
+  top: 720px;
   left: 462px;
 
   @media (max-width: 768px) {

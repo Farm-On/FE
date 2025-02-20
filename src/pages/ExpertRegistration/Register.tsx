@@ -29,7 +29,7 @@ export default function Register() {
 
   const handleNextClick = () => {
     if (selectedCategory) {
-      navigate(`/detail-category/${selectedCategory}`);
+      navigate(`/expert/register/category/${selectedCategory}`);
     }
   };
 

@@ -11,7 +11,6 @@ import { Search } from '@/components/search/search';
 import { Announcements } from '@/components/Announcements';
 import { Trendings } from '@/components/Trendings';
 
-
 export default function Home() {
   return (
     <>
@@ -22,7 +21,7 @@ export default function Home() {
             <Search />
           </H.SearchSection>
           <H.CommunitySection>
-            <Header title="궁금한 점을 나눠보세요" link="/Community" />
+            <Header title="궁금한 점을 나눠보세요" link="/community" />
             <Community />
           </H.CommunitySection>
           <H.TrendingsSection>
@@ -54,9 +53,11 @@ const Header = ({ title, link }: HeaderProps) => (
   <H.HeaderContainer>
     <H.HeaderTitle>{title}</H.HeaderTitle>
     <H.HeaderViewAllContainer>
-      <H.HeaderViewAllText>전체보기</H.HeaderViewAllText>
-      <Link to={link}>
-        <ChevronRight />
+      <Link to={link} style={{ textDecoration: 'none' }}>
+        <H.LinkContainer>
+          <H.HeaderViewAllText>전체보기</H.HeaderViewAllText>
+          <ChevronRight />
+        </H.LinkContainer>
       </Link>
     </H.HeaderViewAllContainer>
   </H.HeaderContainer>

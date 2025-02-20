@@ -5,66 +5,96 @@ import { Pagination } from '@/components/Pagination';
 import { useState } from 'react';
 import { useFilterModalStore } from '@/store/modals/useExpertModalStore';
 import { EstimatesFilterModal } from '@/components/modals/Expert/Estimates.modal';
-
-const menus = {
-  추천: '',
-  곡물: {
-    쌀: 'key1',
-    보리: 'key2',
-    옥수수: 'key3',
-    콩: 'key4',
-    '기타 곡물': 'key5',
-  },
-  채소작물: '',
-  과일: '',
-  특용: '',
-  화훼: '',
-  사료: '',
-  기타: '',
-} as const;
-
-const activeMenus = {
-  곡물: true,
-  추천: false,
-  채소작물: false,
-  과일: false,
-  특용: false,
-  화훼: false,
-  사료: false,
-  기타: false,
-};
-
-const totalPages = 6;
-
-const dummy = [
-  {
-    id: 1,
-    title: '쌀농사 토양, 물 관리 관련 컨설팅 문의',
-    subtitle: '쌀 (곡물) | 토양 및 환경관리 | 경기 이천시',
-    estimatedCost: '500만원 ~ 1,000만원',
-    date: '2024.11.11',
-  },
-  {
-    id: 2,
-    title: '쌀농사 토양, 물 관리 관련 컨설팅 문의',
-    subtitle: '쌀 (곡물) | 토양 및 환경관리 | 경기 이천시',
-    estimatedCost: '500만원 ~ 1,000만원',
-    date: '2024.11.11',
-  },
-  {
-    id: 3,
-    title: '쌀농사 토양, 물 관리 관련 컨설팅 문의',
-    subtitle: '쌀 (곡물) | 토양 및 환경관리 | 경기 이천시',
-    estimatedCost: '500만원 ~ 1,000만원',
-    date: '2024.11.11',
-  },
-];
+import { useQuery } from '@tanstack/react-query';
+import axiosInstance from '@/api/axios';
+import { EstimatesResponse } from '@/api/types/expert/estimates';
+import { useNavigate } from 'react-router-dom';
+import useAuthStore from '@/store/useAuthStore';
+import Crops from '@/constants/Crops';
 
 export default function Estimates() {
+  const navigate = useNavigate();
+
   const [currentPage, setCurrentPage] = useState(1);
 
   // 필터 모달 상태
-  const { openFilterModal } = useFilterModalStore();
+  const { openFilterModal, Field, Location, DetailedLocation, Budget } = useFilterModalStore();
+
+  const { userInfo } = useAuthStore();
+  const [cropCategory, setCropCategory] = useState<{
+    menu: keyof typeof Crops | '추천';
+    subMenu: string | null;
+  }>({
+    menu: '추천',
+    subMenu: null,
+  });
+
+  const { data } = useQuery<EstimatesResponse>({
+    queryKey: [
+      'expertEstimates',
+      cropCategory,
+      currentPage,
+      Field,
+      Location,
+      DetailedLocation,
+      Budget,
+    ],
+    queryFn: async () => {
+      // 필터 선택 시
+      if (Field || Location || DetailedLocation || Budget) {
+        const response = await axiosInstance.get('/estimate/expert/filter', {
+          params: {
+            expertId: cropCategory.menu === '추천' ? userInfo?.expertId : undefined,
+            cropCategory: cropCategory.menu,
+            cropName: cropCategory.subMenu ?? undefined,
+            estimateCategory: Field ?? undefined,
+            areaName: Location ?? undefined,
+            areaNameDetail: DetailedLocation ?? undefined,
+            budget: Budget ?? undefined,
+            page: currentPage,
+          },
+        });
+
+        return response.data;
+      }
+
+      if (cropCategory.subMenu) {
+        // 서브메뉴 선택 시
+        const response = await axiosInstance.get('/estimate/expert/crop-name', {
+          params: { cropName: cropCategory.subMenu, page: currentPage },
+        });
+
+        return response.data;
+      }
+
+      if (cropCategory.menu === '추천') {
+        // 추천 메뉴
+        const response = await axiosInstance.get(`/estimate/expert/${userInfo?.expertId}/by-crop`, {
+          params: { page: currentPage },
+        });
+        return response.data;
+      }
+
+      // 일반 메뉴
+      const response = await axiosInstance.get('/estimate/expert/crop-category', {
+        params: { cropCategory: cropCategory.menu, page: currentPage },
+      });
+
+      return response.data;
+    },
+  });
+
+  // 메뉴 변경
+  const changeMenu = (menu: keyof typeof Crops) => {
+    setCurrentPage(1);
+    setCropCategory({ menu, subMenu: null });
+  };
+
+  // 서브메뉴 변경
+  const changeSubMenu = (subMenu: string) => {
+    setCurrentPage(1);
+    setCropCategory((m) => ({ ...m, subMenu }));
+  };
 
   return (
     <>
@@ -74,22 +104,39 @@ export default function Estimates() {
           <E.Title>견적 찾기</E.Title>
           <E.Container>
             <E.Sidebar>
-              {Object.keys(menus).map((menu) => {
-                if (typeof menus[menu as keyof typeof menus] === 'object') {
+              {Object.keys(Crops).map((crop) => {
+                if (typeof Crops[crop as keyof typeof Crops] === 'object') {
                   return (
-                    <div key={menu}>
-                      <E.Menu active={activeMenus[menu as keyof typeof menus]}>{menu}</E.Menu>
-                      <E.SubMenuContainer>
-                        {Object.keys(menus[menu as keyof typeof menus]).map((subMenu) => (
-                          <E.SubMenu key={subMenu}>{subMenu}</E.SubMenu>
-                        ))}
-                      </E.SubMenuContainer>
+                    <div key={crop}>
+                      <E.Menu
+                        active={crop === cropCategory.menu}
+                        onClick={() => changeMenu(crop as keyof typeof Crops)}
+                      >
+                        {crop}
+                      </E.Menu>
+                      {crop === cropCategory.menu && (
+                        <E.SubMenuContainer>
+                          {Crops[crop as keyof typeof Crops].map((subMenu) => (
+                            <E.SubMenu
+                              key={subMenu}
+                              active={subMenu === cropCategory.subMenu}
+                              onClick={() => changeSubMenu(subMenu)}
+                            >
+                              {subMenu}
+                            </E.SubMenu>
+                          ))}
+                        </E.SubMenuContainer>
+                      )}
                     </div>
                   );
                 } else {
                   return (
-                    <E.Menu key={menu} active={activeMenus[menu as keyof typeof menus]}>
-                      {menu}
+                    <E.Menu
+                      key={crop}
+                      active={crop === cropCategory.menu}
+                      onClick={() => changeMenu(crop as keyof typeof Crops)}
+                    >
+                      {crop}
                     </E.Menu>
                   );
                 }
@@ -97,23 +144,27 @@ export default function Estimates() {
             </E.Sidebar>
             <E.Content>
               <E.Header>
-                <E.SelectedCategoryLabel>곡물</E.SelectedCategoryLabel>
+                <E.SelectedCategoryLabel>
+                  {cropCategory.menu}
+                  {cropCategory.subMenu ? ` > ${cropCategory.subMenu}` : null}
+                </E.SelectedCategoryLabel>
                 <E.FilterBtn onClick={() => openFilterModal()} />
               </E.Header>
               <E.Grid>
-                {dummy.map((data) => (
+                {data?.result.estimateList.map((estimate) => (
                   <ExpertEstimateCard
-                    key={data.id}
-                    id={data.id}
-                    title={data.title}
-                    subtitle={data.subtitle}
-                    estimatedCost={data.estimatedCost}
-                    date={data.date}
+                    key={estimate.estimateId}
+                    id={estimate.estimateId}
+                    title={estimate.title}
+                    subtitle={`${estimate.cropName} (${estimate.cropCategory}) | ${estimate.estimateCategory} | ${estimate.areaName} ${estimate.areaNameDetail}`}
+                    estimatedCost={estimate.budget}
+                    date={estimate.createdAt}
+                    onClick={() => navigate(`/expert/estimate/${estimate.estimateId}`)}
                   />
                 ))}
               </E.Grid>
               <Pagination
-                totalPages={totalPages}
+                totalPages={data?.result.totalPage ?? 0}
                 currentPage={currentPage}
                 onPageClick={(page) => setCurrentPage(page)}
               />
