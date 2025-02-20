@@ -35,12 +35,14 @@ export const Navbar = () => {
   useEffect(() => {
     // 로그인 후 전문가 등록 여부 확인 및 리다이렉션
     if (isLoggedIn && isExpertLoginIntent) {
-      setIsExpertLoginIntent(false); // 상태 초기화
-      if (userInfo?.role !== 'EXPERT') {
+      setIsExpertLoginIntent(false);
+      if (userInfo?.role === 'EXPERT') {
+        navigate('/');
+      } else {
         navigate('/expert/register');
       }
     }
-  }, [isLoggedIn, userInfo, isExpertLoginIntent]);
+  }, [isLoggedIn, userInfo, isExpertLoginIntent, navigate]);
 
   const handleLogout = () => {
     logout();
@@ -75,7 +77,6 @@ export const Navbar = () => {
           role: response.result.exchangeRole,
         };
 
-        // expertId 추가
         if (targetRole === 'EXPERT') {
           updatedUserInfo.expertId = response.result.expertId;
         }
@@ -101,6 +102,9 @@ export const Navbar = () => {
           </N.Logo>
           <N.MenuContainer className={isMobileMenuOpen ? 'open' : ''}>
             <N.MenuLink to="/expert/profile">전문가 프로필</N.MenuLink>
+            {userInfo?.role === 'EXPERT' && (
+              <N.MenuLink to="/expert/estimates">견적 찾기</N.MenuLink>
+            )}
             <N.MenuLink to="/chat" className={isActiveChat ? 'active' : ''}>
               채팅
             </N.MenuLink>
@@ -114,6 +118,9 @@ export const Navbar = () => {
               <N.NotificationIcon>
                 <Bell />
               </N.NotificationIcon>
+              {userInfo?.role === 'EXPERT' && (
+                <N.MenuLink to="/expert/estimates">견적 찾기</N.MenuLink>
+              )}
               <N.MenuLink to="/my/estimate">내 견적</N.MenuLink>
               <N.UserDropdown>
                 <N.UserName>
@@ -138,7 +145,7 @@ export const Navbar = () => {
                   {userInfo?.role === 'EXPERT' && (
                     <N.DropdownItem>
                       <Link
-                        to="/my-profile"
+                        to="/expert/portfolio/edit"
                         style={{
                           color: 'inherit',
                           textDecoration: 'none',
@@ -179,6 +186,9 @@ export const Navbar = () => {
       {isMobileMenuOpen && (
         <N.MobileMenu>
           <N.MobileMenuLink to="/expert/profile">전문가 프로필</N.MobileMenuLink>
+          {userInfo?.role === 'EXPERT' && (
+            <N.MobileMenuLink to="/expert/estimates">견적 찾기</N.MobileMenuLink>
+          )}
           <N.MobileMenuLink to="/chat" className={isActiveChat ? 'active' : ''}>
             채팅
           </N.MobileMenuLink>

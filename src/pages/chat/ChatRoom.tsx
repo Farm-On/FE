@@ -8,120 +8,98 @@ import {
   useChatMessages,
   useChatEstimate,
   useUploadChatImage,
-  type SocketMessage,
 } from '@/hooks/useChat';
 import useAuthStore from '@/store/useAuthStore';
-import { format } from 'date-fns';
-import { ko } from 'date-fns/locale';
+
+interface Message {
+  senderId: number;
+  messageType: 'TEXT' | 'IMAGE' | 'ENTER' | 'EXIT';
+  messageContent: string;
+  isMine: boolean;
+  sendTime: string;
+  isOtherRead: boolean;
+}
 
 const ChatRoom = () => {
   const navigate = useNavigate();
   const { roomId } = useParams<{ roomId: string }>();
   const { userInfo } = useAuthStore();
   const [message, setMessage] = useState('');
-  const [messageHistory, setMessageHistory] = useState<SocketMessage[]>([]);
+  const [messageHistory, setMessageHistory] = useState<Message[]>([]);
   const messageEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isSending, setIsSending] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
+  const maxRetries = 3;
 
   const chatRoomId = roomId ? parseInt(roomId, 10) : 0;
-  const userId = userInfo?.userId || 0;
+  const userId = userInfo?.userId ?? 0;
 
   const { connected, subscribeToChat, sendMessage } = useSocket(userId);
 
-  const { data: roomData, isLoading: roomLoading } = useChatRoom(userId, chatRoomId);
-  const { data: messagesData } = useChatMessages(userId, chatRoomId, 1);
+  const {
+    data: roomData,
+    isLoading: roomLoading,
+    error: roomError,
+  } = useChatRoom(userId, chatRoomId);
+
+  const { data: messagesData, isLoading: messagesLoading } = useChatMessages(userId, chatRoomId, 1);
+
   const { data: estimateData } = useChatEstimate(userId, chatRoomId);
   const uploadImageMutation = useUploadChatImage();
 
+  const scrollToBottom = useCallback(() => {
+    requestAnimationFrame(() => {
+      messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    });
+  }, []);
+
   useEffect(() => {
-    if (!roomId || !userInfo) {
-      navigate('/chat');
+    if (!userInfo) {
+      navigate('/');
       return;
     }
 
-    if (connected && userId && chatRoomId) {
-      const currentTime = format(new Date(), 'a h:mm', { locale: ko });
-      sendMessage(chatRoomId, {
-        senderId: userId,
-        messageType: 'ENTER',
-        messageContent: '',
-        isMine: true,
-        sendTime: currentTime,
-        isOtherRead: false,
-      });
+    let reconnectTimeout: NodeJS.Timeout;
+
+    const attemptReconnect = () => {
+      if (!connected && retryCount < maxRetries) {
+        console.log(`재연결 시도 ${retryCount + 1}/${maxRetries}`);
+        setRetryCount((prev) => prev + 1);
+        reconnectTimeout = setTimeout(() => {
+          // 재연결 로직은 useSocket 훅에서 처리
+        }, 3000);
+      }
+    };
+
+    if (!connected) {
+      attemptReconnect();
     }
 
     return () => {
-      if (connected && userId && chatRoomId) {
-        const currentTime = format(new Date(), 'a h:mm', { locale: ko });
-        sendMessage(chatRoomId, {
-          senderId: userId,
-          messageType: 'EXIT',
-          messageContent: '',
-          isMine: true,
-          sendTime: currentTime,
-          isOtherRead: false,
-        });
+      if (reconnectTimeout) {
+        clearTimeout(reconnectTimeout);
       }
     };
-  }, [roomId, userInfo, connected, userId, chatRoomId, navigate, sendMessage]);
+  }, [connected, retryCount, userInfo, navigate]);
 
-  const scrollToBottom = useCallback(() => {
-    if (messageEndRef.current) {
-      messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, []);
-
-  const handleNewMessage = useCallback(
-    (newMsg: SocketMessage) => {
-      setMessageHistory((prev) => [...prev, newMsg]);
-      scrollToBottom();
-    },
-    [scrollToBottom]
-  );
-
-  useEffect(() => {
-    if (messagesData?.result.chatMesageList) {
-      const convertedMessages: SocketMessage[] = messagesData.result.chatMesageList.map((msg) => ({
-        ...msg,
-        senderId: userId,
-        messageType: 'TEXT',
-        isEstimateComplete: false,
-      }));
-      setMessageHistory(convertedMessages);
-      scrollToBottom();
-    }
-  }, [messagesData?.result.chatMesageList, scrollToBottom, userId]);
-
-  useEffect(() => {
-    if (connected && userId && chatRoomId) {
-      const unsubscribe = subscribeToChat(chatRoomId, handleNewMessage);
-      return () => {
-        unsubscribe();
-      };
-    }
-  }, [connected, chatRoomId, userId, subscribeToChat, handleNewMessage]);
-
-  const formatMessageTime = useCallback((timeString: string) => {
-    try {
-      const [period, time] = timeString.split(' ');
-      const [hours, minutes] = time.split(':').map(Number);
-      const date = new Date();
-      date.setHours(period === '오후' ? hours + 12 : hours);
-      date.setMinutes(minutes);
-      return format(date, 'a h:mm', { locale: ko });
-    } catch {
-      return timeString;
-    }
-  }, []);
+  const formatCurrentTime = () => {
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    const period = hours >= 12 ? '오후' : '오전';
+    return `${period} ${hours % 12 || 12}:${minutes.toString().padStart(2, '0')}`;
+  };
 
   const handleSendMessage = useCallback(async () => {
-    if (!message.trim() || !connected || isSending || !chatRoomId || !userId) return;
+    if (!message.trim() || !connected || isSending || !chatRoomId || !userId) {
+      return;
+    }
 
     try {
       setIsSending(true);
-      const currentTime = format(new Date(), 'a h:mm', { locale: ko });
+      const currentTime = formatCurrentTime();
+
       await sendMessage(chatRoomId, {
         senderId: userId,
         messageType: 'TEXT',
@@ -130,7 +108,11 @@ const ChatRoom = () => {
         sendTime: currentTime,
         isOtherRead: false,
       });
+
       setMessage('');
+    } catch (error) {
+      console.error('메시지 전송 실패:', error);
+      alert('메시지 전송에 실패했습니다. 다시 시도해주세요.');
     } finally {
       setIsSending(false);
     }
@@ -139,10 +121,18 @@ const ChatRoom = () => {
   const handleImageUpload = useCallback(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
-      if (!file || !connected || isSending || !chatRoomId || !userId) return;
+      if (!file || !connected || isSending || !chatRoomId || !userId) {
+        return;
+      }
 
       try {
         setIsSending(true);
+
+        if (file.size > 5 * 1024 * 1024) {
+          alert('파일 크기는 5MB를 초과할 수 없습니다.');
+          return;
+        }
+
         const response = await uploadImageMutation.mutateAsync({
           userId,
           chatRoomId,
@@ -150,7 +140,7 @@ const ChatRoom = () => {
         });
 
         if (response.isSuccess) {
-          const currentTime = format(new Date(), 'a h:mm', { locale: ko });
+          const currentTime = formatCurrentTime();
           await sendMessage(chatRoomId, {
             senderId: userId,
             messageType: 'IMAGE',
@@ -161,7 +151,8 @@ const ChatRoom = () => {
           });
         }
       } catch (error) {
-        console.error('Image upload failed:', error);
+        console.error('이미지 업로드 실패:', error);
+        alert('이미지 업로드에 실패했습니다. 다시 시도해주세요.');
       } finally {
         setIsSending(false);
         if (fileInputRef.current) {
@@ -171,6 +162,36 @@ const ChatRoom = () => {
     },
     [connected, isSending, chatRoomId, userId, uploadImageMutation, sendMessage]
   );
+
+  const handleNewMessage = useCallback(
+    (newMsg: Message) => {
+      setMessageHistory((prev) => [...prev, newMsg]);
+      scrollToBottom();
+    },
+    [scrollToBottom]
+  );
+
+  useEffect(() => {
+    if (messagesData?.result.chatMesageList) {
+      const messages = messagesData.result.chatMesageList.map((msg) => ({
+        ...msg,
+        senderId: userId,
+        messageType: msg.messageContent.startsWith('http') ? 'IMAGE' : ('TEXT' as const),
+        isEstimateComplete: false,
+      }));
+      setMessageHistory(messages);
+      scrollToBottom();
+    }
+  }, [messagesData?.result.chatMesageList, userId, scrollToBottom]);
+
+  useEffect(() => {
+    if (connected && userId && chatRoomId) {
+      const unsubscribe = subscribeToChat(chatRoomId, handleNewMessage);
+      return () => {
+        unsubscribe();
+      };
+    }
+  }, [connected, chatRoomId, userId, subscribeToChat, handleNewMessage]);
 
   const handleKeyPress = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -182,11 +203,11 @@ const ChatRoom = () => {
     [handleSendMessage]
   );
 
-  if (roomLoading) {
+  if (roomLoading || messagesLoading) {
     return <S.Container>로딩 중...</S.Container>;
   }
 
-  if (!roomData) {
+  if (roomError || !roomData) {
     return <S.Container>채팅방을 찾을 수 없습니다.</S.Container>;
   }
 
@@ -236,8 +257,8 @@ const ChatRoom = () => {
                   {msg.messageType === 'IMAGE' ? (
                     <img
                       src={msg.messageContent}
-                      alt="Sent"
-                      style={{ maxWidth: '200px' }}
+                      alt="전송된 이미지"
+                      style={{ maxWidth: '200px', maxHeight: '200px', objectFit: 'contain' }}
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.src = '/default-profile.png';
@@ -247,7 +268,7 @@ const ChatRoom = () => {
                     msg.messageContent
                   )}
                 </S.MessageText>
-                <S.MessageTime>{msg.sendTime ? formatMessageTime(msg.sendTime) : ''}</S.MessageTime>
+                <S.MessageTime>{msg.sendTime}</S.MessageTime>
               </S.MessageContent>
             </S.MessageContainer>
           ))}
@@ -269,23 +290,26 @@ const ChatRoom = () => {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyPress={handleKeyPress}
-            disabled={isSending}
+            disabled={isSending || !connected}
           />
 
           <S.IconButtonsContainer>
-            <S.IconButton>
+            <S.IconButton disabled={isSending || !connected}>
               <Smile size={20} />
             </S.IconButton>
-            <S.IconButton onClick={() => fileInputRef.current?.click()} disabled={isSending}>
+            <S.IconButton
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isSending || !connected}
+            >
               <Camera size={20} />
             </S.IconButton>
           </S.IconButtonsContainer>
 
           <S.SendButton
             onClick={handleSendMessage}
-            disabled={isSending || !message.trim()}
+            disabled={isSending || !connected || !message.trim()}
             style={{
-              backgroundColor: message.trim() && !isSending ? '#00A05E' : '#E9E9E9',
+              backgroundColor: message.trim() && !isSending && connected ? '#00A05E' : '#E9E9E9',
             }}
           >
             <Send size={16} />
