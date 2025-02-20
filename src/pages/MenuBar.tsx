@@ -74,7 +74,7 @@ export default function MenuBar() {
   const [searchParams] = useSearchParams();
 
   const handleSubcategoryClick = (categoryTitle: string, subcategory: string) => {
-    navigate('/MyEstimate/RequestEstimate', {
+    navigate('/my/estimate/request', {
       state: { categoryTitle, subcategory },
     });
   };
@@ -136,7 +136,7 @@ export default function MenuBar() {
                 {category.subcategories.map((pair, index) => (
                   <React.Fragment key={`row-${category.id}-${index}`}>
                     {pair.map(
-                      (subcategory, _) =>
+                      (subcategory) =>
                         subcategory && (
                           <M.SubcategoryItem
                             key={subcategory}
