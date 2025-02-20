@@ -123,7 +123,6 @@ export const CommunitySearch = ({ boardId }: CSProps) => {
 
 const ContainerWrapper = styled.div`
   padding-left: 7.3vw;
-  padding-top: 12.5vw;
 `;
 
 const SearchContainer = styled.div`
