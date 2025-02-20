@@ -40,6 +40,7 @@ export const Menu = styled.div<{ active?: boolean }>`
   font-style: normal;
   font-weight: 600;
   line-height: 150%; /* 30px */
+  cursor: pointer;
 `;
 
 export const SubMenuContainer = styled.div`
@@ -51,13 +52,14 @@ export const SubMenuContainer = styled.div`
   gap: 20px;
 `;
 
-export const SubMenu = styled.span`
-  color: #888;
+export const SubMenu = styled.span<{ active?: boolean }>`
+  color: ${(props) => (props.active ? '#000' : '#888')};
   font-family: PretendardRegular;
   font-size: 16px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: ${(props) => (props.active ? 500 : 400)};
   line-height: 150%; /* 24px */
+  cursor: pointer;
 `;
 
 export const Content = styled.div`

@@ -5,27 +5,47 @@ import styled from '@emotion/styled';
 import AddBtn from '@/assets/icons/addBtn.svg?react';
 import ChevronRight from '@/assets/icons/Che.svg?react';
 import { useNavigate } from 'react-router-dom';
-import SuhwanPhoto from '../../assets/images/suhwan.png';
-import JiminPhoto from '../../assets/images/jimin.png';
-import DonghoPhoto from '../../assets/images/dongho.png';
 import GreenRight from '../../assets/icons/chevron-right-green.svg?react';
-import { useRecentEstimates } from '@/hooks/useMyEstimate';
+import { useRecentEstimates, useFindExpertCard } from '@/hooks/useMyEstimate';
+import useAuthStore from '../../store/useAuthStore';
+import { useEffect } from 'react';
 
 export default function MyEstimatePage() {
   const navigate = useNavigate();
-  const userID = 1; 
+  const { userInfo, isLoggedIn } = useAuthStore();
+  const userID = userInfo?.userId;
 
-  const {data:estimates, isLoading,isError} = useRecentEstimates(userID);
+  const { data: estimates, isLoading, isError } = useRecentEstimates(userID);
+  const {
+    data: findExpert,
+    isLoading: isfindingLoading,
+    isError: isfindingError,
+  } = useFindExpertCard();
+  console.log('직접전문가카드 데이터:', findExpert);
+
+  if (isfindingLoading) {
+    console.log('직접찾기 전문가 조회중');
+  }
+  if (isfindingError) {
+    console.log('직접찾기 전문가 조회실패');
+  }
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      alert('로그인이 필요한 서비스입니다');
+      navigate('/signup');
+    }
+  }, [isLoggedIn, navigate]);
 
   const handleEstimateClick = (estimateId: number) => {
-    navigate(`/MyEstimate/detail/${estimateId}`);
+    navigate(`/my/estimate/${estimateId}`);
   };
-  
-  if(isLoading){
-    console.log('내 견적 로딩중')
+
+  if (isLoading) {
+    console.log('내 견적 로딩중');
   }
-  if(isError){
-    console.log('errrrrr')
+  if (isError) {
+    console.log('errrrrr');
   }
   return (
     <E.PageWrapper>
@@ -33,7 +53,7 @@ export default function MyEstimatePage() {
         <div>
           <E.Title1>
             <h2>내 견적</h2>
-            <E.ViewAll onClick={()=>navigate('/MyEstimate/allEstimates')}>
+            <E.ViewAll onClick={() => navigate('/my/estimate/all')}>
               <h4>전체보기</h4>
               <GreenRight />
             </E.ViewAll>
@@ -54,8 +74,16 @@ export default function MyEstimatePage() {
               />
             ))}
 
-            <E.AddCard onClick={() => navigate('/MyEstimate/RequestEstimate')}>
-              <div style={{display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center',gap:'10px'}}>
+            <E.AddCard onClick={() => navigate('/my/estimate/request')}>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  gap: '10px',
+                }}
+              >
                 <StyledBtn />
                 <StyledP>새 견적 받아보기</StyledP>
               </div>
@@ -72,23 +100,19 @@ export default function MyEstimatePage() {
           </E.Title2>
 
           <E.ExpertCardWrap>
-            <ExpertCard
-              name="농사꾼131"
-              product="곡물,벼"
-              star={4.8}
-              years={10}
-              url={DonghoPhoto}
-            />
-
-            <ExpertCard name="이수환" product="과일,감귤" star={4.8} years={12} url={SuhwanPhoto} />
-
-            <ExpertCard
-              name="이지민(해충해방)"
-              product="채소작물,버섯"
-              star={4.8}
-              years={20}
-              url={JiminPhoto}
-            />
+            {findExpert?.expertCardDTOList.map((expertCard) => (
+              <ExpertCard
+                key={expertCard?.expertId}
+                name={expertCard?.name}
+                nickName={expertCard?.nickname}
+                cropCategory={expertCard?.cropCategory}
+                cropName={expertCard?.cropName}
+                star={expertCard?.rating}
+                years={expertCard?.careerYears}
+                url={expertCard?.profileImageUrl}
+                onClick={() => navigate(`/expert/profile/${expertCard?.expertId}`)}
+              />
+            ))}
 
             <E.ChevronRight>
               <ChevronRightB />
@@ -110,22 +134,20 @@ const ChevronRightB = styled(ChevronRight)`
 const StyledBtn = styled(AddBtn)`
   @media (max-width: 768px) {
     width: 40px;
-    height: 40px;  
+    height: 40px;
   }
 
   @media (max-width: 480px) {
     width: 20px;
     height: 20px;
   }
-
-`
+`;
 const StyledP = styled.p`
   @media (max-width: 768px) {
     font-size: 14px !important;
   }
 
   @media (max-width: 480px) {
-    font-size:10px !important;
+    font-size: 10px !important;
   }
-
-`
+`;

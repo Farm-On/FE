@@ -256,7 +256,7 @@ const Signup = () => {
         };
 
         await signupMutation.mutateAsync(signupData);
-        navigate('/signup-complete');
+        navigate('/signup/complete');
       } catch (error) {
         const axiosError = error as AxiosError<{ message: string }>;
         setFormError('submit', axiosError.response?.data?.message || '회원가입에 실패했습니다.');

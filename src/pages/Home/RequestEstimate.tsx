@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import ImgUpload from '../../components/RequestImageUpload';
 import { useCreateEstimateMutation } from '@/hooks/useMyEstimate';
+import useAuthStore from '../../store/useAuthStore';
 
 interface Category {
   id: string;
@@ -26,6 +27,9 @@ const initialCategories: Category[] = [
 ];
 
 export default function RequestEstimatePage(): JSX.Element {
+  const navigate = useNavigate();
+  const { userInfo, isLoggedIn } = useAuthStore();
+  const userId = userInfo?.userId;
   const location = useLocation();
   const editData = location.state?.editData;
   const editSection = location.state?.editSection;
@@ -37,7 +41,6 @@ export default function RequestEstimatePage(): JSX.Element {
   const [currentSection, setCurrentSection] = useState<
     'category' | 'location' | 'budget' | 'detail'
   >('category');
-
   const [areaName, setAreaName] = useState<string>('');
   const [areaNameDetail, setNameDetail] = useState<string>('');
 
@@ -47,9 +50,18 @@ export default function RequestEstimatePage(): JSX.Element {
   const detailRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  const [alertShown, setAlertShown] = useState(false);
+
   //이미지 관련 상태
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
-  
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      alert('로그인이 필요한 서비스입니다');
+      navigate('/signup');
+    }
+  }, [isLoggedIn, navigate]);
+
   const handleLocationSelect = (city: string, district: string) => {
     setAreaName(city);
     setNameDetail(district);
@@ -68,6 +80,11 @@ export default function RequestEstimatePage(): JSX.Element {
   };
 
   const handleImagesChange = (files: File[]) => {
+    // 알림이 아직 표시되지 않았을 때만 표시
+    if (!alertShown) {
+      alert('선택된 사진을 수정할 시 전부 초기화 되므로 신중히 선택해주세요');
+      setAlertShown(true);
+    }
     setSelectedImages(files);
   };
 
@@ -109,7 +126,6 @@ export default function RequestEstimatePage(): JSX.Element {
   const handleCityClick = () => {
     scrollToSection(budgetRef, 'budget');
   };
-  const navigate = useNavigate();
 
   // 수정 모드로 진입했을 때 기존 데이터 설정
   useEffect(() => {
@@ -123,8 +139,25 @@ export default function RequestEstimatePage(): JSX.Element {
       setAreaName(editData.areaName);
       setNameDetail(editData.areaNameDetail);
 
+      // 이미지 설정 - 전달받은 모든 이미지 URL 사용
       if (editData.images && editData.images.length > 0) {
-        setSelectedImages(editData.images);
+        // 문자열 배열 또는 File 객체 배열일 수 있으므로 타입 확인
+        type ImageType = string | File | (string | File)[];
+        const imageList = editData.images
+          .map((img: ImageType) => {
+            // 이미 URL 문자열이면 그대로 사용
+            if (typeof img === 'string') {
+              return img;
+            }
+            // File 객체면 임시 URL 생성
+            else if (img instanceof File) {
+              return URL.createObjectURL(img);
+            }
+            return null;
+          })
+          .filter((url) => url !== null);
+
+        setSelectedImages(imageList);
       }
 
       switch (editSection) {
@@ -162,7 +195,7 @@ export default function RequestEstimatePage(): JSX.Element {
     }
 
     const inputData = {
-      userId: 1,
+      userId: userId,
       cropName: '쌀',
       category: categoryTitle,
       areaName: areaName,
@@ -172,30 +205,30 @@ export default function RequestEstimatePage(): JSX.Element {
       body: contentValue,
     };
 
-    console.log('서버로 보낼 데이터:', inputData); 
+    console.log('서버로 보낼 데이터:', inputData);
 
     try {
       if (location.state?.editSection) {
         const imageUrls = selectedImages
-        .filter(file => file instanceof File)  // 실제 File 객체만 필터링
-        .map(file => {
-          try {
-            return URL.createObjectURL(file); //url로 변환
-          } catch (error) {
-            console.error('URL 생성 실패:', error);
-            return null;
-          }
-        })
-        .filter(url => url !== null);
+          .filter((file) => file instanceof File) // 실제 File 객체만 필터링
+          .map((file) => {
+            try {
+              return URL.createObjectURL(file); //url로 변환
+            } catch (error) {
+              console.error('URL 생성 실패:', error);
+              return null;
+            }
+          })
+          .filter((url) => url !== null);
         // 수정된 데이터 가지고 이동
-        navigate('/MyEstimate/RequestEstimate/CheckMyEstimate', {
+        navigate('/my/estimate/request', {
           state: {
             estimateData: {
               ...inputData,
-              imageUrls,    
+              imageUrls,
               originalFiles: selectedImages,
               editMode: true,
-              areaName: areaName, 
+              areaName: areaName,
               areaNameDetail: areaNameDetail,
             },
           },
@@ -204,13 +237,13 @@ export default function RequestEstimatePage(): JSX.Element {
         // 새로운 견적서 생성일 때 (기존 코드)
         const response = await createEstimateMutation.mutateAsync({
           data: inputData,
-          files: selectedImages.filter(file => file instanceof File)
+          files: selectedImages.filter((file) => file instanceof File),
         });
         console.log('✅ 요청한 데이터:', inputData);
         console.log('✅ 서버 응답 데이터:', response);
 
         if (response.isSuccess) {
-          navigate('/MyEstimate/RequestEstimate/CheckMyEstimate', {
+          navigate(`/my/estimate/request/${response.result.estimateId}`, {
             state: {
               estimateData: {
                 ...inputData,
@@ -218,7 +251,7 @@ export default function RequestEstimatePage(): JSX.Element {
               },
             },
           });
-          console.log('전달된 데이터들:', response);
+          console.log('전달된 데이터들!!:', response);
         }
       }
     } catch (error) {
@@ -295,12 +328,12 @@ export default function RequestEstimatePage(): JSX.Element {
                 <RE.Bubble>예산은 어느 정도인가요?</RE.Bubble>
                 <RE.InputContainer>
                   {[
-                    '10~50만원',
-                    '50~100만원',
-                    '100~200만원',
-                    '200~500만원',
-                    '500~1000만원',
-                    '1000만원 이상',
+                    '10만원 ~ 50만원',
+                    '50만원 ~ 100만원',
+                    '100만원 ~ 200만원',
+                    '200만원 ~ 500만원',
+                    '500만원 ~ 1,000만원',
+                    '1,000만원 이상',
                   ].map((value) => (
                     <EstimateBudget
                       key={value}
@@ -353,7 +386,7 @@ export default function RequestEstimatePage(): JSX.Element {
                         marginTop: '10px',
                       }}
                     >
-                      <ImgUpload onImagesChange={handleImagesChange} maxImages={5} />
+                      <ImgUpload onImagesChange={handleImagesChange} maxImages={15} />
                     </div>
                     <RE.ContentLength>{contentValue.length}/3000</RE.ContentLength>
                   </InputContainer>

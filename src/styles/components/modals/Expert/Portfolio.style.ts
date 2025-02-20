@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 
 import X from '@/assets/icons/X.svg?react';
+import ChevronLeftWhite from '@/assets/icons/ChevronLeftWhite.svg?react';
 
 export const Header = styled.div`
-  padding-top: 20px;
-  padding-right: 25px;
+  padding: 20px 25px 0px 25px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -12,6 +12,7 @@ export const Header = styled.div`
 `;
 
 export const Content = styled.div`
+  overflow-y: auto;
   margin-top: 4px;
   padding-left: 30px;
   padding-right: 30px;
@@ -34,6 +35,48 @@ export const Title = styled.span`
   font-style: normal;
   font-weight: 500;
   line-height: 150%; /* 30px */
+`;
+
+export const PortfolioIndicator = styled.span`
+  margin-left: 20px;
+  margin-bottom: 8px;
+  color: #fff;
+  font-family: PretendardRegular;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 166%; /* 29.88px */
+`;
+
+export const PreviousArrow = styled(ChevronLeftWhite)`
+  cursor: pointer;
+  margin-right: 110px;
+`;
+
+export const NextArrow = styled(ChevronLeftWhite)`
+  cursor: pointer;
+  margin-left: 110px;
+  rotate: 180deg;
+`;
+
+export const PortfolioTitle = styled.span`
+  padding-top: 30px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #00a05e;
+  color: #000;
+  font-family: PretendardRegular;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 160%; /* 41.6px */
+`;
+
+export const PortfolioContent = styled.div`
+  overflow-y: auto;
+  margin-top: 30px;
+  & img {
+    width: 100%;
+  }
 `;
 
 export const Input = styled.input`
@@ -114,6 +157,10 @@ export const SaveBtn = styled.button`
   font-weight: 500;
   line-height: 166%; /* 29.88px */
   cursor: pointer;
+`;
+
+export const ChipContainer = styled.div`
+  height: 40px;
 `;
 
 export const Chip = styled.div`

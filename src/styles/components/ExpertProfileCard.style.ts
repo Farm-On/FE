@@ -19,7 +19,7 @@ export const Card = styled.div`
 export const Avatar = styled.img`
   width: 84px;
   height: 84px;
-  border-radius: 84px;
+  border-radius: 9999px;
   object-fit: cover;
 `;
 
@@ -44,15 +44,6 @@ export const Info = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 12px;
-`;
-
-export const RatingsText = styled.span`
-  color: #2c2c2c;
-  font-family: PretendardRegular;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 150%; /* 24px */
 `;
 
 export const InfoText = styled.span`

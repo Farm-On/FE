@@ -37,7 +37,7 @@ export const Navbar = () => {
     if (isLoggedIn && isExpertLoginIntent) {
       setIsExpertLoginIntent(false); // 상태 초기화
       if (userInfo?.role !== 'EXPERT') {
-        navigate('/expert-register');
+        navigate('/expert/register');
       }
     }
   }, [isLoggedIn, userInfo, isExpertLoginIntent]);
@@ -56,7 +56,7 @@ export const Navbar = () => {
       setIsExpertLoginIntent(true);
       openExpertLoginModal();
     } else if (userInfo?.role !== 'EXPERT') {
-      navigate('/expert-register');
+      navigate('/expert/register');
     }
   };
 
@@ -75,15 +75,20 @@ export const Navbar = () => {
           role: response.result.exchangeRole,
         };
 
+        // expertId 추가
+        if (targetRole === 'EXPERT') {
+          updatedUserInfo.expertId = response.result.expertId;
+        }
+
         updateUserInfo(updatedUserInfo);
       } else {
         if (response.code === 'EXPERT4002') {
-          navigate('/expert-register');
+          navigate('/expert/register');
         }
       }
     } catch (error) {
       console.error('Role exchange failed:', error);
-      navigate('/expert-register');
+      navigate('/expert/register');
     }
   };
 
@@ -109,7 +114,7 @@ export const Navbar = () => {
               <N.NotificationIcon>
                 <Bell />
               </N.NotificationIcon>
-              <N.MenuLink to="/MyEstimate">내 견적</N.MenuLink>
+              <N.MenuLink to="/my/estimate">내 견적</N.MenuLink>
               <N.UserDropdown>
                 <N.UserName>
                   {userInfo?.role === 'EXPERT' && <N.ExpertBadge>전문가</N.ExpertBadge>}
@@ -160,7 +165,7 @@ export const Navbar = () => {
                 <N.ExpertButton onClick={handleExpertRegistration}>전문가 등록하기</N.ExpertButton>
                 <N.LoginButton onClick={openLoginModal}>로그인</N.LoginButton>
               </N.AuthLinks>
-              <N.SignupButton to="/agreement">
+              <N.SignupButton to="/signup/agreement">
                 <N.SignupText>회원가입</N.SignupText>
               </N.SignupButton>
               <N.MobileMenuButton onClick={toggleMobileMenu}>
@@ -179,7 +184,7 @@ export const Navbar = () => {
           </N.MobileMenuLink>
           <N.MobileMenuLink to="/community">커뮤니티</N.MobileMenuLink>
           <N.MobileDivider />
-          <N.MobileMenuLink to="/expert-register" className="register">
+          <N.MobileMenuLink to="/expert/register" className="register">
             전문가 등록하기
           </N.MobileMenuLink>
           <N.MobileMenuLink to="/login">로그인</N.MobileMenuLink>

@@ -8,7 +8,7 @@ export const regions:RegionType[] = [
       city: "서울",
       id:'1',
       districts: [
-        "전체",
+        "서울전체",
         "강남구",
         "강동구", 
         "강북구",
@@ -40,7 +40,7 @@ export const regions:RegionType[] = [
       city: "경기",
       id:'2',
       districts: [
-        "전체",
+        "경기전체",
         "수원시",
         "성남시",
         "안양시",
@@ -76,7 +76,7 @@ export const regions:RegionType[] = [
       city: "인천",
       id:'3',
       districts: [
-        "전체",
+        "인천전체",
         "중구",
         "동구",
         "남동구",
@@ -93,7 +93,7 @@ export const regions:RegionType[] = [
       city: "강원",
       id:'4',
       districts: [
-        "전체",
+        "강원전체",
         "춘천시",
         "원주시",
         "강릉시",
@@ -118,7 +118,7 @@ export const regions:RegionType[] = [
       city: "대전",
       id:'5',
       districts: [
-        "전체",
+        "대전전체",
         "동구",
         "중구",
         "서구",
@@ -137,7 +137,7 @@ export const regions:RegionType[] = [
       city: "충남",
       id:'7',
       districts: [
-        "전체",
+        "충남전체",
         "천안시",
         "공주시",
         "보령시",
@@ -159,7 +159,7 @@ export const regions:RegionType[] = [
       city: "충북",
       id:'8',
       districts: [
-        "전체",
+        "충북전체",
         "청주시",
         "충주시",
         "제천시",
@@ -177,7 +177,7 @@ export const regions:RegionType[] = [
       city: "부산",
       id:'9',
       districts: [
-        "전체",
+        "부산전체",
         "중구",
         "서구",
         "동구",
@@ -200,7 +200,7 @@ export const regions:RegionType[] = [
       city: "울산",
       id:'10',
       districts: [
-        "전체",
+        "울산전체",
         "중구",
         "남구",
         "동구",
@@ -212,7 +212,7 @@ export const regions:RegionType[] = [
       city: "경남",
       id:'11',
       districts: [
-        "전체",
+        "경남전체",
         "창원시",
         "진주시",
         "통영시",
@@ -237,7 +237,7 @@ export const regions:RegionType[] = [
       city: "경북",
       id:'12',
       districts: [
-        "전체",
+        "경북전체",
         "포항시",
         "경주시",
         "김천시",
@@ -266,7 +266,7 @@ export const regions:RegionType[] = [
       city: "대구",
       id:'13',
       districts: [
-        "전체",
+        "대구전체",
         "중구",
         "동구",
         "서구",
@@ -281,7 +281,7 @@ export const regions:RegionType[] = [
       city: "광주",
       id:'14',
       districts: [
-        "전체",
+        "광주전체",
         "동구",
         "서구",
         "남구",
@@ -293,7 +293,7 @@ export const regions:RegionType[] = [
       city: "전남",
       id:'15',
       districts: [
-        "전체",
+        "전남전체",
         "목포시",
         "여수시",
         "순천시",
@@ -322,7 +322,7 @@ export const regions:RegionType[] = [
       city: "전북",
       id:'16',
       districts: [
-        "전체",
+        "전북전체",
         "전주시",
         "군산시",
         "익산시",
@@ -343,7 +343,7 @@ export const regions:RegionType[] = [
       city: "제주",
       id:'17',
       districts: [
-        "전체",
+        "제주전체",
         "제주시",
         "서귀포시"
       ]

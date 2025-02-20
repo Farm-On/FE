@@ -21,7 +21,7 @@ export default function Home() {
             <Search />
           </H.SearchSection>
           <H.CommunitySection>
-            <Header title="궁금한 점을 나눠보세요" link="/Community" />
+            <Header title="궁금한 점을 나눠보세요" link="/community" />
             <Community />
           </H.CommunitySection>
           <H.TrendingsSection>

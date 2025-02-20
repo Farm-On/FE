@@ -115,10 +115,10 @@ export interface CreateEstimate {
     code: string;
     message: string;
     result: {
-      listSize: 0;
-      totalPage: 0;
-      totalElements: 0;
-      currentPage: 0;
+      listSize: number;
+      totalPage: number;
+      totalElements: number;
+      currentPage: number;
       isFirst: true;
       isLast: true;
       offerList: OfferList[];
@@ -150,3 +150,31 @@ export interface CreateEstimate {
     result: EstimateDetail;
   }
   
+
+  //전문가 직접찾기 용 
+  export interface FindExpert {
+    expertId: number,
+    name: string,
+    nickname: string,
+    isNicknameOnly: true,
+    cropCategory: string,
+    cropName: string,
+    rating: number,
+    careerYears: number,
+    profileImageUrl: string
+  }
+
+  export interface FindExpertEsponse {
+    isSuccess: true,
+    code: string,
+    message: string,
+    result: {
+      listSize: number,
+      totalPage: number,
+      totalElements: number,
+      currentPage: number,
+      isFirst: true,
+      isLast: true,
+      expertCardDTOList:FindExpert[]
+    }
+  }

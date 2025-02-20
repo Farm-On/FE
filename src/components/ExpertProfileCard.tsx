@@ -1,11 +1,14 @@
 import * as P from '@/styles/components/ExpertProfileCard.style';
 
-import Star from '@/assets/icons/Star.svg?react';
+import DefaultAvatar from '@/assets/icons/DefaultAvatar.svg?react';
+import { useNavigate } from 'react-router-dom';
 
 interface ExpertProfileCardProps {
+  id: number;
   profileImg: string;
+  isNicknameOnly: boolean;
   name: string;
-  ratings: number;
+  nickname: string | null;
   years: number;
   location: string;
   fields: string;
@@ -13,31 +16,35 @@ interface ExpertProfileCardProps {
 }
 
 export const ExpertProfileCard = ({
+  id,
   profileImg,
+  isNicknameOnly,
   name,
-  ratings,
+  nickname,
   years,
   location,
   fields,
   introduction,
 }: ExpertProfileCardProps) => {
+  const navigate = useNavigate();
+
   return (
     <P.Card>
-      <P.Avatar src={profileImg} />
+      {profileImg ? <P.Avatar src={profileImg} /> : <DefaultAvatar width={84} height={84} />}
       <P.Profile>
-        <P.Name>{name}</P.Name>
+        <P.Name>
+          {isNicknameOnly ? nickname : `${name}` + (nickname ? ` (${nickname})` : '')}
+        </P.Name>
         <P.Info>
-          <div>
-            <Star />
-            <P.RatingsText>{ratings}</P.RatingsText>
-          </div>
           <P.InfoText>
-            경력 {years}년 | {location}
+            경력 {years ? `${years}년` : '없음'} | {location}
           </P.InfoText>
         </P.Info>
         <P.FieldText>{fields}</P.FieldText>
         <P.IntroductionText>{introduction}</P.IntroductionText>
-        <P.ViewPortfolioBtn>포트폴리오 보기</P.ViewPortfolioBtn>
+        <P.ViewPortfolioBtn onClick={() => navigate(`/expert/profile/${id}`)}>
+          포트폴리오 보기
+        </P.ViewPortfolioBtn>
       </P.Profile>
     </P.Card>
   );

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { css, Global } from '@emotion/react';
 import ReactModal from 'react-modal';
@@ -36,17 +36,13 @@ import PasswordReset from './pages/Auth/PasswordReset';
 import PasswordComplete from './pages/Auth/PasswordComplete';
 import EditProfile from './pages/User/EditProfile';
 import CheckMyEstimatePage from './pages/Home/EstimateCheckPage';
-import ExpertProfile from './pages/Expert/Profile';
-import Portfolio from './pages/Expert/Portfolio';
+import ExpertProfileList from './pages/Expert/ProfileList';
+import Profile from './pages/Expert/Profile';
 import EstimateSheet from './pages/Home/EstimateSheet';
 import QnA from './pages/Community/QnA';
 import { FreePage } from './pages/Community/FreePage';
 
-// 컴포넌트
-import LoginModal from './components/LoginModal';
-import useAuthStore from './store/useAuthStore';
-import { Navbar } from './components/Navbar';
-import { Footer } from './components/Footer';
+import MainLayout from './layouts/MainLayout';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -66,120 +62,97 @@ const AppContainer = styled.div`
 
 ReactModal.setAppElement('#root');
 
-// 레이아웃 컴포넌트
-const AppRoutes = () => {
-  const location = useLocation();
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <MainLayout />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: 'my/estimate', element: <MyEstimatePage /> },
+      { path: 'update-info', element: <EditProfile /> },
+      { path: 'expert/profile', element: <ExpertProfileList /> },
+      { path: 'expert/portfolio/edit', element: <PortfolioEdit /> },
+      { path: 'expert/portfolio/editor/:portfolioId', element: <PortfolioEditor /> },
+      { path: 'expert/profile/:userID', element: <Profile /> },
+      { path: 'expert/estimates', element: <Estimates /> },
+      { path: 'expert/estimate/:estimateId', element: <Estimate /> },
+      { path: 'expert/my/estimate', element: <ExpertMyEstimate /> },
+      { path: 'expert/register', element: <Register /> },
+      { path: 'expert/register/category/:categoryId', element: <DetailCategory /> },
+      { path: 'expert/register/location', element: <Location /> },
+      { path: 'expert/register/complete', element: <RegisterComplete /> },
+      { path: 'community', element: <CommunityPage /> },
+      { path: '/qna/:postId', element: <QnA /> },
+      { path: '/:apiValue/:boardId/:postId', element: <FreePage /> },
+      { path: 'my/estimate/request', element: <RequestEstimatePage /> },
+      { path: 'my/estimate/request/:estimateId', element: <CheckMyEstimatePage /> },
+      { path: 'menu', element: <MenuBar /> },
+      { path: 'chat', element: <ChatList /> },
+      { path: 'chat/:roomId', element: <ChatRoom /> },
+      { path: 'signup/agreement', element: <Agreement /> },
+      { path: 'signup', element: <Signup /> },
+      { path: 'signup/complete', element: <SignupComplete /> },
+      { path: 'my/estimate/all', element: <AllEstimates /> },
+      { path: 'my/estimate/:estimateId', element: <EstimateSheet /> },
+      { path: 'find-account', element: <FindAccount /> },
+      { path: 'find-account/id-complete', element: <FindAccountComplete /> },
+      { path: 'find-account/password-reset', element: <PasswordReset /> },
+      { path: 'find-account/password-complete', element: <PasswordComplete /> },
 
-  // 홈페이지 체크
-  const isHomePage = location.pathname === '/';
-
-  // 인증 페이지 체크
-  const authPages = [
-    '/agreement',
-    '/signup',
-    '/signup-complete',
-    '/find-account',
-    '/find-account/id-complete',
-    '/find-account/password-reset',
-    '/find-account/password-complete',
-  ];
-  const isAuthPage = authPages.includes(location.pathname);
-
-  // Navbar와 Footer 표시 여부
-  const shouldShowNavbarAndFooter =
-    !isHomePage && (!isAuthPage || location.pathname === '/update-info');
-
-  return (
-    <>
-      {shouldShowNavbarAndFooter && <Navbar />}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/MyEstimate" element={<MyEstimatePage />} />
-        <Route path="/update-info" element={<EditProfile />} />
-        <Route path="/expert/profile" element={<ExpertProfile />} />
-        <Route path="/expert/portfolio/edit" element={<PortfolioEdit />} />
-        <Route path="/expert/portfolio/editor" element={<PortfolioEditor />} />
-        <Route path="/expert/portfolio/:userID" element={<Portfolio />} />
-        <Route path="/expert/estimates" element={<Estimates />} />
-        <Route path="/expert/estimate" element={<Estimate />} />
-        <Route path="/expert/my/estimate" element={<ExpertMyEstimate />} />
-        <Route path="/expert-register" element={<Register />} />
-        <Route path="/detail-category/:categoryId" element={<DetailCategory />} />
-        <Route path="/location" element={<Location />} />
-        <Route path="/register-complete" element={<RegisterComplete />} />
-        <Route path="/Community" element={<CommunityPage />} />
-        <Route path="/MyEstimate/RequestEstimate" element={<RequestEstimatePage />} />
-        <Route path="/menu" element={<MenuBar />} />
-        <Route path="/chat" element={<ChatList />} />
-        <Route path="/chat/:roomId" element={<ChatRoom />} />
-        <Route path="/agreement" element={<Agreement />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/signup-complete" element={<SignupComplete />} />
-        <Route path="/qna/:postId" element={<QnA />} />
-        <Route path="/:apiValue/:boardId/:postId" element={<FreePage />} />
-
-        <Route path="/MyEstimate/allEstimates" element={<AllEstimates />} />
-        <Route
-          path="/MyEstimate/RequestEstimate/CheckMyEstimate"
-          element={<CheckMyEstimatePage />}
-        />
-        <Route path="/MyEstimate/detail/:estimateId" element={<EstimateSheet />} />
-
-        <Route path="/find-account" element={<FindAccount />} />
-        <Route path="/find-account/id-complete" element={<FindAccountComplete />} />
-        <Route path="/find-account/password-reset" element={<PasswordReset />} />
-        <Route path="/find-account/password-complete" element={<PasswordComplete />} />
-      </Routes>
-      {shouldShowNavbarAndFooter && <Footer />}
-    </>
-  );
-};
+    ],
+  },
+]);
 
 function App() {
-  const { isLoginModalOpen, closeLoginModal, loginModalType } = useAuthStore();
-
   return (
     <QueryClientProvider client={queryClient}>
-      <Router>
-        <AppContainer>
-          <Global
-            styles={css`
-              *,
-              *::before,
-              *::after {
-                box-sizing: border-box;
-              }
+      <AppContainer>
+        <Global
+          styles={css`
+            *,
+            *::before,
+            *::after {
+              box-sizing: border-box;
+            }
 
-              :root {
-                -webkit-font-smoothing: antialiased;
-                -moz-osx-font-smoothing: grayscale;
-              }
+            :root {
+              -webkit-font-smoothing: antialiased;
+              -moz-osx-font-smoothing: grayscale;
+            }
 
-              @font-face {
-                font-family: 'PretendardRegular';
-                src: url(${PretendardRegular}) format('woff');
-                font-weight: 500;
-              }
-              @font-face {
-                font-family: 'PretendardSemiBold';
-                src: url(${PretendardSemiBold}) format('woff');
-                font-weight: 600;
-              }
-              @font-face {
-                font-family: 'PretendardMedium';
-                src: url(${PretendardMedium}) format('woff');
-                font-weight: 500;
-              }
-              body {
-                margin: 0;
-                padding: 0;
-              }
-            `}
-          />
-          <AppRoutes />
-          <LoginModal isOpen={isLoginModalOpen} onClose={closeLoginModal} type={loginModalType} />
-        </AppContainer>
-      </Router>
+            @font-face {
+              font-family: 'PretendardRegular';
+              src: url(${PretendardRegular}) format('woff');
+              font-weight: 500;
+            }
+            @font-face {
+              font-family: 'PretendardSemiBold';
+              src: url(${PretendardSemiBold}) format('woff');
+              font-weight: 600;
+            }
+            @font-face {
+              font-family: 'PretendardMedium';
+              src: url(${PretendardMedium}) format('woff');
+              font-weight: 500;
+            }
+
+            body {
+              margin: 0;
+              padding: 0;
+              background: #f9f9f9;
+            }
+
+            .ReactModal__Body--open {
+              overflow: hidden;
+              position: fixed;
+              width: 100%;
+              height: 100%;
+            }
+          `}
+        />
+
+        <RouterProvider router={router} />
+      </AppContainer>
     </QueryClientProvider>
   );
 }

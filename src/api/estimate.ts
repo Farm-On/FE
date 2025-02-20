@@ -22,7 +22,7 @@ export const createEstimate = async (data: CreateEstimate, files?: File[]): Prom
 
     if (files && files.length > 0) {
       files.forEach((file) => {
-        formData.append('files', file);
+        formData.append('imageFiles', file);
       });
     }
 
@@ -81,4 +81,11 @@ export const getAllEstimates = async(userId:number)=>{
 export const getAllCompleted = async(userId:number)=>{
     const response = await axiosInstance.get(`/estimate/user/${userId}/is-complete`);
     return response.data;
+}
+
+//직접찾기용 전문가 카드불러오기
+export const getFindExpert = async()=>{
+  const response = await axiosInstance.get('/estimate/expert-cards');
+  console.log('직접찾기전문가 데이터:',response.data)
+  return response.data;
 }

@@ -23,6 +23,7 @@ interface UserInfo {
   userId: number;
   userName: string;
   role: 'ADMIN' | 'FARMER' | 'EXPERT';
+  expertId?: number;
   email: string;
   token: string;
 }
