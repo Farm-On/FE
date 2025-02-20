@@ -17,6 +17,18 @@ interface Category {
   title: string;
 }
 
+interface NavigateEstimateResponse {
+  estimateId: number;
+  userId: number;
+  cropName: string;
+  category: string;
+  areaName: string;
+  areaNameDetail: string;
+  budget: string;
+  title: string;
+  body: string;
+}
+
 const initialCategories: Category[] = [
   { id: '1', title: '작물관리' },
   { id: '2', title: '토양 및 환경관리' },
@@ -54,9 +66,6 @@ export default function RequestEstimatePage(): JSX.Element {
 
   //이미지 관련 상태
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
-
-  const categoryTitle = location.state?.categoryTitle || '카테고리 선택';
-  const subcategory = location.state?.subcategory || '세부 항목 선택';
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -238,10 +247,11 @@ export default function RequestEstimatePage(): JSX.Element {
         });
       } else {
         // 새로운 견적서 생성일 때 (기존 코드)
-        const response = await createEstimateMutation.mutateAsync({
+        const response = (await createEstimateMutation.mutateAsync({
           data: inputData,
           files: selectedImages.filter((file) => file instanceof File),
-        });
+        })) as { isSuccess: boolean; result: NavigateEstimateResponse }; // 타입 단언 추가
+
         console.log('✅ 요청한 데이터:', inputData);
         console.log('✅ 서버 응답 데이터:', response);
 
