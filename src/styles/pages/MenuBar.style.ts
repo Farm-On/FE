@@ -141,6 +141,7 @@ export const CategoryTitle = styled.h2`
   color: black;
   font-family: 'PretendardSemiBold';
   margin-bottom: 40px;
+  cursor: pointer;
 
   @media (max-width: 1024px) {
     font-size: 18px;
@@ -185,6 +186,7 @@ export const SubcategoryContainer = styled.div`
   gap: 8px 300px;
   width: fit-content;
   margin-bottom: 84px;
+  cursor: pointer;
 
   @media (max-width: 1024px) {
     grid-template-columns: 180px 180px;
@@ -216,6 +218,7 @@ export const SubcategoryItem = styled.span`
   font-weight: 400;
   color: #2c2c2c;
   margin-bottom: 48px;
+  cursor: pointer;
 
   @media (max-width: 1024px) {
     font-size: 17px;

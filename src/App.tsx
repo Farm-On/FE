@@ -39,6 +39,8 @@ import CheckMyEstimatePage from './pages/Home/EstimateCheckPage';
 import ExpertProfileList from './pages/Expert/ProfileList';
 import Profile from './pages/Expert/Profile';
 import EstimateSheet from './pages/Home/EstimateSheet';
+import QnA from './pages/Community/QnA';
+import { FreePage } from './pages/Community/FreePage';
 
 // 레이아웃
 import MainLayout from './layouts/MainLayout';
@@ -84,6 +86,8 @@ const router = createBrowserRouter([
       { path: 'expert/register/location', element: <Location /> },
       { path: 'expert/register/complete', element: <RegisterComplete /> },
       { path: 'community', element: <CommunityPage /> },
+      { path: '/qna/:postId', element: <QnA /> },
+      { path: '/:apiValue/:boardId/:postId', element: <FreePage /> },
       { path: 'my/estimate/request', element: <RequestEstimatePage /> },
       { path: 'my/estimate/request/:estimateId', element: <CheckMyEstimatePage /> },
       { path: 'menu', element: <MenuBar /> },
@@ -98,6 +102,7 @@ const router = createBrowserRouter([
       { path: 'find-account/id-complete', element: <FindAccountComplete /> },
       { path: 'find-account/password-reset', element: <PasswordReset /> },
       { path: 'find-account/password-complete', element: <PasswordComplete /> },
+
     ],
   },
 ]);
