@@ -22,4 +22,17 @@ export default defineConfig({
       '@': '/src',
     },
   },
+  preview: {
+    port: 5173,
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://farmon-be.site',
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
+  },
 });
