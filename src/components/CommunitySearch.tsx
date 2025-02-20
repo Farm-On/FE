@@ -63,11 +63,24 @@ export const CommunitySearch = ({ boardId }: CSProps) => {
     }, 500); // 0.5초 딜레이 후 API 호출
 
     return () => clearTimeout(delayDebounceFn); // 이전 요청 취소
-  }, [searchValue]);
+  }, []);
 
   // 게시글 클릭 시 FreePage로 이동
   const handlePostClick = (postId: number) => {
     navigate(`/free/${boardId}/${postId}`);
+  };
+
+  const decodeImageUrl = (url: string): string => {
+    try {
+      let decodedUrl = decodeURIComponent(url);
+      if (decodedUrl.startsWith('https://umcfarmon.s3.ap-northeast-2.amazonaws.com/https://')) {
+        decodedUrl = decodedUrl.replace('https://umcfarmon.s3.ap-northeast-2.amazonaws.com/', '');
+      }
+      return decodedUrl;
+    } catch (e) {
+      console.error('이미지 URL 디코딩 실패:', e);
+      return url;
+    }
   };
 
   return (
@@ -98,7 +111,7 @@ export const CommunitySearch = ({ boardId }: CSProps) => {
               category="검색결과"
               product=""
               productDetail=""
-              imgSrc={post.imgUrls?.[0] || ''}
+              imgSrc={post.imgUrls?.length ? decodeImageUrl(post.imgUrls[0]) : ''}
               onClick={() => handlePostClick(post.id)} // FreePage로 이동
             />
           ))}
