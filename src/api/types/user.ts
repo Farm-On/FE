@@ -1,4 +1,4 @@
-import { BaseResponse } from './base';
+import type { BaseResponse } from './base';
 
 export interface MyPageResponse extends BaseResponse {
   result: {
