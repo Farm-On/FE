@@ -2,7 +2,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 export const axiosInstance = axios.create({
-  baseURL: '/api',
+  baseURL: 'https://farmon-be.site/api',
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
