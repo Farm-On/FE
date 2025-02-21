@@ -7,7 +7,7 @@ export const ModalOverlay = styled.div`
   left: 0;
   top: 0;
   background: rgba(0, 0, 0, 0.6);
-  z-index: 1000;
+  z-index: 99999;
   min-height: 100vh;
   min-height: -webkit-fill-available;
 `;
@@ -22,7 +22,7 @@ export const ModalContainer = styled.div`
   transform: translate(-50%, -50%);
   background: #ffffff;
   border-radius: 20px;
-  z-index: 1001;
+  z-index: 999991;
   padding: 30px;
 
   @media (max-width: 768px) {
