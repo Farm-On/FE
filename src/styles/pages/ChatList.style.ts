@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 
 export const Container = styled.div`
+  padding-top: 84px;
   width: 100%;
   min-height: calc(100vh - 80px);
   background: #f9f9f9;
@@ -9,6 +10,8 @@ export const Container = styled.div`
 `;
 
 export const MainContent = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
   width: 100%;
   padding-top: 0;
   flex: 1;
