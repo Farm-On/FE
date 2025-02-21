@@ -1,4 +1,4 @@
-import { BaseResponse } from './base';
+import type { BaseResponse } from './base';
 
 export interface LoginRequest {
   email: string;
@@ -49,13 +49,6 @@ export interface CommonResponse {
   code: string;
   message: string;
   result: string;
-}
-
-// TODO
-export interface BaseResponse {
-  isSuccess: boolean;
-  code: string;
-  message: string;
 }
 
 export interface ErrorResponse {

@@ -1,13 +1,13 @@
 import styled from '@emotion/styled';
 import LeftIcon from '../assets/icons/chevron-left-gray.svg?react';
-import RightIcon from '../assets/icons/chevron-Right-gray.svg?react';
+import RightIcon from '../assets/icons/chevron-right-gray.svg?react';
 
-interface PageProps{
-    currentPage:number;
-    totalPages:number;
-    onPageChange:(page: number)=>void;
+interface PageProps {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
 }
-export const CommuPageBtn = ({ currentPage, totalPages, onPageChange }:PageProps) => {
+export const CommuPageBtn = ({ currentPage, totalPages, onPageChange }: PageProps) => {
   const pageSize = 6; // 한 그룹당 보여줄 페이지 수
   const currentGroup = Math.floor((currentPage - 1) / pageSize);
   const startPage = currentGroup * pageSize + 1;
@@ -32,13 +32,15 @@ export const CommuPageBtn = ({ currentPage, totalPages, onPageChange }:PageProps
       <NavigationButton onClick={handlePrevGroup} disabled={startPage === 1}>
         <LeftIcon />
       </NavigationButton>
-      <LeftIcon style={{
+      <LeftIcon
+        style={{
           width: '26px',
           height: '26px',
           opacity: startPage === 1 ? 0.5 : 1,
           cursor: startPage === 1 ? '' : 'pointer',
-        }} 
-        onClick={handlePrevGroup}/>
+        }}
+        onClick={handlePrevGroup}
+      />
       {Array.from({ length: endPage - startPage + 1 }, (_, index) => {
         const pageNumber = startPage + index;
         return (
@@ -65,7 +67,6 @@ export const CommuPageBtn = ({ currentPage, totalPages, onPageChange }:PageProps
   );
 };
 
-
 const PaginationContainer = styled.div`
   display: flex;
   align-items: center;
@@ -78,8 +79,8 @@ const PageButton = styled.button<{ isActive?: boolean }>`
   height: 32.4px;
   border-radius: 7.551px;
   border: none;
-  background-color: ${props => props.isActive ? '#00A05E' : 'transparent'};
-  color: ${props => props.isActive ? '#FFF' : '#8E8E8E'};
+  background-color: ${(props) => (props.isActive ? '#00A05E' : 'transparent')};
+  color: ${(props) => (props.isActive ? '#FFF' : '#8E8E8E')};
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -87,7 +88,7 @@ const PageButton = styled.button<{ isActive?: boolean }>`
   font-size: 16px;
   font-family:'PretendardRegular'
   &:hover {
-    background-color: ${props => props.isActive ? '#00A67E' : '#f0f0f0'};
+    background-color: ${(props) => (props.isActive ? '#00A67E' : '#f0f0f0')};
   }
 `;
 

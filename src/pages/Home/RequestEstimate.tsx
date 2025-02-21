@@ -11,10 +11,15 @@ import { useLocation } from 'react-router-dom';
 import ImgUpload from '../../components/RequestImageUpload';
 import { useCreateEstimateMutation } from '@/hooks/useMyEstimate';
 import useAuthStore from '../../store/useAuthStore';
+import { CreateEstimate } from '@/api/types/userEstimate';
 
 interface Category {
   id: string;
   title: string;
+}
+
+interface NavigateEstimateResponse extends CreateEstimate {
+  estimateId: number;
 }
 
 const initialCategories: Category[] = [
@@ -54,9 +59,6 @@ export default function RequestEstimatePage(): JSX.Element {
 
   //이미지 관련 상태
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
-
-  const categoryTitle = location.state?.categoryTitle || '카테고리 선택';
-  const subcategory = location.state?.subcategory || '세부 항목 선택';
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -238,10 +240,11 @@ export default function RequestEstimatePage(): JSX.Element {
         });
       } else {
         // 새로운 견적서 생성일 때 (기존 코드)
-        const response = await createEstimateMutation.mutateAsync({
+        const response = (await createEstimateMutation.mutateAsync({
           data: inputData,
           files: selectedImages.filter((file) => file instanceof File),
-        });
+        })) as unknown as { isSuccess: boolean; result: NavigateEstimateResponse };
+
         console.log('✅ 요청한 데이터:', inputData);
         console.log('✅ 서버 응답 데이터:', response);
 
