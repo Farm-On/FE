@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const axiosInstance = axios.create({
-  baseURL: process.env.NODE_ENV === 'production' ? 'https://farmon-be.site/api' : '/api',
+  baseURL: 'https://farmon-be.site/api',
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',

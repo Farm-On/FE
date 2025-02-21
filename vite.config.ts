@@ -14,6 +14,15 @@ export default defineConfig({
     svgr(),
     tsconfigPaths(),
   ],
+  // server: {
+  //   proxy: {
+  //     '/api': {
+  //       target: 'https://farmon-be.site',
+  //       changeOrigin: true,
+  //       secure: false,
+  //     },
+  //   },
+  // },
   define: {
     global: 'window',
   },

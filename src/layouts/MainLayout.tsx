@@ -28,7 +28,9 @@ export default function MainLayout() {
 
   // padding 및 margin 여부
   const noGuttersPaths = ['/', '/my/estimate/request', '/menu'];
-  const noGutters = noGuttersPaths.some((p) => p === location.pathname);
+  const noGutters = noGuttersPaths.some(
+    (p) => p === location.pathname || location.pathname.startsWith('/chat')
+  );
 
   const { isLoginModalOpen, closeLoginModal, loginModalType } = useAuthStore();
 
